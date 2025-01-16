@@ -330,6 +330,8 @@ def read_data(file, type_doc="v21"):
         return info_bat, data_bat, obs, message
     if type_doc == "v23":
         info_bat, data_bat, message = traiLogbook_v23(file)
+        # data_bat.to_csv('./ma_data.csv')
+        # print(data_bat.columns)
         return info_bat, data_bat, message
 
 
@@ -1684,7 +1686,7 @@ def build_trip(allData, info_bat, data_log, oce, prg, ob):
     else:
         resu = getId(allData, "Harbour", argment="label2=" + (info_bat['Arrivee_Port']).upper())
         if resu == None:
-            js_contents["landingHarbour"] = getId(allData, "Harbour", argment="code=999")
+            js_contents["landingHarb number = 1our"] = getId(allData, "Harbour", argment="code=999")
         else:
             js_contents["landingHarbour"] = resu
 
@@ -1722,7 +1724,9 @@ def build_trip_v23(allData, info_bat, data_log, oce, prg):
         allMessages, js_contents
     """
 
-    group = data_log.groupby(['date'])
+    # 2024-02-24T06:50:00.000Z, "2024-02-24T00:00:00.000Z"
+    grouped_by_date = data_log.groupby('date')
+
     oths = False
     oths_rej = []
     data_date = ""
@@ -1747,7 +1751,7 @@ def build_trip_v23(allData, info_bat, data_log, oce, prg):
     js_floatingObjects = {}
     #####################
 
-    homeId = Som_thon = 0
+    homeId = 0
     nb = 1
 
     WeightMeasureMet = getId(allData, "WeightMeasureMethod", argment="label2=Estimation visuelle")
@@ -1778,74 +1782,69 @@ def build_trip_v23(allData, info_bat, data_log, oce, prg):
     tab_fpa = getAll(allData, "FpaZone", type_data="tableau")
     #############################
 
-
-
-    i = 0
-    for val in group:
-        i += 1
-
-        Som_thon = 0
-        list_catches = []
-        # nb += 1
+    for date, day_group in grouped_by_date:
+        # print(date)
 
         number = 1
-        inner = val[1].groupby(['date', 'heure'])
+        # Regrouper par heure pour chaque journée
+        grouped_by_hour = day_group.groupby('heure')
+        for heure, hour_group in grouped_by_hour:
+            list_catches = []
+            total_weight = 0
+            #print(date)
 
-        for vals in inner:
-            for index, datas in vals[1].iterrows():
-                data = datas
-                date = data["date"]
+            # Construire les captures spécifiques à cette heure
+            for _, row in hour_group.iterrows():
+                if pd.notna(row['espece']):  # Si une capture est présente
+                    wgtCategory = weightCategory(allData, row['categ_poids'], row["espece"][:3].upper())
+                    species_id = getId(allData, "Species", argment="faoCode=" + row["espece"][:3].upper())
 
-                if (data['espece'] != None and (data['quant_conser_tonne'] != None or data['quant_reje_tonne'] != None)):
-
-                    def func_tab4_catches(js_catches, topId_sp, weight, WeightMeasureMet, code_conser_reje, count=None, wgtCategory=None):
-                        js_catches["species"] = topId_sp
-                        js_catches["weight"] = weight
-                        js_catches["weightMeasureMethod"] = WeightMeasureMet
-                        js_catches["speciesFate"] = code_conser_reje
-                        js_catches["count"] = count
-                        js_catches["weightCategory"] = wgtCategory
-
-                        return js_catches
-
-                    wgtCategory = weightCategory(allData, data['categ_poids'], data["espece"][:3].upper())
-
-                    species_id = getId(allData, "Species", argment="faoCode=" + data["espece"][:3].upper())
                     if species_id == "":
                         species_id = getId(allData, "Species", argment="faoCode=XXX")
 
-                    # Recuperation des caputure et chercher les infor a partir de l'api pour concevoir le content pour catches
-                    js_catches = js_catche()  # intialisatiion des parametres defaut
+                    def func_tab4_catches(topId_sp, weight, WeightMeasureMet, code_conser_reje, count=None, wgtCategory=None):
+                        js_catch = js_catche()
+                        js_catch.update({
+                            "species": topId_sp,
+                            "weightCategory": wgtCategory,
+                            "weight": weight,
+                            "speciesFate": code_conser_reje,
+                            "weightMeasureMethod": WeightMeasureMet,
+                            "count": count,
+                        })
+                        return js_catch
 
-                    homeId += 1
+                    # total_weight += row['quant_conser_tonne'] if pd.notna(row['quant_conser_tonne']) else 0
 
-                    if data['quant_conser_tonne'] != None:
-
-                        Som_thon += float(data['quant_conser_tonne']) # Tonne
-                        js_catches = func_tab4_catches(js_catches, species_id, data['quant_conser_tonne'],
-                                                       WeightMeasureMet, code_conser, data['quant_conser_nb'], wgtCategory)
-                    elif data['quant_reje_tonne'] != None:
-
-                        Som_thon += float(data['quant_reje_tonne']) # Tonne
-                        js_catches = func_tab4_catches(js_catches, species_id, data['quant_reje_tonne'],
-                                                       WeightMeasureMet, code_reje, data['quant_reje_nb'], wgtCategory)
+                    if pd.notna(row['quant_conser_tonne']):
+                        total_weight += float(row['quant_conser_tonne']) # Tonne
+                        js_catch = func_tab4_catches(species_id, row['quant_conser_tonne'], WeightMeasureMet, code_conser, row['quant_conser_nb'], wgtCategory)
+                    elif pd.notna(row['quant_reje_tonne']):
+                        total_weight += float(row['quant_reje_tonne']) # Tonne
+                        js_catch = func_tab4_catches(species_id, row['quant_reje_tonne'], WeightMeasureMet, code_reje, row['quant_reje_nb'], wgtCategory)
                     else:
-                        Som_thon += float(0) # Tonne
-                        js_catches = func_tab4_catches(js_catches, species_id, None,
-                                                       WeightMeasureMet, code_conser, data['quant_conser_nb'], wgtCategory)
+                        total_weight += float(0) # Tonne
+                        js_catch = func_tab4_catches(species_id, float(0), WeightMeasureMet, code_conser, row['quant_conser_nb'], wgtCategory)
 
-                    list_catches.append(js_catches)
+                    if pd.notna(row['quant_conser_nb']):
+                        js_catch.update({"comment": str(row['quant_conser_nb']) +" => QUANTITE CONSERVEE"})
+
+                    if pd.notna(row['quant_reje_nb']):
+                        js_catch.update({"comment": str(row['quant_reje_nb']) +" => QUANTITE REJETEE"})
+
+                    list_catches.append(js_catch)
+
 
             ##### Floating Obj CODE ###########
-            d_date  = vals[1].iloc[0]['date']
-            d_act_boue  = vals[1].iloc[0]['bouee_inst_act_bou']
+            d_date  = hour_group.iloc[0]['date']
+            d_act_boue  = hour_group.iloc[0]['bouee_inst_act_bou']
 
             depart_date = info_bat['Depart_Date']
             Depart_heure = info_bat['Depart_heure']
 
             # recuperer les objets
-            data_act_obj = vals[1].loc[:, 'obj_flot_act_sur_obj':'obj_bio']
-            data_act_bo = vals[1].loc[:, 'bouee_inst_act_bou':'bouee_numero']
+            data_act_obj = hour_group.loc[:, 'obj_flot_act_sur_obj':'obj_bio']
+            data_act_bo = hour_group.loc[:, 'bouee_inst_act_bou':'bouee_numero']
 
             # supprimer les doublons
             d_act_obj = data_act_obj.drop_duplicates()
@@ -1853,37 +1852,36 @@ def build_trip_v23(allData, info_bat, data_log, oce, prg):
 
 
             check_vis_dep = ()
-            for index, datas in d_act_obj.iterrows():
+            for index, row in d_act_obj.iterrows():
 
-                data = datas
                 tab1_Float = []
                 tab2_Transmitt = []
                 temp_float = None
 
-                def func_tab3_floatingObject(allData, data, dico_objeMat, js_Floats, bool_tuple, argment, tab1_Float=[]):
+                def func_tab3_floatingObject(allData, row, dico_objeMat, js_Floats, bool_tuple, argment, tab1_Float=[]):
 
                     # Types objets flottants
                     js_Floats = js_Float()  # intialisatiion des parametres defaut
-                    temp_float = floatingObjectPart(data['obj_flot_typ_obj'], data, dico_objeMat, index='obj_flot_typ_obj')
+                    temp_float = floatingObjectPart(row['obj_flot_typ_obj'], row, dico_objeMat, index='obj_flot_typ_obj')
                     obj_ob_part_body_(temp_float, tab1_Float, js_Floats, bool_tuple)
 
                     try:
                         # Maillage
                         js_Floats = js_Float()  # intialisatiion des parametres defau
-                        temp_float = floatingObjectPart(data['obj_mailles'], data, dico_objeMat,
+                        temp_float = floatingObjectPart(row['obj_mailles'], row, dico_objeMat,
                                                         index='obj_mailles')
                         obj_ob_part_body_(temp_float, tab1_Float, js_Floats, bool_tuple)
 
                     except:
                         # Risque de maillage en surface
                         js_Floats = js_Float()  # intialisatiion des parametres defau
-                        temp_float = floatingObjectPart(data['obj_flot_risq_mail_en_surf'], data, dico_objeMat,
+                        temp_float = floatingObjectPart(row['obj_flot_risq_mail_en_surf'], row, dico_objeMat,
                                                         index='obj_flot_risq_mail_en_surf')
                         obj_ob_part_body_(temp_float, tab1_Float, js_Floats, bool_tuple)
 
                         # Risque de maillage sous la surface
                         js_Floats = js_Float()  # intialisatiion des parametres defau
-                        temp_float = floatingObjectPart(data['obj_flot_risq_mail_sou_surf'], data, dico_objeMat,
+                        temp_float = floatingObjectPart(row['obj_flot_risq_mail_sou_surf'], row, dico_objeMat,
                                                         index='obj_flot_risq_mail_sou_surf', perte_act=True)
                         obj_ob_part_body_(temp_float, tab1_Float, js_Floats, bool_tuple)
 
@@ -1897,8 +1895,8 @@ def build_trip_v23(allData, info_bat, data_log, oce, prg):
 
                 try:
                     check_vis_dep = tuple()
-                    if (data['obj_flot_act_sur_obj'] != None) and (d_act_obj.loc[index + 1, 'obj_flot_act_sur_obj'] != None):
-                        check_vis_dep = data['obj_flot_act_sur_obj'].lower(), d_act_obj.loc[index + 1, 'obj_flot_act_sur_obj'].lower()
+                    if (row['obj_flot_act_sur_obj'] != None) and (d_act_obj.loc[index + 1, 'obj_flot_act_sur_obj'] != None):
+                        check_vis_dep = row['obj_flot_act_sur_obj'].lower(), d_act_obj.loc[index + 1, 'obj_flot_act_sur_obj'].lower()
                         prev = index + 1
 
                         if ("visite" in check_vis_dep) and ("déploiement" in check_vis_dep):
@@ -1912,8 +1910,7 @@ def build_trip_v23(allData, info_bat, data_log, oce, prg):
                 except:
                     if index != prev:
                         try:
-
-                            if (data['obj_flot_act_sur_obj'] == None) or ("perte" in str(d_act_boue).lower()):
+                            if (row['obj_flot_act_sur_obj'] == None) or ("perte" in str(d_act_boue).lower()):
                                 depart_date = info_bat['Depart_Date']
 
                                 if (str(d_date).split(" ")[0] >= depart_date) and (
@@ -1925,7 +1922,7 @@ def build_trip_v23(allData, info_bat, data_log, oce, prg):
                                                                                   bool_tuple=("true", "true"), argment="code=11")
                                     tab3_floatingObject.append(js_floatingObjects)
 
-                            elif ("déploiement" in str(data['obj_flot_act_sur_obj']).lower()):  ####### Déploiement
+                            elif ("déploiement" in str(row['obj_flot_act_sur_obj']).lower()):  ####### Déploiement
                                 operation = "mise à l'eau == Déploiement"
                                 tab2_Transmitt = obj_deja_deploy_v23(d_act_bo, js_Transmitts, dico_trams_oper, dico_trams, dico_trams_owner,
                                                                  allData, operation)
@@ -1933,7 +1930,7 @@ def build_trip_v23(allData, info_bat, data_log, oce, prg):
                                                                               bool_tuple=("false", "true"), argment="code=1")
                                 tab3_floatingObject.append(js_floatingObjects)
 
-                            elif ("visite" in str(data['obj_flot_act_sur_obj']).lower()):  ###### Visite
+                            elif ("visite" in str(row['obj_flot_act_sur_obj']).lower()):  ###### Visite
                                 operation = "visite == Visite"
                                 tab2_Transmitt = obj_deja_deploy_v23(d_act_bo, js_Transmitts, dico_trams_oper, dico_trams, dico_trams_owner,
                                                                  allData, operation)
@@ -1941,7 +1938,7 @@ def build_trip_v23(allData, info_bat, data_log, oce, prg):
                                                                               bool_tuple=("true", "false"), argment="code=2")
                                 tab3_floatingObject.append(js_floatingObjects)
 
-                            elif ("pêche" in str(data['obj_flot_act_sur_obj']).lower()):  ###### Pêche
+                            elif ("pêche" in str(row['obj_flot_act_sur_obj']).lower()):  ###### Pêche
                                 operation = "pêche == Pêche"
                                 tab2_Transmitt = obj_deja_deploy_v23(d_act_bo, js_Transmitts, dico_trams_oper, dico_trams, dico_trams_owner,
                                                                  allData, operation)
@@ -1950,7 +1947,7 @@ def build_trip_v23(allData, info_bat, data_log, oce, prg):
                                 tab3_floatingObject.append(js_floatingObjects)
 
 
-                            elif ("récupération" in str(data['obj_flot_act_sur_obj']).lower()): ####### Récupération
+                            elif ("récupération" in str(row['obj_flot_act_sur_obj']).lower()): ####### Récupération
                                 operation = "retrait == Récupération"
                                 tab2_Transmitt = obj_deja_deploy_v23(d_act_bo, js_Transmitts, dico_trams_oper, dico_trams, dico_trams_owner,
                                                                  allData, operation)
@@ -1958,8 +1955,8 @@ def build_trip_v23(allData, info_bat, data_log, oce, prg):
                                                                               bool_tuple=("true", "false"), argment="code=4")
                                 tab3_floatingObject.append(js_floatingObjects)
 
-                            elif (("perte" in str(data['obj_flot_act_sur_obj']).lower()) or (
-                                    "fin" in str(data['obj_flot_act_sur_obj']).lower())):  ####### Perte ou Fin d'utilisation
+                            elif (("perte" in str(row['obj_flot_act_sur_obj']).lower()) or (
+                                    "fin" in str(row['obj_flot_act_sur_obj']).lower())):  ####### Perte ou Fin d'utilisation
                                 operation = "Perte ou de fin d'utilisation == Perte ou Fin d'utilisation"
                                 tab2_Transmitt = obj_deja_deploy_v23(d_act_bo, js_Transmitts, dico_trams_oper, dico_trams, dico_trams_owner,
                                                                  allData, operation)
@@ -1968,15 +1965,13 @@ def build_trip_v23(allData, info_bat, data_log, oce, prg):
                                 tab3_floatingObject.append(js_floatingObjects)
 
 
-                            if ((data['obj_flot_act_sur_obj'] == None) and (data['obj_flot_typ_obj'] != None) and ("perte" != str(data['bouee_inst_act_bou']).lower())):
-                                allMessages.append("Le " + str(data["date"]) + " à " + str(data["heure"]) + " ===> Activité sur objet flottant non renseignéé ")
+                            if ((row['obj_flot_act_sur_obj'] == None) and (row['obj_flot_typ_obj'] != None) and ("perte" != str(row['bouee_inst_act_bou']).lower())):
+                                allMessages.append("Le " + str(row["date"]) + " à " + str(row["heure"]) + " ===> Activité sur objet flottant non renseignéé ")
 
                         except TransmitException as e:
                             allMessages.append(e.message)
 
-
-
-                    elif ("déploiement" in str(data['obj_flot_act_sur_obj']).lower()):
+                    elif ("déploiement" in str(row['obj_flot_act_sur_obj']).lower()):
                         operation = "renforcement == Visite + Déploiement"
                         tab2_Transmitt = obj_deja_deploy_v23(d_act_bo, js_Transmitts, dico_trams_oper, dico_trams, dico_trams_owner,
                                                          allData, operation)
@@ -1985,14 +1980,15 @@ def build_trip_v23(allData, info_bat, data_log, oce, prg):
                         tab3_floatingObject.append(js_floatingObjects)
 
             ########### Activite ############
-            data_activity  = vals[1].iloc[0]
+            data_activity  = hour_group.iloc[0]
+            date = data_activity["date"]
 
             last = len(data_log) - 1
 
             if data_activity["heure"] is None:
                 not_time = True
 
-            js_activitys = js_activity(list_catches, tab3_floatingObject)
+            js_activitys = js_activity(tab4_catches=list_catches, tab3_floatingObject=tab3_floatingObject, sommeThon=total_weight)
 
             tab3_floatingObject = []
 
@@ -2012,9 +2008,6 @@ def build_trip_v23(allData, info_bat, data_log, oce, prg):
                 data_activity["heure"]) + ".000Z"
             js_activitys["seaSurfaceTemperature"] = data_activity["temp_mer"]
             js_activitys["windDirection"] = data_activity["vent_dir"]
-
-            if Som_thon != 0:
-                js_activitys["totalWeight"] = Som_thon
 
 
             # Verifier si premiere activité et enregistrer
@@ -2123,17 +2116,17 @@ def build_trip_v23(allData, info_bat, data_log, oce, prg):
 
             js_activitys["wind"] = get_wind_id_interval(allData, "Wind", data_activity["vent_vit"])
 
-            nb_lignes = len(vals[1])  # Nombre total de lignes dans vals[1]
+            nb_lignes = len(hour_group)  # Nombre total de lignes dans hour_group
 
             if nb_lignes >= 2:
-                dernier_element        = vals[1].iloc[-1]  # Récupération de le dernier élément de datas
+                dernier_element        = hour_group.iloc[-1]  # Récupération de le dernier élément de datas
                 fpa_suiv               = dernier_element["zee"]
                 type_decla_suiv        = dernier_element["type_declaration"].lower()[:3]
                 comment_suiv           = dernier_element["type_declaration"]
 
             if ( (type_decla_suiv == "cox") and ("coe" == data_activity["type_declaration"].lower()[:3]) or (type_decla_suiv == "coe") and ("cox" == data_activity["type_declaration"].lower()[:3]) or (type_decla_suiv == "coe") and ("coe" == data_activity["type_declaration"].lower()[:3]) or (type_decla_suiv == "cox") and ("cox" == data_activity["type_declaration"].lower()[:3]) ):
 
-                data_activity   = vals[1].iloc[-1]  # Récupération de le dernier élément de datas
+                data_activity   = hour_group.iloc[-1]  # Récupération de le dernier élément de datas
 
                 # faire le changement de zone
                 # js_activitys["number"] = nb_prece
@@ -2175,7 +2168,6 @@ def build_trip_v23(allData, info_bat, data_log, oce, prg):
 
 
             js_activitys["number"] = int(number)
-            Som_thon                = 0
             nb += 1
             number += 1
 
