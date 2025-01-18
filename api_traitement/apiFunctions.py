@@ -653,7 +653,6 @@ def cap_obs_sea(allData, ob):
                 lisPren = ob['captain'].split(" ")[1:]
                 prenoms = " ".join(lisPren)
             else:
-                status = 0
                 try:
                     # lorsqu'on a le nom et prenoms; ex: paul kenji
                     nom, prenoms = ob['captain'].split(" ")
@@ -662,20 +661,20 @@ def cap_obs_sea(allData, ob):
                     # lorsque nous avons une seule informations saisie soit le nom ou le prenom; ex: kenji
                     nom_prenoms = ob['captain']
 
-            if status == 1:
-                trouv_id = [val[0] for val in arra if ((nom.lower() in str(val)) and (prenoms.lower() in str(val)))]
-                if trouv_id != "": return trouv_id[0]
+            # Lorsqu'on a le nom et prenons dans la base de donnée
+            trouv_id = [val[0] for val in arra if ((nom.lower() in str(val)) and (prenoms.lower() in str(val)))]
+            if trouv_id != None: return trouv_id[0]
 
-            elif status == 2:
-                # Lorsqu'on a le nom seulement dans la base de donnée
-                trouv_id = [val[0] for val in arra if ((nom_prenoms.lower() in str(val)) and ("[inconnu]" == val[2]))]
-                if trouv_id != "": return trouv_id[0]
 
-                # Lorsqu'on a le prenom seulement dans la base de donnée
-                trouv_id = [val[0] for val in arra if (("[inconnu]" == val[1]) and (nom_prenoms.lower() in str(val)))]
-                if trouv_id != "": return trouv_id[0]
-            else:
-                return inconnu_id[0]
+            # Lorsqu'on a le nom seulement dans la base de donnée
+            trouv_id = [val[0] for val in arra if ((nom_prenoms.lower() in str(val)) and ("[inconnu]" == val[2]))]
+            if trouv_id != None: return trouv_id[0]
+
+            # Lorsqu'on a le prenom seulement dans la base de donnée
+            trouv_id = [val[0] for val in arra if (("[inconnu]" == val[1]) and (nom_prenoms.lower() in str(val)))]
+            if trouv_id != None: return trouv_id[0]
+
+            return inconnu_id[0]
         else:
             return inconnu_id[0]
 
@@ -1790,26 +1789,27 @@ def build_trip_v23(allData, info_bat, data_log, oce, prg):
         grouped_by_hour = day_group.groupby('heure')
         for heure, hour_group in grouped_by_hour:
             list_catches = []
+            tab3_floatingObject = []
             total_weight = 0
             #print(date)
 
             # Construire les captures spécifiques à cette heure
             for _, row in hour_group.iterrows():
-                if pd.notna(row['espece']):  # Si une capture est présente
+                if pd.notna(row['espece']) and  row['espece'] != "":  # Si une capture est présente
                     wgtCategory = weightCategory(allData, row['categ_poids'], row["espece"][:3].upper())
                     species_id = getId(allData, "Species", argment="faoCode=" + row["espece"][:3].upper())
 
                     if species_id == "":
                         species_id = getId(allData, "Species", argment="faoCode=XXX")
 
-                    def func_tab4_catches(topId_sp, weight, WeightMeasureMet, code_conser_reje, count=None, wgtCategory=None):
+                    def func_tab4_catches(topId_sp, weight, WeightMeasureMet, code_conser_reje, wgtCategory=None, count=None):
                         js_catch = js_catche()
                         js_catch.update({
                             "species": topId_sp,
-                            "weightCategory": wgtCategory,
                             "weight": weight,
-                            "speciesFate": code_conser_reje,
                             "weightMeasureMethod": WeightMeasureMet,
+                            "speciesFate": code_conser_reje,
+                            "weightCategory": wgtCategory,
                             "count": count,
                         })
                         return js_catch
@@ -1818,22 +1818,24 @@ def build_trip_v23(allData, info_bat, data_log, oce, prg):
 
                     if pd.notna(row['quant_conser_tonne']):
                         total_weight += float(row['quant_conser_tonne']) # Tonne
-                        js_catch = func_tab4_catches(species_id, row['quant_conser_tonne'], WeightMeasureMet, code_conser, row['quant_conser_nb'], wgtCategory)
+                        js_catch = func_tab4_catches(topId_sp=species_id, weight=row['quant_conser_tonne'], WeightMeasureMet=WeightMeasureMet, code_conser_reje=code_conser, wgtCategory=wgtCategory, count=row['quant_conser_nb'])
                     elif pd.notna(row['quant_reje_tonne']):
                         total_weight += float(row['quant_reje_tonne']) # Tonne
-                        js_catch = func_tab4_catches(species_id, row['quant_reje_tonne'], WeightMeasureMet, code_reje, row['quant_reje_nb'], wgtCategory)
+                        js_catch = func_tab4_catches(topId_sp=species_id, weight=row['quant_reje_tonne'], WeightMeasureMet=WeightMeasureMet, code_conser_reje=code_reje, wgtCategory=wgtCategory, count=row['quant_reje_nb'])
                     else:
                         total_weight += float(0) # Tonne
-                        js_catch = func_tab4_catches(species_id, float(0), WeightMeasureMet, code_conser, row['quant_conser_nb'], wgtCategory)
+                        js_catch = func_tab4_catches(topId_sp=species_id, weight=float(0), WeightMeasureMet=WeightMeasureMet, code_conser_reje=code_conser_autre, wgtCategory=wgtCategory)
 
                     if pd.notna(row['quant_conser_nb']):
-                        js_catch.update({"comment": str(row['quant_conser_nb']) +" => QUANTITE CONSERVEE"})
+                        js_catch.update({"count": str(row['quant_conser_nb'])})
+                        js_catch.update({"comment": "CONSERVEE"})
 
                     if pd.notna(row['quant_reje_nb']):
-                        js_catch.update({"comment": str(row['quant_reje_nb']) +" => QUANTITE REJETEE"})
+                        js_catch.update({"count": str(row['quant_reje_nb'])})
+                        js_catch.update({"speciesFate": code_reje})
+                        js_catch.update({"comment": "REJETEE"})
 
                     list_catches.append(js_catch)
-
 
             ##### Floating Obj CODE ###########
             d_date  = hour_group.iloc[0]['date']
@@ -1990,8 +1992,6 @@ def build_trip_v23(allData, info_bat, data_log, oce, prg):
 
             js_activitys = js_activity(tab4_catches=list_catches, tab3_floatingObject=tab3_floatingObject, sommeThon=total_weight)
 
-            tab3_floatingObject = []
-
             if list_catches is not []:
 
                 if data_activity["commentaire"] is not None:
@@ -2079,20 +2079,42 @@ def build_trip_v23(allData, info_bat, data_log, oce, prg):
                 return setCount, setSuccessStatus, vesselActivity
 
             if data_activity["calee_type"] is not None:
-                if ( ("FAR -" in data_activity["type_declaration"].upper()) and ("libre" in data_activity["calee_type"].lower()) ):
+                if ( ("FAR -" in data_activity["type_declaration"].upper()) and ("libre" in data_activity["calee_type"].lower()) and list_catches != []):
                     # Code 6
                     js_activitys["setCount"], js_activitys["setSuccessStatus"], js_activitys["vesselActivity"] = setCo_setSuc_vess(1, dico_code_setSucc["1"], vers_code_6)
                     js_activitys["schoolType"] = schoolType(data_activity["calee_type"], dico_code_sch_type)
 
-                elif ( ("FAR -" in data_activity["type_declaration"].upper()) and ("objet" in data_activity["calee_type"].lower()) ):
+                elif ( ("FAR -" in data_activity["type_declaration"].upper()) and ("objet" in data_activity["calee_type"].lower()) and list_catches != []):
                     # Code 6
                     js_activitys["setCount"], js_activitys["setSuccessStatus"], js_activitys["vesselActivity"] = setCo_setSuc_vess(1, dico_code_setSucc["0"], vers_code_6)
                     js_activitys["schoolType"] = schoolType(data_activity["calee_type"], dico_code_sch_type)
+                elif ( ("FAR -" in data_activity["type_declaration"].upper()) and ("libre" in data_activity["calee_type"].lower()) and tab3_floatingObject != []):
+                    # Code 13
+                    js_activitys["setCount"], js_activitys["setSuccessStatus"], js_activitys["vesselActivity"] = setCo_setSuc_vess(1, dico_code_setSucc["1"], vers_code_13)
+                    js_activitys["schoolType"] = schoolType(data_activity["calee_type"], dico_code_sch_type)
+
+                elif ( ("FAR -" in data_activity["type_declaration"].upper()) and ("objet" in data_activity["calee_type"].lower()) and tab3_floatingObject != []):
+                    # Code 13
+                    js_activitys["setCount"], js_activitys["setSuccessStatus"], js_activitys["vesselActivity"] = setCo_setSuc_vess(1, dico_code_setSucc["0"], vers_code_13)
+                    js_activitys["schoolType"] = schoolType(data_activity["calee_type"], dico_code_sch_type)
+                else:
+                    # Code 103
+                    js_activitys["setCount"], js_activitys["setSuccessStatus"], js_activitys["vesselActivity"] = setCo_setSuc_vess(0, None, vers_code_103)
+                    js_activitys["schoolType"] = None
 
             elif ( ("FAR -" in data_activity["type_declaration"].upper()) and (data_activity["calee_type"] is None) ):
-                # Code 13
-                js_activitys["setCount"], js_activitys["setSuccessStatus"], js_activitys["vesselActivity"] = setCo_setSuc_vess(0, None, vers_code_13)
-                js_activitys["schoolType"] = schoolType(data_activity["calee_type"], dico_code_sch_type)
+                if (list_catches != []):
+                    # Code 6
+                    js_activitys["setCount"], js_activitys["setSuccessStatus"], js_activitys["vesselActivity"] = setCo_setSuc_vess(1, dico_code_setSucc["1"], vers_code_6)
+                    js_activitys["schoolType"] = schoolType(data_activity["calee_type"], dico_code_sch_type)
+                elif (tab3_floatingObject != []):
+                    # Code 13
+                    js_activitys["setCount"], js_activitys["setSuccessStatus"], js_activitys["vesselActivity"] = setCo_setSuc_vess(1, dico_code_setSucc["0"], vers_code_13)
+                    js_activitys["schoolType"] = schoolType(data_activity["calee_type"], dico_code_sch_type)
+                else:
+                    # Code 99
+                    js_activitys["setCount"], js_activitys["setSuccessStatus"], js_activitys["vesselActivity"] = setCo_setSuc_vess(0, None, vers_code_99)
+                    js_activitys["schoolType"] = schoolType(data_activity["calee_type"], dico_code_sch_type)
 
             elif ( ("DEP -" in data_activity["type_declaration"].upper()) or ("RTP -" in data_activity["type_declaration"].upper()) ):
                 # Code 0
@@ -2233,7 +2255,6 @@ def build_trip_v23(allData, info_bat, data_log, oce, prg):
         js_contents["endDate"] = None
     else:
         js_contents["endDate"] = info_bat['Arrivee_Date'] + "T00:00:00.000Z"
-
 
     js_contents["captain"], js_contents["logbookDataEntryOperator"] = cap_obs_sea(allData, info_bat)
 
