@@ -2079,42 +2079,20 @@ def build_trip_v23(allData, info_bat, data_log, oce, prg):
                 return setCount, setSuccessStatus, vesselActivity
 
             if data_activity["calee_type"] is not None:
-                if ( ("FAR -" in data_activity["type_declaration"].upper()) and ("libre" in data_activity["calee_type"].lower()) and list_catches != []):
+                if ( ("FAR -" in data_activity["type_declaration"].upper()) and ("libre" in data_activity["calee_type"].lower()) ):
                     # Code 6
                     js_activitys["setCount"], js_activitys["setSuccessStatus"], js_activitys["vesselActivity"] = setCo_setSuc_vess(1, dico_code_setSucc["1"], vers_code_6)
                     js_activitys["schoolType"] = schoolType(data_activity["calee_type"], dico_code_sch_type)
 
-                elif ( ("FAR -" in data_activity["type_declaration"].upper()) and ("objet" in data_activity["calee_type"].lower()) and list_catches != []):
+                elif ( ("FAR -" in data_activity["type_declaration"].upper()) and ("objet" in data_activity["calee_type"].lower()) ):
                     # Code 6
                     js_activitys["setCount"], js_activitys["setSuccessStatus"], js_activitys["vesselActivity"] = setCo_setSuc_vess(1, dico_code_setSucc["0"], vers_code_6)
                     js_activitys["schoolType"] = schoolType(data_activity["calee_type"], dico_code_sch_type)
-                elif ( ("FAR -" in data_activity["type_declaration"].upper()) and ("libre" in data_activity["calee_type"].lower()) and tab3_floatingObject != []):
-                    # Code 13
-                    js_activitys["setCount"], js_activitys["setSuccessStatus"], js_activitys["vesselActivity"] = setCo_setSuc_vess(1, dico_code_setSucc["1"], vers_code_13)
-                    js_activitys["schoolType"] = schoolType(data_activity["calee_type"], dico_code_sch_type)
-
-                elif ( ("FAR -" in data_activity["type_declaration"].upper()) and ("objet" in data_activity["calee_type"].lower()) and tab3_floatingObject != []):
-                    # Code 13
-                    js_activitys["setCount"], js_activitys["setSuccessStatus"], js_activitys["vesselActivity"] = setCo_setSuc_vess(1, dico_code_setSucc["0"], vers_code_13)
-                    js_activitys["schoolType"] = schoolType(data_activity["calee_type"], dico_code_sch_type)
-                else:
-                    # Code 103
-                    js_activitys["setCount"], js_activitys["setSuccessStatus"], js_activitys["vesselActivity"] = setCo_setSuc_vess(0, None, vers_code_103)
-                    js_activitys["schoolType"] = None
 
             elif ( ("FAR -" in data_activity["type_declaration"].upper()) and (data_activity["calee_type"] is None) ):
-                if (list_catches != []):
-                    # Code 6
-                    js_activitys["setCount"], js_activitys["setSuccessStatus"], js_activitys["vesselActivity"] = setCo_setSuc_vess(1, dico_code_setSucc["1"], vers_code_6)
-                    js_activitys["schoolType"] = schoolType(data_activity["calee_type"], dico_code_sch_type)
-                elif (tab3_floatingObject != []):
-                    # Code 13
-                    js_activitys["setCount"], js_activitys["setSuccessStatus"], js_activitys["vesselActivity"] = setCo_setSuc_vess(1, dico_code_setSucc["0"], vers_code_13)
-                    js_activitys["schoolType"] = schoolType(data_activity["calee_type"], dico_code_sch_type)
-                else:
-                    # Code 99
-                    js_activitys["setCount"], js_activitys["setSuccessStatus"], js_activitys["vesselActivity"] = setCo_setSuc_vess(0, None, vers_code_99)
-                    js_activitys["schoolType"] = schoolType(data_activity["calee_type"], dico_code_sch_type)
+                # Code 13
+                js_activitys["setCount"], js_activitys["setSuccessStatus"], js_activitys["vesselActivity"] = setCo_setSuc_vess(1, dico_code_setSucc["0"], vers_code_13)
+                js_activitys["schoolType"] = schoolType(data_activity["calee_type"], dico_code_sch_type)
 
             elif ( ("DEP -" in data_activity["type_declaration"].upper()) or ("RTP -" in data_activity["type_declaration"].upper()) ):
                 # Code 0
