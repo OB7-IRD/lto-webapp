@@ -8,6 +8,7 @@
 
 import json
 import os
+import re
 from time import gmtime, strftime, strptime
 import requests
 
@@ -479,30 +480,78 @@ def del_trip(base_url, token, content):
 
 def error_filter(response):
     """
-    Permet de simplifier l'afficharge des erreurs dans le programme lors de l'insertion des données
+    Permet de simplifier l'affichage des erreurs dans le programme lors de l'insertion des données
     """
     error = json.loads(response)
-    # print(error['exception']['result']['nodes'])
+    text_l = []  # Liste pour stocker les textes d'erreur
+    def error_message(nodes, text_list):
+        if 'children' in nodes:
+            # Appel récursif pour explorer les sous-nœuds
+            child_text = str(nodes['datum']['text'])
+            if child_text not in text_list:
+                text_list.append(child_text)
+            return error_message(nodes['children'][0], text_list)
 
-    def error_message(nodes):
-        if ('children' in nodes.keys()):
-            return error_message(nodes['children'][0])
-
-        if ('messages' in nodes.keys()):
+        if 'messages' in nodes:
             temp = nodes['messages']
             text = nodes['datum']['text']
 
-            return format_html("<strong>Texte : </strong>"+ str(text) + "  <br>   <strong>Champs erreur: </strong>" + str(temp[0]['fieldName']) + " <br>  <strong>Message Erreur: </strong>" + str(temp[0]['message']))
-            # return str(text + " - Champs : " + temp[0]['fieldName'] + " - Erreur : "  + temp[0]['message'])
+            # Ajout du texte d'erreur dans la liste si pas déjà présent
+            if text not in text_list:
+                text_list.append(text)
 
+            # text_list = text_list[-1]
+
+            # Expression régulière pour extraire la date et l'heure
+            time_pattern = r"(\d{2}/\d{2}/\d{4})"  # pour la date
+            date_pattern = r"##(\d{2}:\d{2})##"    # pour l'heure
+
+            # Variables pour stocker la date et l'heure
+            date = ""
+            heure = ""
+            # Recherche du motif dans text_list
+            for idx, value in enumerate(text_list):
+                match = re.search(time_pattern, value)  # Recherche de la date
+                match2 = re.search(date_pattern, value)  # Recherche de l'heure
+
+                if match:
+                    date = match.group(1)  # Extraction de la date
+                    text_list[idx] = date  # Remplacer la date dans text_list
+
+                elif match2:
+                    heure = match2.group(1)  # Extraction de l'heure
+                    text_list[idx] = heure  # Remplacer l'heure dans text_list
+
+            text_list.remove(heure)
+            text_list.remove(date)
+
+            # Génération du format HTML
+            if date != "" and heure != "":
+                return (f"<div class='ml-3 text-sm font-medium text-red-700'>"
+                        f"Date: {date} ; Heure: {heure} <br>\
+                        {''.join([f'{t}<br>' for t in text_list])}\
+                        <strong>Champs erreur: </strong>{str(temp[0]['fieldName'])} <br>\
+                        <strong>Message Erreur: </strong>{str(temp[0]['message'])} <br>"
+                        f"</div>")
+            else:
+                return (f"<div class='ml-3 text-sm font-medium text-red-700'>"
+                        f"{''.join([f'{t}<br>' for t in text_list])}\
+                        <strong>Champs erreur: </strong>{str(temp[0]['fieldName'])} <br>\
+                        <strong>Message Erreur: </strong>{str(temp[0]['message'])} <br>"
+                        f"</div>")
     all_message = []
 
-    if 'messages' in error['exception']['result']['nodes'][0].keys():
-        all_message.append(error_message(error['exception']['result']['nodes'][0]))
-    try:
-        for val in error['exception']['result']['nodes'][0]['children']:
-            all_message.append(error_message(val))
-    except:
-        pass
+    # Vérifie si le premier nœud contient des messages
+    if 'messages' in error['exception']['result']['nodes'][0]:
+        all_message.append(error_message(error['exception']['result']['nodes'][0], text_l))
 
+    # Parcours des enfants si existants
+    try:
+        for val in error['exception']['result']['nodes'][0].get('children', []):
+            all_message.append(error_message(val, text_l))
+    except KeyError:
+        pass
+    print("Len : ",len(all_message))
     return all_message
+
+
