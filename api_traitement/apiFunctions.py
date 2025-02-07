@@ -643,14 +643,15 @@ def cap_obs_sea(allData, ob):
             logbookDataEntryOperator.append((val["topiaId"], val["firstName"].lower(), val["lastName"].lower()))
 
     def sou_fonc(arra):
-        print(ob['captain'])
+        print(ob['captain'], len(ob['captain'].split(" ")))
         trouv_id = None
         inconnu_id = [val[0] for val in arra if (("[inconnu]" == val[1]) and ("[inconnu]" == val[2]))]
 
         if ob['captain'] != None:
             if len(ob['captain'].split(" ")) > 2:
                 nom = ob['captain'].split(" ")[0]
-                lisPren = ob['captain'].split(" ")[1:]
+                lisPren_s = ob['captain'].split(" ")[1:]
+                lisPren = [x for x in lisPren_s if x != ""]
                 prenoms = " ".join(lisPren)
             else:
                 try:
