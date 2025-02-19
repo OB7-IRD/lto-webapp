@@ -92,8 +92,14 @@ $(document).ready(function(){
                                 option += '<option value="' + response.dataPro.id[i] + '">' + response.dataPro.value[i] + '</option>';
                             } else {
                                 if (ll_context.programme == response.dataPro.id[i]) {
-                                    $("#apply select[name='ty_doc']").find('.after').after('<option selected class="orth" value="ps">Logbook ORTHONGEL v21</option>');
-                                    $("#apply select[name='ty_doc']").find('.orth').after('<option class="orth23" value="ps2">Logbook ORTHONGEL v23</option>');
+                                    // console.log(ll_context);
+                                    if (ll_context.ty_doc == "ps"){
+                                        $("#apply select[name='ty_doc']").find('.after').after('<option selected class="orth" value="ps">Logbook ORTHONGEL v21</option>');
+                                        $("#apply select[name='ty_doc']").find('.orth').after('<option class="orth23" value="ps2">Logbook ORTHONGEL v23</option>');
+                                    }else{
+                                        $("#apply select[name='ty_doc']").find('.after').after('<option class="orth" value="ps">Logbook ORTHONGEL v21</option>');
+                                        $("#apply select[name='ty_doc']").find('.orth').after('<option selected class="orth23" value="ps2">Logbook ORTHONGEL v23</option>');
+                                    };
                                     $("#apply select[name='ty_doc']").find('.orth23').after('<option class="ers" value="ers">Données ERS</option>');
 
                                     option += '<option selected value="' + response.dataPro.id[i] + '">' + response.dataPro.value[i] + '</option>';

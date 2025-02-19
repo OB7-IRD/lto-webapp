@@ -87,6 +87,12 @@ def auth_login(request):
                     "ocean": None,
                     "program" : None
                 }
+                request.session['current_user_data'] = {
+                    "firstname": request.user.firstname,
+                    "lastname" : request.user.lastname,
+                    "username" : request.user.username,
+                }
+                #print(request.session.get('current_user_data'))
                 request.session['current_profile_id'] = -1
                 request.session['data_Oc_Pr'] = datat_0c_Pr
                 return redirect('home')  # Rediriger vers la page d'accueil ou une autre page définie
@@ -130,6 +136,11 @@ def deconnexion(request):
     request.session['database'] = None
     request.session['context'] = None
     request.session['current_profile'] = None
+    request.session['current_user_data'] = {
+        "firstname": None,
+        "lastname" : None,
+        "username" : None,
+    }
 
     return redirect("login")
 
