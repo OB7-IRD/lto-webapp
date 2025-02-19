@@ -25,6 +25,7 @@
         <div class="flex items-center">
           <div class="flex-shrink-0">
             <img class="h-8 w-8 rounded-xl" src="{% static '/assets/img/ob7-logo-zoom.png' %}" alt="Workflow">
+            <img class="h-8 w-8 rounded-xl" src="{% static '/assets/img/ob7-logo-zoom.png' %}" alt="Workflow">
           </div>
           <div class="hidden md:block">
             <div class="ml-10 flex items-baseline space-x-4">
@@ -90,6 +91,23 @@
 
   </header>
   <main>
+      {% if ll_context != None %}
+            {{ ll_context | json_script:"context-data" }}
+      {% endif %}
+<!--
+    {% if ll_context != None %}
+        <div class="max-w-3xl mx-auto p-2 sm:px-3 lg:px-3">
+            <div class="flex items-baseline space-x-2">
+                <strong class="p-1 text-white bg-green-600">Domaine: </strong>
+                <strong class="px-10">{{ll_context.domaine}}</strong>
+                <strong class="p-1 text-white bg-green-600">Program: </strong>
+                <strong class="px-10">{{ll_context.program}}</strong>
+                <strong class="p-1 text-white bg-green-600">Ocean: </strong>
+                <strong class="px-10">{{ll_context.ocean}}</strong>
+            </div>
+        </div>
+    {% endif %}-->
+
     <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
         {% if ll_context != None %}
             <script id="context-data" type="application/json">

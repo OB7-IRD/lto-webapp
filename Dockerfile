@@ -1,5 +1,5 @@
 # base image  
-FROM python:3.11  
+FROM python:3.13-bullseye
 # setup environment variable  
 ENV DockerHOME=/home/app/webapp  
 
@@ -20,6 +20,7 @@ ENV PYTHONUNBUFFERED=1
 # Update image
 RUN apt-get update 
 RUN apt-get upgrade -y
+RUN apt-get install nano
 
 # install dependencies  
 RUN pip install --upgrade pip  

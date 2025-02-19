@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-02-18 15:55+0400\n"
+"POT-Creation-Date: 2024-12-20 05:53+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -52,8 +52,8 @@ msgstr ""
 "The table between lines 13 and 16 in column 'AC' has not been entered. "
 "Please check the data."
 
-#: .\palangre_syc\templates\LL_presenting_logbook.html:7
-#: .\palangre_syc\templates\LL_previoustrippage.html:7
+#: palangre_syc/templates/LL_homepage.html:7
+#: palangre_syc/templates/LL_previoustrippage.html:7
 msgid "Palangre aux Seychelles"
 msgstr "Longliners in Seychelles"
 
