@@ -670,35 +670,20 @@ msgstr ""
 
 #: webapps/views.py:317
 msgid "Veuillez recharger la page et reprendre votre opération SVP."
-msgstr ""
+msgstr "Veuillez recharger la page et reprendre votre opération SVP."
 
 #: webapps/views.py:414 webapps/views.py:471
 msgid "Veuillez ressayer svp."
-msgstr ""
+msgstr "Veuillez ressayer svp."
 
 #: website/settings.py:134
 msgid "English"
-msgstr ""
+msgstr "Anglais"
 
 #: website/settings.py:135
 msgid "Français"
-msgstr ""
+msgstr "Français"
 
-#, fuzzy
-#~| msgid "December"
-#~ msgid "Enter a number."
-#~ msgstr "Décembre"
-
-#, fuzzy
-#~| msgid "December"
-#~ msgid "Decimal number"
-#~ msgstr "Décembre"
-
-#, fuzzy
-#~| msgctxt "abbrev. month"
-#~| msgid "Nov."
-#~ msgid "No"
-#~ msgstr "Nov."
 
 #~ msgid "PM"
 #~ msgstr "après-midi"
