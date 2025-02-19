@@ -33,7 +33,8 @@ class ConnectionProfileForm(ModelForm):
 
     def clean_name(self):
         name = self.cleaned_data.get('name')
-        if ConnectionProfile.objects.filter(name=name).exists():
+        # Vérifier si un autre profil de l'ensemble excluant le 'id' du profil actuel, avec le même 'name' existe
+        if ConnectionProfile.objects.filter(name=name).exclude(id=self.instance.id).exists():
             raise ValidationError("Un profil avec ce nom existe déjà.")
         return name
 
