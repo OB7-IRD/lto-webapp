@@ -1,0 +1,897 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" data-theme="light">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>api_traitement.common_functions &#8212; LB2Observe  documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-codeautolink.css?v=125d5c1c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=0b5196b5" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=30646c52"></script>
+    <script src="../../_static/design-tabs.js?v=36754332"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/api_traitement/common_functions';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="light">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+    
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="LB2Observe  documentation - Home"/>
+    <img src="" class="logo__image only-dark pst-js-only" alt="LB2Observe  documentation - Home"/>
+  
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../getting_started/index.html">
+    Getting Started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../user_guide/index.html">
+    User Guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/index.html">
+    API
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-external" href="https://ob7-ird.science">
+    The Ob7's team
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/OB7-IRD/observe-logbooks-reader-webapp" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../getting_started/index.html">
+    Getting Started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../user_guide/index.html">
+    User Guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/index.html">
+    API
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-external" href="https://ob7-ird.science">
+    The Ob7's team
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/OB7-IRD/observe-logbooks-reader-webapp" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">api_traitement.common_functions</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for api_traitement.common_functions</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot; </span>
+
+<span class="sd">Module de fonctions communes et générales à l&#39;application indépendamment de la pêcherie. </span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">openpyxl</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<div class="viewcode-block" id="load_json_file">
+<a class="viewcode-back" href="../../api/api_traitement.html#api_traitement.common_functions.load_json_file">[docs]</a>
+<span class="k">def</span> <span class="nf">load_json_file</span><span class="p">(</span><span class="n">file_path</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Fonction qui charge un fichier json enregistré dans un dossier donné en argument et le renvoie</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        file_path</span>
+<span class="sd">        </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        dict: fichier json en format dictionnaire</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">data</span>
+    <span class="k">except</span> <span class="ne">FileNotFoundError</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;File &#39;</span><span class="si">{</span><span class="n">file_path</span><span class="si">}</span><span class="s2">&#39; not found.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">except</span> <span class="n">json</span><span class="o">.</span><span class="n">JSONDecodeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error decoding JSON file &#39;</span><span class="si">{</span><span class="n">file_path</span><span class="si">}</span><span class="s2">&#39;: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+    
+<div class="viewcode-block" id="serialize">
+<a class="viewcode-back" href="../../api/api_traitement.html#api_traitement.common_functions.serialize">[docs]</a>
+<span class="k">def</span> <span class="nf">serialize</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span> 
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; </span>
+<span class="sd">    Serialize obj dans un format json de type date, int ou str.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">obj</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span></div>
+
+    <span class="c1"># raise TypeError(&quot;Type not serializable&quot;)</span>
+
+<div class="viewcode-block" id="pretty_print">
+<a class="viewcode-back" href="../../api/api_traitement.html#api_traitement.common_functions.pretty_print">[docs]</a>
+<span class="k">def</span> <span class="nf">pretty_print</span><span class="p">(</span><span class="n">json_data</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="s2">&quot;media/temporary_files/created_json_file.json&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Fonction qui affiche le fichier json avec les bonnes indentations un fichier json</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        json_data (json): Données json en entrée</span>
+<span class="sd">        file (str, optional): Nom de fichier json de sortie &quot;created_json_file.json&quot;.</span>
+<span class="sd">        mode (str, optional): Defaults to &quot;a&quot; pour &quot;append&quot; - &quot;w&quot; pour &quot;write&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">json_formatted_str</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span>
+        <span class="n">json_data</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">serialize</span><span class="p">)</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">mode</span><span class="p">)</span> <span class="k">as</span> <span class="n">outfile</span><span class="p">:</span>
+        <span class="n">outfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">json_formatted_str</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="del_empty_col">
+<a class="viewcode-back" href="../../api/api_traitement.html#api_traitement.common_functions.del_empty_col">[docs]</a>
+<span class="k">def</span> <span class="nf">del_empty_col</span><span class="p">(</span><span class="n">dataframe</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Fonction qui supprime la colonne si elle ne contient pas d&#39;information</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        dataframe: avec des potentielles colonnes vides (cellules mergées)</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        dataframe: uniquement avec des éléments</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">colonnes_a_supprimer</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">colonne</span> <span class="k">for</span> <span class="n">colonne</span> <span class="ow">in</span> <span class="n">dataframe</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="nb">all</span><span class="p">(</span><span class="n">dataframe</span><span class="p">[</span><span class="n">colonne</span><span class="p">]</span><span class="o">.</span><span class="n">isna</span><span class="p">())]</span>
+    <span class="n">dataframe</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">colonnes_a_supprimer</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">dataframe</span></div>
+
+
+<div class="viewcode-block" id="strip_if_string">
+<a class="viewcode-back" href="../../api/api_traitement.html#api_traitement.common_functions.strip_if_string">[docs]</a>
+<span class="k">def</span> <span class="nf">strip_if_string</span><span class="p">(</span><span class="n">element</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Fonction qui applique la fonction python strip() si l&#39;élement est bien de type texte</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">element</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">element</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">else</span> <span class="n">element</span></div>
+
+
+<div class="viewcode-block" id="remove_spec_char_from_list">
+<a class="viewcode-back" href="../../api/api_traitement.html#api_traitement.common_functions.remove_spec_char_from_list">[docs]</a>
+<span class="k">def</span> <span class="nf">remove_spec_char_from_list</span><span class="p">(</span><span class="n">char_list</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Fonction qui applique remove_spec_char à chaque élément d&#39;une liste de chaînes</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot;[^A-Z a-z0-9]&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">item</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">char_list</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="convert_to_int">
+<a class="viewcode-back" href="../../api/api_traitement.html#api_traitement.common_functions.convert_to_int">[docs]</a>
+<span class="k">def</span> <span class="nf">convert_to_int</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Vérifie si la valeur est numérique ou peut être transformée en numérique (integer).</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">    value: L&#39;élément à vérifier.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    bool: la valeur si elle est de type numérique et un message sinon.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)):</span>
+        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">value</span><span class="o">.</span><span class="n">isdigit</span><span class="p">():</span>
+            <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+            <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">value</span>
+    <span class="k">return</span> <span class="n">value</span></div>
+
+
+<div class="viewcode-block" id="convert_to_time_or_text">
+<a class="viewcode-back" href="../../api/api_traitement.html#api_traitement.common_functions.convert_to_time_or_text">[docs]</a>
+<span class="k">def</span> <span class="nf">convert_to_time_or_text</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Fonction qui converti la cellule en time si elle est au format type time ou date dans le excel</span>
+<span class="sd">    et qui laisse au format texte (cruising, in port etc) si la cellule est au format texte</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;[0-9]</span><span class="si">{4}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+            <span class="n">time_value</span> <span class="o">=</span> <span class="n">value</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span><span class="o">+</span> <span class="s2">&quot;:&quot;</span><span class="o">+</span> <span class="n">value</span><span class="p">[</span><span class="mi">2</span><span class="p">:]</span><span class="o">+</span><span class="s2">&quot;:00&quot;</span>
+            <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">time_value</span><span class="p">,</span> <span class="s1">&#39;%H:%M:%S&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">time</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%H:%M:%S&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s2">&quot;[0-9]</span><span class="si">{2}</span><span class="s2">:[0-9]</span><span class="si">{2}</span><span class="s2">:[0-9]</span><span class="si">{2}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s1">&#39;%H:%M:%S&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">time</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%H:%M:%S&#39;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s2">&quot;[0-9]</span><span class="si">{2}</span><span class="s2">:[0-9]</span><span class="si">{2}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">value</span><span class="o">.</span><span class="n">strip</span><span class="p">()):</span>
+            <span class="k">return</span> <span class="n">value</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;:00&#39;</span>
+        <span class="k">return</span> <span class="n">value</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">):</span>
+        <span class="n">date_time</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">date_time</span><span class="p">,</span> <span class="s1">&#39;strftime&#39;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">date_time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%H:%M:%S&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">date_time</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="np_removing_semicolon">
+<a class="viewcode-back" href="../../api/api_traitement.html#api_traitement.common_functions.np_removing_semicolon">[docs]</a>
+<span class="k">def</span> <span class="nf">np_removing_semicolon</span><span class="p">(</span><span class="n">numpy_table</span><span class="p">,</span> <span class="n">num_col</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Fonction qui prend une numpy table et ne retourne que la partie avant les deux point (:) de la colonne demandée</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">s</span><span class="o">.</span><span class="n">partition</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)[</span><span class="n">num_col</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">numpy_table</span><span class="p">[:,</span> <span class="n">num_col</span><span class="p">]])</span></div>
+
+
+<div class="viewcode-block" id="dms_to_decimal">
+<a class="viewcode-back" href="../../api/api_traitement.html#api_traitement.common_functions.dms_to_decimal">[docs]</a>
+<span class="k">def</span> <span class="nf">dms_to_decimal</span><span class="p">(</span><span class="n">degrees</span><span class="p">,</span> <span class="n">minutes</span><span class="p">,</span> <span class="n">direction</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Transforme des degrés minutes secondes en décimal</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        degrees (int), minutes (int): value</span>
+<span class="sd">        direction (str): N S E W</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        float: value</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">degrees</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    
+    <span class="n">degrees</span> <span class="o">=</span> <span class="n">degrees</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">minutes</span> <span class="o">=</span> <span class="n">minutes</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    
+    <span class="n">degrees</span> <span class="o">=</span> <span class="n">degrees</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+    <span class="n">minutes</span> <span class="o">=</span> <span class="n">minutes</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+
+    <span class="n">decimal_degrees</span> <span class="o">=</span> <span class="n">degrees</span> <span class="o">+</span> <span class="n">minutes</span> <span class="o">/</span> <span class="mf">60.0</span>
+    <span class="n">decimal_degrees</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">direction</span><span class="o">.</span><span class="n">isin</span><span class="p">([</span><span class="s1">&#39;S&#39;</span><span class="p">,</span> <span class="s1">&#39;W&#39;</span><span class="p">]),</span> <span class="o">-</span><span class="n">decimal_degrees</span><span class="p">,</span> <span class="n">decimal_degrees</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">decimal_degrees</span></div>
+
+
+<div class="viewcode-block" id="zero_if_empty">
+<a class="viewcode-back" href="../../api/api_traitement.html#api_traitement.common_functions.zero_if_empty">[docs]</a>
+<span class="k">def</span> <span class="nf">zero_if_empty</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Remplace par 0 quand la case est vide</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">value</span> <span class="o">==</span> <span class="s2">&quot;None&quot;</span> <span class="ow">or</span> <span class="n">pd</span><span class="o">.</span><span class="n">isna</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+        <span class="k">return</span> <span class="mi">0</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">value</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span> <span class="ow">or</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\S*&quot;</span><span class="p">,</span> <span class="n">value</span><span class="p">)):</span>
+        <span class="k">return</span> <span class="mi">0</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="remove_if_nul">
+<a class="viewcode-back" href="../../api/api_traitement.html#api_traitement.common_functions.remove_if_nul">[docs]</a>
+<span class="k">def</span> <span class="nf">remove_if_nul</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">column</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Function that remove the last rows if the value is null in a specific column</span>
+<span class="sd">    Args:</span>
+<span class="sd">        df (dataframe)</span>
+<span class="sd">        column: column you want to check</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">while</span> <span class="n">df</span><span class="p">[</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">df</span></div>
+
+
+<div class="viewcode-block" id="read_excel">
+<a class="viewcode-back" href="../../api/api_traitement.html#api_traitement.common_functions.read_excel">[docs]</a>
+<span class="k">def</span> <span class="nf">read_excel</span><span class="p">(</span><span class="n">logbook_file_path</span><span class="p">,</span> <span class="n">num_page</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; </span>
+<span class="sd">    Fonction qui extrait les informations d&#39;un fichier excel en dataframe</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        logbook_file_path: lien vers le fichier contenant le logbook</span>
+<span class="sd">        num_page (int): numéro de page à extraire (1, 2 etc ...)</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        (dataframe): du fichier excel</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">classeur</span> <span class="o">=</span> <span class="n">openpyxl</span><span class="o">.</span><span class="n">load_workbook</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">logbook_file_path</span><span class="p">,</span> <span class="n">data_only</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">noms_feuilles</span> <span class="o">=</span> <span class="n">classeur</span><span class="o">.</span><span class="n">sheetnames</span>
+    <span class="n">feuille</span> <span class="o">=</span> <span class="n">classeur</span><span class="p">[</span><span class="n">noms_feuilles</span><span class="p">[</span><span class="n">num_page</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]]</span>
+    <span class="n">df_donnees</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">feuille</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+    <span class="n">classeur</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">df_donnees</span></div>
+
+
+
+<div class="viewcode-block" id="get_list_harbours">
+<a class="viewcode-back" href="../../api/api_traitement.html#api_traitement.common_functions.get_list_harbours">[docs]</a>
+<span class="k">def</span> <span class="nf">get_list_harbours</span><span class="p">(</span><span class="n">allData</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Args:</span>
+<span class="sd">        allData</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        list: all the enabled ports (topiaId and label2)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">harbours</span> <span class="o">=</span> <span class="n">allData</span><span class="p">[</span><span class="s2">&quot;Harbour&quot;</span><span class="p">]</span>
+    <span class="n">sorted_list_harbours</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">&#39;topiaId&#39;</span><span class="p">:</span> <span class="n">harbour</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;topiaId&#39;</span><span class="p">),</span> <span class="s1">&#39;label2&#39;</span><span class="p">:</span> <span class="n">harbour</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;label2&#39;</span><span class="p">)}</span> 
+                        <span class="k">for</span> <span class="n">harbour</span> <span class="ow">in</span> <span class="n">harbours</span> <span class="k">if</span> <span class="n">harbour</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;status&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;enabled&#39;</span><span class="p">]</span>
+    <span class="n">sorted_list_harbours</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="s1">&#39;label2&#39;</span><span class="p">])</span>
+
+    <span class="k">return</span> <span class="n">sorted_list_harbours</span></div>
+
+
+
+<div class="viewcode-block" id="from_topiaid_to_value">
+<a class="viewcode-back" href="../../api/api_traitement.html#api_traitement.common_functions.from_topiaid_to_value">[docs]</a>
+<span class="k">def</span> <span class="nf">from_topiaid_to_value</span><span class="p">(</span><span class="n">topiaid</span><span class="p">,</span> <span class="n">lookingfor</span><span class="p">,</span> <span class="n">label_output</span><span class="p">,</span> <span class="n">allData</span><span class="p">,</span> <span class="n">domaine</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Fonction générale qui retourne le label output pour un topiad donné </span>
+<span class="sd">    dans la base common ou longliner</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        topiad</span>
+<span class="sd">        lookingfor: catégorie issu du WS dans laquelle on veut chercher notre topiaid</span>
+<span class="sd">        label_output: ce qu&#39;on veut présenter (label, nom, espèce ...)</span>
+<span class="sd">        domaine si nécessaire (palangre, senne)</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        nom souhaité associé au topotiad</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="k">if</span> <span class="n">lookingfor</span> <span class="o">==</span> <span class="s1">&#39;VesselActivity&#39;</span> <span class="ow">or</span> <span class="n">lookingfor</span> <span class="o">==</span> <span class="s1">&#39;Program&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">domaine</span> <span class="ow">is</span> <span class="kc">None</span> <span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error il faut préciser un domaine&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">else</span> <span class="p">:</span>
+            <span class="k">if</span> <span class="n">domaine</span> <span class="o">==</span> <span class="s1">&#39;palangre&#39;</span><span class="p">:</span>
+                <span class="n">domaine_en</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="s1">&#39;longline&#39;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">domaine_en</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="s1">&#39;seine&#39;</span><span class="p">)</span>
+            
+            <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">allData</span><span class="p">[</span><span class="n">lookingfor</span><span class="p">][</span><span class="n">domaine_en</span><span class="p">]:</span> 
+                <span class="k">if</span> <span class="n">element</span><span class="p">[</span><span class="s1">&#39;topiaId&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">topiaid</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">element</span><span class="p">[</span><span class="n">label_output</span><span class="p">]</span>
+        
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">allData</span><span class="p">[</span><span class="n">lookingfor</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">allData</span><span class="p">[</span><span class="n">lookingfor</span><span class="p">]:</span>
+                <span class="k">if</span> <span class="n">element</span><span class="p">[</span><span class="s1">&#39;topiaId&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">topiaid</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">element</span><span class="p">[</span><span class="n">label_output</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;please do check the orthographe of looking for element&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="getId">
+<a class="viewcode-back" href="../../api/api_traitement.html#api_traitement.common_functions.getId">[docs]</a>
+<span class="k">def</span> <span class="nf">getId</span><span class="p">(</span><span class="n">allData</span><span class="p">,</span> <span class="n">moduleName</span><span class="p">,</span> <span class="n">argment</span><span class="p">,</span> <span class="n">nbArg</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">domaine</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Fonction qui retourne l&#39;ID d&#39;un module en fonction des arguments donnés</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        allData (json): données de references</span>
+<span class="sd">        moduleName (str): le module de la base de donnée</span>
+<span class="sd">        argment (str): les arguments de la requete sur le module</span>
+<span class="sd">        domaine (str): &quot;seine&quot; ou &quot;longline&quot; dans le cas ou nous voulons recuperer les id de VesselActivity</span>
+<span class="sd">        nbArg (bool): permet de signifier le nombre d&#39;argument dont on aura besoin pour trouver l&#39;ID</span>
+<span class="sd">               par defaut quand c&#39;est False nous avons 1 argument en paramentre</span>
+<span class="sd">               si c&#39;est True, nous avons 2 arguments en parametre</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">         topiad (str)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">Id</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">dataKey</span> <span class="o">=</span> <span class="p">[</span><span class="n">k</span> <span class="k">for</span> <span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="ow">in</span> <span class="n">allData</span><span class="o">.</span><span class="n">items</span><span class="p">()]</span>
+
+    <span class="k">if</span> <span class="n">moduleName</span> <span class="ow">in</span> <span class="n">dataKey</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">domaine</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">tempDic</span> <span class="o">=</span> <span class="n">allData</span><span class="p">[</span><span class="n">moduleName</span><span class="p">][</span><span class="n">domaine</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">tempDic</span> <span class="o">=</span> <span class="n">allData</span><span class="p">[</span><span class="n">moduleName</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">nbArg</span><span class="p">:</span>
+            <span class="c1"># 2 arguments</span>
+            <span class="n">argTab</span> <span class="o">=</span> <span class="n">argment</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;&amp;filters.&quot;</span><span class="p">)</span>
+            <span class="n">argments</span> <span class="o">=</span> <span class="p">[</span><span class="n">argTab</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="p">),</span> <span class="n">argTab</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="p">)]</span>
+            <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">tempDic</span><span class="p">:</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">val</span><span class="p">[</span><span class="n">argments</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]]</span> <span class="o">==</span> <span class="n">argments</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span> <span class="ow">and</span> <span class="p">(</span><span class="n">val</span><span class="p">[</span><span class="n">argments</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]]</span> <span class="o">==</span> <span class="n">argments</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]):</span>
+                    <span class="n">Id</span> <span class="o">=</span> <span class="n">val</span><span class="p">[</span><span class="s1">&#39;topiaId&#39;</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># 1 argument</span>
+            <span class="n">argments</span> <span class="o">=</span> <span class="n">argment</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">tempDic</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">val</span><span class="p">[</span><span class="n">argments</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">==</span> <span class="n">argments</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+                    <span class="n">Id</span> <span class="o">=</span> <span class="n">val</span><span class="p">[</span><span class="s1">&#39;topiaId&#39;</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">Id</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+            <span class="c1"># message = &quot;Aucun topiad&quot;</span>
+            <span class="n">Id</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># message = &quot;Le module: &quot;+ module + &quot; n&#39;existe pas&quot;</span>
+        <span class="n">Id</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">return</span> <span class="n">Id</span></div>
+
+
+<div class="viewcode-block" id="search_in">
+<a class="viewcode-back" href="../../api/api_traitement.html#api_traitement.common_functions.search_in">[docs]</a>
+<span class="k">def</span> <span class="nf">search_in</span><span class="p">(</span><span class="n">allData</span><span class="p">,</span> <span class="n">search</span><span class="o">=</span><span class="s2">&quot;Ocean&quot;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Fonction permet d&#39;avoir à partir des données de references les oceans ou les programmes</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        allData (json): données de references</span>
+<span class="sd">        search (str): &quot;Ocean&quot; ou &quot;Program&quot;</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        prog_dic (json)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">allData</span> <span class="o">==</span> <span class="p">[]:</span> <span class="k">return</span> <span class="p">{}</span>
+
+    <span class="k">if</span> <span class="n">search</span> <span class="o">==</span> <span class="s2">&quot;Ocean&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">{</span> <span class="n">val</span><span class="p">[</span><span class="s2">&quot;topiaId&quot;</span><span class="p">]</span> <span class="p">:</span> <span class="n">val</span><span class="p">[</span><span class="s2">&quot;label2&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">allData</span><span class="p">[</span><span class="n">search</span><span class="p">]}</span>
+    <span class="n">prog_dic</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">if</span> <span class="n">allData</span> <span class="o">==</span> <span class="p">[]</span> <span class="p">:</span>
+        <span class="k">return</span> <span class="n">prog_dic</span>
+
+    <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">allData</span><span class="p">[</span><span class="n">search</span><span class="p">]:</span>
+        <span class="n">prog_dic</span><span class="p">[</span><span class="n">val</span><span class="p">[</span><span class="s2">&quot;topiaId&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">val</span><span class="p">[</span><span class="s2">&quot;label2&quot;</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">prog_dic</span></div>
+
+
+<div class="viewcode-block" id="getSome">
+<a class="viewcode-back" href="../../api/api_traitement.html#api_traitement.common_functions.getSome">[docs]</a>
+<span class="k">def</span> <span class="nf">getSome</span><span class="p">(</span><span class="n">allData</span><span class="p">,</span> <span class="n">moduleName</span><span class="p">,</span> <span class="n">argment</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Permet de retouner un dictionnaire de donnée du module dans une liste (tableau)</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        allData (json): données de references</span>
+<span class="sd">        moduleName (str): le module de la base de donnée</span>
+<span class="sd">        argment (str): les arguments de la requete sur le module</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        (list)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">tempDic</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">dico</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">dataKey</span> <span class="o">=</span> <span class="p">[</span><span class="n">k</span> <span class="k">for</span> <span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="ow">in</span> <span class="n">allData</span><span class="o">.</span><span class="n">items</span><span class="p">()]</span>
+
+    <span class="k">if</span> <span class="n">moduleName</span> <span class="ow">in</span> <span class="n">dataKey</span><span class="p">:</span>
+        <span class="n">tempDic</span> <span class="o">=</span> <span class="n">allData</span><span class="p">[</span><span class="n">moduleName</span><span class="p">]</span>
+        <span class="n">argments</span> <span class="o">=</span> <span class="n">argment</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">tempDic</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">val</span><span class="p">[</span><span class="n">argments</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="n">argments</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
+                <span class="n">dico</span> <span class="o">=</span> <span class="n">val</span>
+
+    <span class="k">return</span> <span class="p">[</span><span class="n">dico</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="getAll">
+<a class="viewcode-back" href="../../api/api_traitement.html#api_traitement.common_functions.getAll">[docs]</a>
+<span class="k">def</span> <span class="nf">getAll</span><span class="p">(</span><span class="n">allData</span><span class="p">,</span> <span class="n">moduleName</span><span class="p">,</span> <span class="n">type_data</span><span class="o">=</span><span class="s2">&quot;dictionnaire&quot;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Permet de retourner un dictionnaire ou un tableau</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        allData (json): données de references</span>
+<span class="sd">        moduleName (str): le module de la base de donnée</span>
+<span class="sd">        type_data (str): &quot;dictionnaire&quot; ou &quot;tableau&quot;</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        tab (list)</span>
+<span class="sd">        dico (dict)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">type_data</span> <span class="o">==</span> <span class="s2">&quot;tableau&quot;</span><span class="p">:</span>
+        <span class="n">tab</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">allData</span><span class="p">[</span><span class="n">moduleName</span><span class="p">]:</span>
+            <span class="n">tab</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">val</span><span class="p">[</span><span class="s2">&quot;topiaId&quot;</span><span class="p">],</span> <span class="n">val</span><span class="p">[</span><span class="s2">&quot;label1&quot;</span><span class="p">]))</span>
+
+        <span class="k">return</span> <span class="n">tab</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">dico</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">allData</span><span class="p">[</span><span class="n">moduleName</span><span class="p">]:</span>
+            <span class="n">dico</span><span class="p">[</span><span class="n">val</span><span class="p">[</span><span class="s2">&quot;code&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">val</span><span class="p">[</span><span class="s2">&quot;topiaId&quot;</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">dico</span></div>
+
+
+
+
+
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div id="searchbox"></div></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+
+<script>
+  $(document).ready(function () {
+    const content = $('<div class="alert-danger">ArviZ docs will now be available at <a href="https://python.arviz.org">python.arviz.org</a>!</div>')
+    $('#banner').append(content);
+  })
+</script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2024, Ob7.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.4.7.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,1012 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" data-theme="light">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>api_traitement.api_functions &#8212; LB2Observe  documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-codeautolink.css?v=125d5c1c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=0b5196b5" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=30646c52"></script>
+    <script src="../../_static/design-tabs.js?v=36754332"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/api_traitement/api_functions';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="light">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+    
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="LB2Observe  documentation - Home"/>
+    <img src="" class="logo__image only-dark pst-js-only" alt="LB2Observe  documentation - Home"/>
+  
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../getting_started/index.html">
+    Getting Started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../user_guide/index.html">
+    User Guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/index.html">
+    API
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-external" href="https://ob7-ird.science">
+    The Ob7's team
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/OB7-IRD/observe-logbooks-reader-webapp" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../getting_started/index.html">
+    Getting Started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../user_guide/index.html">
+    User Guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/index.html">
+    API
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-external" href="https://ob7-ird.science">
+    The Ob7's team
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/OB7-IRD/observe-logbooks-reader-webapp" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">api_traitement.api_functions</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for api_traitement.api_functions</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">#######################################################</span>
+<span class="sd">#</span>
+<span class="sd"># Fonctions relatives à la connexion et requêtes faites à l&#39;api</span>
+<span class="sd">#</span>
+<span class="sd">#######################################################</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">gmtime</span><span class="p">,</span> <span class="n">strftime</span><span class="p">,</span> <span class="n">strptime</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+
+<span class="kn">from</span> <span class="nn">django.contrib.auth</span> <span class="kn">import</span> <span class="n">authenticate</span>
+<span class="kn">from</span> <span class="nn">django.utils.html</span> <span class="kn">import</span> <span class="n">format_html</span>
+
+<span class="kn">from</span> <span class="nn">api_traitement.apiFunctions</span> <span class="kn">import</span> <span class="n">errorFilter</span>
+<span class="kn">from</span> <span class="nn">api_traitement.common_functions</span> <span class="kn">import</span> <span class="n">serialize</span><span class="p">,</span> <span class="n">pretty_print</span>
+
+<span class="c1"># from webapps.models import User</span>
+<span class="kn">from</span> <span class="nn">webapps.models</span> <span class="kn">import</span> <span class="n">LTOUser</span> <span class="k">as</span> <span class="n">User</span>
+
+
+<span class="kn">from</span> <span class="nn">django.utils.translation</span> <span class="kn">import</span> <span class="n">gettext</span> <span class="k">as</span> <span class="n">_</span>
+<span class="kn">from</span> <span class="nn">configuration.conf</span> <span class="kn">import</span> <span class="n">TIMEOUT_VALUE</span>
+
+<span class="c1">########### Token ###########</span>
+
+<div class="viewcode-block" id="get_token">
+<a class="viewcode-back" href="../../api/api_traitement.html#api_traitement.api_functions.get_token">[docs]</a>
+<span class="k">def</span> <span class="nf">get_token</span><span class="p">(</span><span class="n">base_url</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Fonction qui permet d&#39;avoir un token</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        base_url (str) : url de base de l&#39;API</span>
+<span class="sd">        data (json): format de données json exemple ci-dessous</span>
+<span class="sd">            exemple:</span>
+<span class="sd">                    data = {</span>
+<span class="sd">                            &quot;config.login&quot;: &quot;username&quot;,</span>
+<span class="sd">                            &quot;config.password&quot;: &quot;password&quot;,</span>
+<span class="sd">                            &quot;config.databaseName&quot;: &quot;database&quot;,</span>
+<span class="sd">                            &quot;referentialLocale&quot;: &quot;fr_FR&quot;</span>
+<span class="sd">                    }</span>
+<span class="sd">    Returns:</span>
+<span class="sd">        token (str)</span>
+<span class="sd">        :rtype: object</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">url</span> <span class="o">=</span> <span class="n">base_url</span> <span class="o">+</span> <span class="s2">&quot;/init/open&quot;</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">TIMEOUT_VALUE</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">url</span><span class="p">)</span>
+    <span class="n">token</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s1">&#39;authenticationToken&#39;</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">token</span></div>
+
+
+
+<div class="viewcode-block" id="is_valid">
+<a class="viewcode-back" href="../../api/api_traitement.html#api_traitement.api_functions.is_valid">[docs]</a>
+<span class="k">def</span> <span class="nf">is_valid</span><span class="p">(</span><span class="n">base_url</span><span class="p">,</span> <span class="n">token</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; </span>
+<span class="sd">    Fonction booléenne qui test si le token est encore valide</span>
+<span class="sd">    Args:</span>
+<span class="sd">        token (str)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">api_base</span> <span class="o">=</span> <span class="n">base_url</span> <span class="o">+</span> <span class="s1">&#39;/init/information?&#39;</span>
+    <span class="c1"># Constitution du lien url pour accéder à l&#39;API et fermer la connexion</span>
+    <span class="n">api_url</span> <span class="o">=</span> <span class="n">api_base</span> <span class="o">+</span> <span class="s1">&#39;authenticationToken=&#39;</span> <span class="o">+</span> <span class="n">token</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">api_url</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">TIMEOUT_VALUE</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;reponse of is valid function &quot;</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span></div>
+
+
+
+<div class="viewcode-block" id="reload_token">
+<a class="viewcode-back" href="../../api/api_traitement.html#api_traitement.api_functions.reload_token">[docs]</a>
+<span class="k">def</span> <span class="nf">reload_token</span><span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">,</span> <span class="n">base_url</span><span class="p">,</span> <span class="n">database</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Fonction qui recharge un token</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        username: identifiant de connexion</span>
+<span class="sd">        password: mot de passe de connexion</span>
+<span class="sd">        base_url: l&#39;url de base du profile</span>
+<span class="sd">        database: la base de données pour la connexion</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        token</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;user database: &quot;</span><span class="p">,</span> <span class="n">database</span><span class="p">)</span>
+
+    <span class="n">data_user_connect</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;config.login&quot;</span><span class="p">:</span> <span class="n">username</span><span class="p">,</span>
+        <span class="s2">&quot;config.password&quot;</span><span class="p">:</span> <span class="n">password</span><span class="p">,</span>
+        <span class="s2">&quot;config.databaseName&quot;</span><span class="p">:</span> <span class="n">database</span><span class="p">,</span>
+        <span class="s2">&quot;referentialLocale&quot;</span><span class="p">:</span> <span class="s2">&quot;FR&quot;</span><span class="p">,</span>
+        <span class="c1"># &quot;referentialLocale&quot;: data_user.ref_language,</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">get_token</span><span class="p">(</span><span class="n">base_url</span><span class="p">,</span> <span class="n">data_user_connect</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="get_all_referential_data">
+<a class="viewcode-back" href="../../api/api_traitement.html#api_traitement.api_functions.get_all_referential_data">[docs]</a>
+<span class="k">def</span> <span class="nf">get_all_referential_data</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">module</span><span class="p">,</span> <span class="n">base_url</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Fonction qui récupère les données de références sur le webservice</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        token</span>
+<span class="sd">        module: ps ou ll</span>
+<span class="sd">        base_url: url de connexion - &#39;https://observe.ob7.ird.fr/observeweb/api/public&#39;</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        dict</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="n">base_url</span> <span class="o">+</span> <span class="s2">&quot;/referential/&quot;</span> <span class="o">+</span> <span class="n">module</span> <span class="o">+</span> <span class="s2">&quot;?authenticationToken=&quot;</span> <span class="o">+</span> <span class="n">token</span>
+    <span class="n">ac_cap</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">TIMEOUT_VALUE</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">ac_cap</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span><span class="p">:</span>
+        <span class="n">dicoModule</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">ac_cap</span><span class="o">.</span><span class="n">text</span><span class="p">)[</span><span class="s2">&quot;content&quot;</span><span class="p">]:</span>
+            <span class="n">vals</span> <span class="o">=</span> <span class="n">val</span><span class="o">.</span><span class="n">rsplit</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">dicoModule</span><span class="p">[</span><span class="n">vals</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+            <span class="k">for</span> <span class="n">valin</span> <span class="ow">in</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">ac_cap</span><span class="o">.</span><span class="n">text</span><span class="p">)[</span><span class="s2">&quot;content&quot;</span><span class="p">][</span><span class="n">val</span><span class="p">]:</span>
+                <span class="n">dicoModule</span><span class="p">[</span><span class="n">vals</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">valin</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="o">*</span><span class="mi">20</span><span class="p">,</span> <span class="s2">&quot;get_all_referential_data&quot;</span><span class="p">,</span> <span class="s2">&quot;=&quot;</span><span class="o">*</span><span class="mi">20</span><span class="p">)</span>
+        <span class="c1"># print(dicoModule)</span>
+        <span class="k">return</span> <span class="n">dicoModule</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">_</span><span class="p">(</span><span class="s2">&quot;Problème de connexion pour recuperer les données&quot;</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="load_data">
+<a class="viewcode-back" href="../../api/api_traitement.html#api_traitement.api_functions.load_data">[docs]</a>
+<span class="k">def</span> <span class="nf">load_data</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">base_url</span><span class="p">,</span> <span class="n">forceUpdate</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Fonction qui recupere toutes les données de refences au format JSON de la base de données et stocke ces données</span>
+<span class="sd">        dans un fichier en local.</span>
+<span class="sd">        Elle recupere les données de references une fois par jour et elle est utilisé pour faire</span>
+<span class="sd">        mise à jour des données de references sur le site</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        token (str): token recuperé</span>
+<span class="sd">        base_url (str): url de base de l&#39;API</span>
+<span class="sd">        forceUpdate (bool): True ou False =&gt; utilisée dans le cas de la mise à jour des données de references forcées par l&#39;utilisateur</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        allData (json)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="o">*</span><span class="mi">20</span><span class="p">,</span> <span class="s2">&quot;load_data function starting&quot;</span><span class="p">,</span> <span class="s2">&quot;_&quot;</span><span class="o">*</span><span class="mi">20</span><span class="p">)</span>
+    <span class="n">day</span> <span class="o">=</span> <span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">gmtime</span><span class="p">())</span>
+    
+    <span class="c1"># Si les dossiers ne sont pas existant, on les créés</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s2">&quot;media/data&quot;</span><span class="p">):</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="s2">&quot;media/data&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s2">&quot;media/temporary_files&quot;</span><span class="p">):</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="s2">&quot;media/temporary_files&quot;</span><span class="p">)</span>
+
+    <span class="n">files</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="s2">&quot;media/data&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">subFunction</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">day</span><span class="p">,</span> <span class="n">url</span><span class="p">):</span>
+        <span class="n">ref_common</span> <span class="o">=</span> <span class="n">get_all_referential_data</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="s2">&quot;common&quot;</span><span class="p">,</span> <span class="n">url</span><span class="p">)</span>
+        <span class="n">ps_logbook</span> <span class="o">=</span> <span class="n">get_all_referential_data</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="s2">&quot;ps/logbook&quot;</span><span class="p">,</span> <span class="n">url</span><span class="p">)</span>
+        <span class="n">ps_common</span> <span class="o">=</span> <span class="n">get_all_referential_data</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="s2">&quot;ps/common&quot;</span><span class="p">,</span> <span class="n">url</span><span class="p">)</span>
+        <span class="n">ll_common</span> <span class="o">=</span> <span class="n">get_all_referential_data</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="s2">&quot;ll/common&quot;</span><span class="p">,</span> <span class="n">url</span><span class="p">)</span>
+
+        <span class="n">program</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;Program&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s1">&#39;seine&#39;</span> <span class="p">:</span><span class="n">ps_common</span><span class="p">[</span><span class="s2">&quot;Program&quot;</span><span class="p">],</span>
+                <span class="s1">&#39;longline&#39;</span><span class="p">:</span><span class="n">ll_common</span><span class="p">[</span><span class="s2">&quot;Program&quot;</span><span class="p">]</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="n">vesselActivity</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;VesselActivity&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s1">&#39;seine&#39;</span> <span class="p">:</span><span class="n">ps_common</span><span class="p">[</span><span class="s2">&quot;VesselActivity&quot;</span><span class="p">],</span>
+                <span class="s1">&#39;longline&#39;</span><span class="p">:</span><span class="n">ll_common</span><span class="p">[</span><span class="s2">&quot;VesselActivity&quot;</span><span class="p">]</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="c1"># Suppression des éléments suivant</span>
+        <span class="k">del</span> <span class="n">ps_common</span><span class="p">[</span><span class="s2">&quot;Program&quot;</span><span class="p">]</span>
+        <span class="k">del</span> <span class="n">ll_common</span><span class="p">[</span><span class="s2">&quot;Program&quot;</span><span class="p">]</span>
+        <span class="k">del</span> <span class="n">ps_common</span><span class="p">[</span><span class="s2">&quot;VesselActivity&quot;</span><span class="p">]</span>
+        <span class="k">del</span> <span class="n">ll_common</span><span class="p">[</span><span class="s2">&quot;VesselActivity&quot;</span><span class="p">]</span>
+
+        <span class="n">allData</span> <span class="o">=</span> <span class="p">{</span><span class="o">**</span><span class="n">ref_common</span><span class="p">,</span> <span class="o">**</span><span class="n">ps_logbook</span><span class="p">,</span> <span class="o">**</span><span class="n">ps_common</span><span class="p">,</span> <span class="o">**</span><span class="n">ll_common</span><span class="p">,</span> <span class="o">**</span><span class="n">program</span><span class="p">,</span> <span class="o">**</span><span class="n">vesselActivity</span><span class="p">}</span>
+        <span class="c1"># allData = {**ref_common, **ps_logbook, **ps_common}</span>
+
+        <span class="n">ref_common</span> <span class="o">=</span> <span class="n">get_all_referential_data</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="s2">&quot;common&quot;</span><span class="p">,</span> <span class="n">url</span><span class="p">)</span>
+        <span class="c1"># ref_common2 =&quot;https://observe.ob7.ird.fr/observeweb/api/public/referential/common?authenticationToken=6811592f-bf3b-4fa0-8320-58a4a58c9ab7&quot;</span>
+        <span class="n">ps_logbook</span> <span class="o">=</span> <span class="n">get_all_referential_data</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="s2">&quot;ps/logbook&quot;</span><span class="p">,</span> <span class="n">url</span><span class="p">)</span>
+        <span class="n">ps_common</span> <span class="o">=</span> <span class="n">get_all_referential_data</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="s2">&quot;ps/common&quot;</span><span class="p">,</span> <span class="n">url</span><span class="p">)</span>
+        <span class="n">ll_common</span> <span class="o">=</span> <span class="n">get_all_referential_data</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="s2">&quot;ll/common&quot;</span><span class="p">,</span> <span class="n">url</span><span class="p">)</span>    
+        
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="o">*</span><span class="mi">20</span><span class="p">,</span> <span class="s2">&quot;load_data SubFunction&quot;</span><span class="p">,</span> <span class="s2">&quot;=&quot;</span><span class="o">*</span><span class="mi">20</span><span class="p">)</span>
+        <span class="c1"># print(ref_common[5:])</span>
+        <span class="c1"># with open(&#39;allData_load.json&#39;, &#39;w&#39;, encoding=&#39;utf-8&#39;) as f:</span>
+        <span class="c1">#     json.dump(allData, f, ensure_ascii=False, indent=4)</span>
+        
+        <span class="n">file_name</span> <span class="o">=</span> <span class="s2">&quot;media/data/data_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">day</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;.json&quot;</span>
+
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">allData</span><span class="p">,</span> <span class="n">ensure_ascii</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">allData</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="mi">0</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">files</span><span class="p">))</span> <span class="ow">and</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">files</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">forceUpdate</span> <span class="o">==</span> <span class="kc">False</span><span class="p">):</span>
+        
+        <span class="n">last_date</span> <span class="o">=</span> <span class="n">files</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">last_file</span> <span class="o">=</span> <span class="n">files</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="n">formatted_date1</span> <span class="o">=</span> <span class="n">strptime</span><span class="p">(</span><span class="n">day</span><span class="p">,</span> <span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">formatted_date2</span> <span class="o">=</span> <span class="n">strptime</span><span class="p">(</span><span class="n">last_date</span><span class="p">,</span> <span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Verifier si le jour actuel est superieur au jour precedent</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">formatted_date1</span> <span class="o">&gt;</span> <span class="n">formatted_date2</span><span class="p">):</span>
+            <span class="n">allData</span> <span class="o">=</span> <span class="n">subFunction</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">day</span><span class="p">,</span> <span class="n">base_url</span><span class="p">)</span>
+
+            <span class="c1"># Suprimer l&#39;ancienne</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s2">&quot;media/data/&quot;</span> <span class="o">+</span> <span class="n">last_file</span><span class="p">)</span>
+            
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="o">*</span><span class="mi">20</span><span class="p">,</span> <span class="s2">&quot;allData updated&quot;</span><span class="p">,</span> <span class="s2">&quot;=&quot;</span><span class="o">*</span><span class="mi">20</span><span class="p">)</span>
+            <span class="c1"># print(allData[5:])</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">file_name</span> <span class="o">=</span> <span class="s2">&quot;media/data/&quot;</span> <span class="o">+</span> <span class="n">files</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="c1"># Opening JSON file</span>
+            <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_name</span> <span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+            <span class="c1"># returns JSON object as  a dictionary</span>
+            <span class="n">allData</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+            
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="o">*</span><span class="mi">20</span><span class="p">,</span> <span class="s2">&quot;allData already existing&quot;</span><span class="p">,</span> <span class="s2">&quot;=&quot;</span><span class="o">*</span><span class="mi">20</span><span class="p">)</span>
+            <span class="c1"># print(allData)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">list_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="s2">&quot;media/data&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">file_name</span> <span class="ow">in</span> <span class="n">list_file</span><span class="p">:</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s2">&quot;media/data/&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">file_name</span><span class="p">))</span>
+
+        <span class="n">allData</span> <span class="o">=</span> <span class="n">subFunction</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">day</span><span class="p">,</span> <span class="n">base_url</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="o">*</span><span class="mi">20</span><span class="p">,</span> <span class="s2">&quot;subFunction getting allData&quot;</span><span class="p">,</span> <span class="s2">&quot;=&quot;</span><span class="o">*</span><span class="mi">20</span><span class="p">)</span>
+        <span class="c1"># print(allData[5:])</span>
+
+    <span class="k">return</span> <span class="n">allData</span></div>
+
+
+<div class="viewcode-block" id="get_one_from_ws">
+<a class="viewcode-back" href="../../api/api_traitement.html#api_traitement.api_functions.get_one_from_ws">[docs]</a>
+<span class="k">def</span> <span class="nf">get_one_from_ws</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">base_url</span><span class="p">,</span> <span class="n">route</span><span class="p">,</span> <span class="n">topiaid</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Fonction qui interroge le web service (ws) pour récupérer toutes les données relatives à une route et un topiaid</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        token (str): token</span>
+<span class="sd">        base_url: chemin d&#39;accès à la connexion (&#39;https://observe.ob7.ird.fr/observeweb/api/public&#39;)</span>
+<span class="sd">        route: chemin d&#39;accès plus précis (par ex : &#39;/data/ll/common/Trip/&#39;)</span>
+<span class="sd">        topiaid: topiaid avec des &#39;-&#39; à la place des &#39;#&#39;</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        file.json: informations relatives au topiaid fourni</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;authenticationToken&#39;</span><span class="p">:</span> <span class="n">token</span><span class="p">,</span> 
+    <span class="p">}</span>
+    
+    <span class="n">params</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;config.recursive&#39;</span> <span class="p">:</span> <span class="s1">&#39;true&#39;</span><span class="p">,</span> 
+    <span class="p">}</span>
+    
+    <span class="n">url</span> <span class="o">=</span> <span class="n">base_url</span> <span class="o">+</span> <span class="n">route</span> <span class="o">+</span> <span class="n">topiaid</span>
+    
+    <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span> <span class="n">params</span> <span class="o">=</span> <span class="n">params</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">TIMEOUT_VALUE</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span> <span class="p">:</span>
+        <span class="c1"># with open(file = &quot;media/temporary_files/previoustrip.json&quot;, mode = &quot;w&quot;) as outfile:</span>
+        <span class="c1">#     outfile.write(response.text)</span>
+        <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">content</span>
+    
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+    
+<div class="viewcode-block" id="trip_for_prog_vessel">
+<a class="viewcode-back" href="../../api/api_traitement.html#api_traitement.api_functions.trip_for_prog_vessel">[docs]</a>
+<span class="k">def</span> <span class="nf">trip_for_prog_vessel</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">base_url</span><span class="p">,</span> <span class="n">route</span><span class="p">,</span> <span class="n">vessel_id</span><span class="p">,</span> <span class="n">programme_topiaid</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Pour un navire et un programme donnée, renvoie le topiaid du dernier trip saisi</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        token</span>
+<span class="sd">        base_url: &#39;https://observe.ob7.ird.fr/observeweb/api/public&#39;</span>
+<span class="sd">        vessel_id: topiaid du navire (avec les &#39;-&#39;)</span>
+<span class="sd">        programme_topiaid: topiaid du programme choisi (avec les &#39;-&#39;)</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        trip topiaid</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># api_base = &#39;https://observe.ob7.ird.fr/observeweb/api/&#39;</span>
+    <span class="n">api_trip</span> <span class="o">=</span> <span class="s1">&#39;?authenticationToken=&#39;</span>
+
+    <span class="n">api_vessel_filter</span> <span class="o">=</span> <span class="s1">&#39;&amp;filters.vessel_id=&#39;</span>
+    <span class="n">api_programme_filter</span> <span class="o">=</span> <span class="s1">&#39;&amp;filters.logbookProgram_id=&#39;</span>
+    <span class="n">api_ordeer_filter</span> <span class="o">=</span> <span class="s1">&#39;&amp;orders.endDate=DESC&#39;</span>
+
+    <span class="n">api_trip_request</span> <span class="o">=</span> <span class="n">base_url</span> <span class="o">+</span> <span class="n">route</span> <span class="o">+</span> <span class="n">api_trip</span> <span class="o">+</span> <span class="n">token</span> <span class="o">+</span> <span class="n">api_vessel_filter</span> <span class="o">+</span> <span class="n">vessel_id</span> <span class="o">+</span> <span class="n">api_programme_filter</span> <span class="o">+</span> <span class="n">programme_topiaid</span> <span class="o">+</span> <span class="n">api_ordeer_filter</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">api_trip_request</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">TIMEOUT_VALUE</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">content</span></div>
+
+
+<div class="viewcode-block" id="send_trip">
+<a class="viewcode-back" href="../../api/api_traitement.html#api_traitement.api_functions.send_trip">[docs]</a>
+<span class="k">def</span> <span class="nf">send_trip</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">base_url</span><span class="p">,</span> <span class="n">route</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; </span>
+<span class="sd">    Fonction qui ajoute un trip (marée) dans la base</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        token (str): token</span>
+<span class="sd">        data (json): json file (trip) que l&#39;on envoie dans la base</span>
+<span class="sd">        base_url (str): &#39;https://observe.ob7.ird.fr/observeweb/api/public&#39; base de connexion à l&#39;api</span>
+<span class="sd">        route (str):  &#39;/data/ps/common/Trip&#39; ou &#39;/data/ll/common/Trip&#39;</span>
+<span class="sd">    Returns:</span>
+<span class="sd">        le json inséré dans le temporary_files </span>
+<span class="sd">        text message: logbook bien inséré, ou bien un json d&#39;erreur</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">data_json</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">serialize</span><span class="p">)</span>
+
+    <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;Content-Type&quot;</span><span class="p">:</span> <span class="s2">&quot;application/json&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;authenticationToken&#39;</span><span class="p">:</span> <span class="n">token</span>
+    <span class="p">}</span>
+
+    <span class="n">url</span> <span class="o">=</span> <span class="n">base_url</span> <span class="o">+</span> <span class="n">route</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Post - send data&quot;</span><span class="p">)</span>
+    <span class="n">pretty_print</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    
+    <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data_json</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">TIMEOUT_VALUE</span><span class="p">)</span>
+
+    <span class="c1"># print(response.status_code, &quot;\n&quot;)</span>
+
+    <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span><span class="p">:</span>
+        <span class="c1"># return json.loads(res.text)</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s2">&quot;Logbook inséré avec success&quot;</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file</span> <span class="o">=</span> <span class="s2">&quot;media/temporary_files/error.json&quot;</span><span class="p">,</span> <span class="n">mode</span> <span class="o">=</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">outfile</span><span class="p">:</span>
+            <span class="n">outfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">(</span><span class="n">error_filter</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">),</span> <span class="mi">2</span><span class="p">)</span>
+            <span class="c1"># return json.loads(res.text), 2</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="c1"># Faire une fonction pour mieux traiter ce type d&#39;erreur</span>
+            <span class="c1"># print(&quot;Message d&#39;erreur: &quot;, json.loads(res.text)[&quot;exception&quot;][&quot;result&quot;][&quot;nodes&quot;]) # A faire</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Message d&#39;erreur: &quot;</span><span class="p">,</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">))</span> <span class="c1"># A faire</span>
+            <span class="k">return</span> <span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s2">&quot;L&#39;insertion de cet logbook n&#39;est pas possible. Désolé veuillez essayer un autre&quot;</span><span class="p">),</span> <span class="mi">3</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="update_trip">
+<a class="viewcode-back" href="../../api/api_traitement.html#api_traitement.api_functions.update_trip">[docs]</a>
+<span class="k">def</span> <span class="nf">update_trip</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">base_url</span><span class="p">,</span> <span class="n">topiaid</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Fonction qui met à jour un trip dans la base de données, donc supprime le trip existant pour insérer le nouveau data_json sous le même topiaid</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        token (str): token</span>
+<span class="sd">        data (json): json file qu&#39;on envoie dans la base</span>
+<span class="sd">        base_url (str): &#39;https://observe.ob7.ird.fr/observeweb/api/public&#39; base de connexion à l&#39;api</span>
+<span class="sd">        topiaid du trip que l&#39;on veut update (l&#39;ancienne version sera supprimée)</span>
+<span class="sd">    Returns:</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">data_json</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">serialize</span><span class="p">)</span>
+
+    <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;Content-Type&quot;</span><span class="p">:</span> <span class="s2">&quot;application/json&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;authenticationToken&#39;</span><span class="p">:</span> <span class="n">token</span><span class="p">,}</span>
+
+    <span class="n">url</span> <span class="o">=</span> <span class="n">base_url</span> <span class="o">+</span> <span class="s1">&#39;/data/ll/common/Trip/&#39;</span> <span class="o">+</span> <span class="n">topiaid</span>
+
+    <span class="n">pretty_print</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data_json</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">TIMEOUT_VALUE</span><span class="p">)</span>
+    
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Code resultat de la requete&quot;</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s2">&quot;Logbook inséré avec success&quot;</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file</span> <span class="o">=</span> <span class="s2">&quot;media/temporary_files/errorupdate.json&quot;</span><span class="p">,</span> <span class="n">mode</span> <span class="o">=</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">outfile</span><span class="p">:</span>
+            <span class="n">outfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+            <span class="k">return</span> <span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s2">&quot;L&#39;insertion de cet logbook n&#39;est pas possible. Désolé veuillez essayer un autre&quot;</span><span class="p">),</span> <span class="mi">3</span><span class="p">)</span></div>
+
+
+
+
+
+<div class="viewcode-block" id="getId_Data">
+<a class="viewcode-back" href="../../api/api_traitement.html#api_traitement.api_functions.getId_Data">[docs]</a>
+<span class="k">def</span> <span class="nf">getId_Data</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">base_url</span><span class="p">,</span> <span class="n">moduleName</span><span class="p">,</span> <span class="n">argment</span><span class="p">,</span> <span class="n">route</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Fonction qui permet de retourner un id en fonction du module et de la route envoyé</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        token (str):token</span>
+<span class="sd">        base_url (str): url de base de l&#39;API</span>
+<span class="sd">        moduleName (str): le module de la base de donnée</span>
+<span class="sd">        argment (str): les arguments de la requete sur le module</span>
+<span class="sd">        route (str):  chemin de l&#39;API de la requete en fonction de la structure de la base de données.</span>
+
+<span class="sd">        exemple:</span>
+<span class="sd">            moduleName = &quot;Trip&quot;</span>
+<span class="sd">            route = &quot;/data/ps/common/&quot;</span>
+<span class="sd">            argment = &quot;startDate=&quot; + ... + &quot;&amp;filters.endDate=&quot; + ... + &quot;&amp;filters.vessel_id=&quot; + ...</span>
+<span class="sd">            OU</span>
+<span class="sd">            argment = &quot;startDate=&quot; + ...</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        id (str):</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;Content-Type&quot;</span><span class="p">:</span> <span class="s2">&quot;application/json&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;authenticationToken&#39;</span><span class="p">:</span> <span class="n">token</span>
+    <span class="p">}</span>
+
+    <span class="n">urls</span> <span class="o">=</span> <span class="n">base_url</span> <span class="o">+</span> <span class="n">route</span> <span class="o">+</span> <span class="n">moduleName</span> <span class="o">+</span> <span class="s2">&quot;?filters.&quot;</span> <span class="o">+</span> <span class="n">argment</span>
+    <span class="n">rep</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">urls</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">TIMEOUT_VALUE</span><span class="p">)</span>
+
+    <span class="c1"># print(rep.url)</span>
+
+    <span class="k">if</span> <span class="n">rep</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">rep</span><span class="o">.</span><span class="n">text</span><span class="p">)[</span><span class="s2">&quot;content&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;topiaId&quot;</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">rep</span><span class="o">.</span><span class="n">text</span><span class="p">)[</span><span class="s2">&quot;message&quot;</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="check_trip">
+<a class="viewcode-back" href="../../api/api_traitement.html#api_traitement.api_functions.check_trip">[docs]</a>
+<span class="k">def</span> <span class="nf">check_trip</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">content</span><span class="p">,</span> <span class="n">base_url</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Fonction qui permet de verifier si la marée a inserer existe déjà dans la base de donnée</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        token (str): token</span>
+<span class="sd">        base_url (str): url de base de l&#39;API</span>
+<span class="sd">        content (json): fragment json de la donnée logbook</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        id_ (str): topid de la marée si elle existe</span>
+<span class="sd">        ms_ (bool): Utilisée pour verifier le statut de la fonction (True == id trouvé)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+
+    <span class="n">start</span> <span class="o">=</span> <span class="n">content</span><span class="p">[</span><span class="s2">&quot;startDate&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;T00:00:00.000Z&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="n">end</span> <span class="o">=</span> <span class="n">content</span><span class="p">[</span><span class="s2">&quot;endDate&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;T00:00:00.000Z&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+    <span class="n">vessel_id</span> <span class="o">=</span> <span class="n">content</span><span class="p">[</span><span class="s2">&quot;vessel&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;#&quot;</span><span class="p">,</span> <span class="s2">&quot;-&quot;</span><span class="p">)</span>
+
+    <span class="c1"># print(start, end, vessel_id)</span>
+
+    <span class="n">id_</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">ms_</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">id_</span> <span class="o">=</span> <span class="n">getId_Data</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">base_url</span><span class="o">=</span><span class="n">base_url</span><span class="p">,</span> <span class="n">moduleName</span><span class="o">=</span><span class="s2">&quot;Trip&quot;</span><span class="p">,</span> <span class="n">route</span><span class="o">=</span><span class="s2">&quot;/data/ps/common/&quot;</span><span class="p">,</span> <span class="n">argment</span><span class="o">=</span><span class="s2">&quot;startDate=&quot;</span> <span class="o">+</span> <span class="n">start</span> <span class="o">+</span> <span class="s2">&quot;&amp;filters.endDate=&quot;</span> <span class="o">+</span> <span class="n">end</span> <span class="o">+</span> <span class="s2">&quot;&amp;filters.vessel_id=&quot;</span> <span class="o">+</span> <span class="n">vessel_id</span><span class="p">)</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="n">ms_</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="k">return</span> <span class="n">id_</span><span class="p">,</span> <span class="n">ms_</span></div>
+
+
+<span class="c1"># Supprimer un trip</span>
+<div class="viewcode-block" id="del_trip">
+<a class="viewcode-back" href="../../api/api_traitement.html#api_traitement.api_functions.del_trip">[docs]</a>
+<span class="k">def</span> <span class="nf">del_trip</span><span class="p">(</span><span class="n">base_url</span><span class="p">,</span> <span class="n">token</span><span class="p">,</span> <span class="n">content</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Fonction qui permet de verifier si la marée a inserer existe déjà dans la base de donnée</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        token (str): token</span>
+<span class="sd">        content (json): fragment json de la donnée logbook</span>
+
+<span class="sd">    Returns: (json)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">dicts</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+
+    <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;Content-Type&quot;</span><span class="p">:</span> <span class="s2">&quot;application/json&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;authenticationToken&#39;</span><span class="p">:</span> <span class="n">token</span>
+    <span class="p">}</span>
+    
+    <span class="n">id_</span><span class="p">,</span> <span class="n">ms_</span> <span class="o">=</span> <span class="n">check_trip</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">content</span><span class="p">,</span> <span class="n">base_url</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">ms_</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+        
+        <span class="n">id_</span> <span class="o">=</span> <span class="n">id_</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;#&quot;</span><span class="p">,</span> <span class="s2">&quot;-&quot;</span><span class="p">)</span>
+
+        <span class="n">url</span> <span class="o">=</span> <span class="n">base_url</span> <span class="o">+</span> <span class="s1">&#39;/data/ps/common/Trip/&#39;</span> <span class="o">+</span> <span class="n">id_</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="n">id_</span><span class="p">)</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Supprimer&quot;</span><span class="p">)</span>
+
+        <span class="n">res</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">dicts</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">TIMEOUT_VALUE</span><span class="p">)</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">res</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Supprimer avec succes&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">errorFilter</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Message d&#39;erreur: &quot;</span><span class="p">,</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">text</span><span class="p">))</span></div>
+
+
+
+<div class="viewcode-block" id="error_filter">
+<a class="viewcode-back" href="../../api/api_traitement.html#api_traitement.api_functions.error_filter">[docs]</a>
+<span class="k">def</span> <span class="nf">error_filter</span><span class="p">(</span><span class="n">response</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Permet de simplifier l&#39;afficharge des erreurs dans le programme lors de l&#39;insertion des données</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">error</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+    <span class="c1"># print(error[&#39;exception&#39;][&#39;result&#39;][&#39;nodes&#39;])</span>
+
+    <span class="k">def</span> <span class="nf">error_message</span><span class="p">(</span><span class="n">nodes</span><span class="p">):</span>
+        <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;children&#39;</span> <span class="ow">in</span> <span class="n">nodes</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+            <span class="k">return</span> <span class="n">error_message</span><span class="p">(</span><span class="n">nodes</span><span class="p">[</span><span class="s1">&#39;children&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;messages&#39;</span> <span class="ow">in</span> <span class="n">nodes</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+            <span class="n">temp</span> <span class="o">=</span> <span class="n">nodes</span><span class="p">[</span><span class="s1">&#39;messages&#39;</span><span class="p">]</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="n">nodes</span><span class="p">[</span><span class="s1">&#39;datum&#39;</span><span class="p">][</span><span class="s1">&#39;text&#39;</span><span class="p">]</span>
+
+            <span class="k">return</span> <span class="n">format_html</span><span class="p">(</span><span class="s2">&quot;&lt;strong&gt;Texte : &lt;/strong&gt;&quot;</span><span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;  &lt;br&gt;   &lt;strong&gt;Champs erreur: &lt;/strong&gt;&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">temp</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;fieldName&#39;</span><span class="p">])</span> <span class="o">+</span> <span class="s2">&quot; &lt;br&gt;  &lt;strong&gt;Message Erreur: &lt;/strong&gt;&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">temp</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;message&#39;</span><span class="p">]))</span>
+            <span class="c1"># return str(text + &quot; - Champs : &quot; + temp[0][&#39;fieldName&#39;] + &quot; - Erreur : &quot;  + temp[0][&#39;message&#39;])</span>
+
+    <span class="n">all_message</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">if</span> <span class="s1">&#39;messages&#39;</span> <span class="ow">in</span> <span class="n">error</span><span class="p">[</span><span class="s1">&#39;exception&#39;</span><span class="p">][</span><span class="s1">&#39;result&#39;</span><span class="p">][</span><span class="s1">&#39;nodes&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="n">all_message</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">error_message</span><span class="p">(</span><span class="n">error</span><span class="p">[</span><span class="s1">&#39;exception&#39;</span><span class="p">][</span><span class="s1">&#39;result&#39;</span><span class="p">][</span><span class="s1">&#39;nodes&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]))</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">error</span><span class="p">[</span><span class="s1">&#39;exception&#39;</span><span class="p">][</span><span class="s1">&#39;result&#39;</span><span class="p">][</span><span class="s1">&#39;nodes&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;children&#39;</span><span class="p">]:</span>
+            <span class="n">all_message</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">error_message</span><span class="p">(</span><span class="n">val</span><span class="p">))</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="k">pass</span>
+
+    <span class="k">return</span> <span class="n">all_message</span></div>
+
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div id="searchbox"></div></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+
+<script>
+  $(document).ready(function () {
+    const content = $('<div class="alert-danger">ArviZ docs will now be available at <a href="https://python.arviz.org">python.arviz.org</a>!</div>')
+    $('#banner').append(content);
+  })
+</script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2024, Ob7.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.4.7.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

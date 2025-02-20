@@ -1,0 +1,1554 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" data-theme="light">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>api_traitement package &#8212; LB2Observe  documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-codeautolink.css?v=125d5c1c" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=0b5196b5" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=30646c52"></script>
+    <script src="../_static/design-tabs.js?v=36754332"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'api/api_traitement';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="webapps package" href="webapps.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="light">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="LB2Observe  documentation - Home"/>
+    <img src="" class="logo__image only-dark pst-js-only" alt="LB2Observe  documentation - Home"/>
+  
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../getting_started/index.html">
+    Getting Started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../user_guide/index.html">
+    User Guide
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="index.html">
+    API
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-external" href="https://ob7-ird.science">
+    The Ob7's team
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/OB7-IRD/observe-logbooks-reader-webapp" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../getting_started/index.html">
+    Getting Started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../user_guide/index.html">
+    User Guide
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="index.html">
+    API
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-external" href="https://ob7-ird.science">
+    The Ob7's team
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/OB7-IRD/observe-logbooks-reader-webapp" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="palangre_syc.html">palangre_syc package</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="simple">
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="webapps.html">webapps package</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="simple">
+</ul>
+</details></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">api_traitement package</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">API Reference</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">api_traitement package</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="api-traitement-package">
+<h1>api_traitement package<a class="headerlink" href="#api-traitement-package" title="Link to this heading">#</a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading">#</a></h2>
+</section>
+<section id="module-api_traitement.apiFunctions">
+<span id="api-traitement-apifunctions-module"></span><h2>api_traitement.apiFunctions module<a class="headerlink" href="#module-api_traitement.apiFunctions" title="Link to this heading">#</a></h2>
+<dl class="py exception">
+<dt class="sig sig-object py" id="api_traitement.apiFunctions.TransmitException">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">api_traitement.apiFunctions.</span></span><span class="sig-name descname"><span class="pre">TransmitException</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/api_traitement/apiFunctions.html#TransmitException"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api_traitement.apiFunctions.TransmitException" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>Classe qui permet de gerer les exceptions sur les activités sur objet</p>
+<p>Args:</p>
+<p>Returns:</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="api_traitement.apiFunctions.build_trip">
+<span class="sig-prename descclassname"><span class="pre">api_traitement.apiFunctions.</span></span><span class="sig-name descname"><span class="pre">build_trip</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">allData</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">info_bat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_log</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">oce</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ob</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/api_traitement/apiFunctions.html#build_trip"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api_traitement.apiFunctions.build_trip" title="Link to this definition">#</a></dt>
+<dd><p>Fonction qui permet de contruire le gros fragment json de la marée et retourner des messages par rapport à la construction</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>allData</strong> (<em>json</em>) – données de references</p></li>
+<li><p><strong>info_bat</strong> (<em>json</em>) – info sur le bateau date de depart/arrivée du port de depart/arrivé</p></li>
+<li><p><strong>data_log</strong> (<em>dataFrame</em>) – les données du logbook</p></li>
+<li><p><strong>oce</strong> (<em>list</em>) – la liste des océans</p></li>
+<li><p><strong>prg</strong> (<em>list</em>) – pour la liste des programmes</p></li>
+<li><p><strong>ob</strong> (<em>json</em>) – info sur le capitaine et homeid du bateau</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>allMessages, js_contents</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="api_traitement.apiFunctions.build_trip_v23">
+<span class="sig-prename descclassname"><span class="pre">api_traitement.apiFunctions.</span></span><span class="sig-name descname"><span class="pre">build_trip_v23</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">allData</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">info_bat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_log</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">oce</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prg</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/api_traitement/apiFunctions.html#build_trip_v23"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api_traitement.apiFunctions.build_trip_v23" title="Link to this definition">#</a></dt>
+<dd><p>Fonction qui permet de contruire le gros fragment json de la marée et retourner des messages par rapport à la construction</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>allData</strong> (<em>json</em>) – données de references</p></li>
+<li><p><strong>info_bat</strong> (<em>json</em>) – info sur le bateau date de depart/arrivée du port de depart/arrivé et info sur le capitaine et homeid du bateau</p></li>
+<li><p><strong>data_log</strong> (<em>dataFrame</em>) – les données du logbook</p></li>
+<li><p><strong>oce</strong> (<em>list</em>) – la liste des océans</p></li>
+<li><p><strong>prg</strong> (<em>list</em>) – pour la liste des programmes</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>allMessages, js_contents</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="api_traitement.apiFunctions.cap_obs_sea">
+<span class="sig-prename descclassname"><span class="pre">api_traitement.apiFunctions.</span></span><span class="sig-name descname"><span class="pre">cap_obs_sea</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">allData</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ob</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/api_traitement/apiFunctions.html#cap_obs_sea"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api_traitement.apiFunctions.cap_obs_sea" title="Link to this definition">#</a></dt>
+<dd><p>Fonction qui permet d’appliquer des traitement sur le nom et prenoms du capitaine pour retrouver son topiaId</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>allData</strong> (<em>json</em>) – données de references</p></li>
+<li><p><strong>ob</strong> (<em>str</em>) – les informations sur le capitaine et le mar_homeid</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>id (str)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="api_traitement.apiFunctions.errorFilter">
+<span class="sig-prename descclassname"><span class="pre">api_traitement.apiFunctions.</span></span><span class="sig-name descname"><span class="pre">errorFilter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">response</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/api_traitement/apiFunctions.html#errorFilter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api_traitement.apiFunctions.errorFilter" title="Link to this definition">#</a></dt>
+<dd><p>Permet de simplifier l’afficharge des erreurs dans le programme lors de l’insertion des données</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="api_traitement.apiFunctions.floatingObjectPart">
+<span class="sig-prename descclassname"><span class="pre">api_traitement.apiFunctions.</span></span><span class="sig-name descname"><span class="pre">floatingObjectPart</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">chaine</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dico</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">perte_act</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/api_traitement/apiFunctions.html#floatingObjectPart"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api_traitement.apiFunctions.floatingObjectPart" title="Link to this definition">#</a></dt>
+<dd><p>Fonction qui permet de retourner un ou deux topiaId en fonction du type d’objet flottant</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>dataFrame</em>) – les données du logbook en cours d’insertion</p></li>
+<li><p><strong>index</strong> (<em>str</em>) – nom de la colonne du dataFrame faisant reference aux objets flottants</p></li>
+<li><p><strong>dico</strong> (<em>json</em>) – dictionnaire de données pour les objets flottants</p></li>
+<li><p><strong>perte_act</strong> (<em>bool</em>) – gestion des pertes</p></li>
+<li><p><strong>chaine</strong> (<em>str</em>) – objet flottant à rechercher</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>id (str), id (str)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="api_traitement.apiFunctions.fpaZone_id">
+<span class="sig-prename descclassname"><span class="pre">api_traitement.apiFunctions.</span></span><span class="sig-name descname"><span class="pre">fpaZone_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">chaine</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tableau</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allData</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/api_traitement/apiFunctions.html#fpaZone_id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api_traitement.apiFunctions.fpaZone_id" title="Link to this definition">#</a></dt>
+<dd><p>Fonction qui permet de retourner le topiaId et un commentaire lorsqu’on ne retrouve pas la zone fpa passée en paramettre</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>allData</strong> (<em>json</em>) – données de references</p></li>
+<li><p><strong>tableau</strong> (<em>list</em>) – liste de données fpa zone</p></li>
+<li><p><strong>chaine</strong> (<em>str</em>) – zone à rechercher</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>id (str), ‘’ (str) ou chaine (str)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="api_traitement.apiFunctions.getAll">
+<span class="sig-prename descclassname"><span class="pre">api_traitement.apiFunctions.</span></span><span class="sig-name descname"><span class="pre">getAll</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">allData</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">moduleName</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'dictionnaire'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/api_traitement/apiFunctions.html#getAll"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api_traitement.apiFunctions.getAll" title="Link to this definition">#</a></dt>
+<dd><p>Permet de retourner un dictionnaire ou un tableau</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>allData</strong> (<em>json</em>) – données de references</p></li>
+<li><p><strong>moduleName</strong> (<em>str</em>) – le module de la base de donnée</p></li>
+<li><p><strong>type_data</strong> (<em>str</em>) – “dictionnaire” ou “tableau”</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>tab (list)
+dico (dict)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="api_traitement.apiFunctions.getId">
+<span class="sig-prename descclassname"><span class="pre">api_traitement.apiFunctions.</span></span><span class="sig-name descname"><span class="pre">getId</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">allData</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">moduleName</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">argment</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nbArg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domaine</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/api_traitement/apiFunctions.html#getId"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api_traitement.apiFunctions.getId" title="Link to this definition">#</a></dt>
+<dd><p>Fonction qui retourne l’ID d’un module en fonction des arguments donnés</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>allData</strong> (<em>json</em>) – données de references</p></li>
+<li><p><strong>moduleName</strong> (<em>str</em>) – le module de la base de donnée</p></li>
+<li><p><strong>argment</strong> (<em>str</em>) – les arguments de la requete sur le module</p></li>
+<li><p><strong>domaine</strong> (<em>str</em>) – “seine” ou “longline” dans le cas ou nous voulons recuperer les id de VesselActivity</p></li>
+<li><p><strong>nbArg</strong> (<em>bool</em>) – permet de signifier le nombre d’argument dont on aura besoin pour trouver l’ID
+par defaut quand c’est False nous avons 1 argument en paramentre
+si c’est True, nous avons 2 arguments en parametre</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>topiad (str)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="api_traitement.apiFunctions.getSome">
+<span class="sig-prename descclassname"><span class="pre">api_traitement.apiFunctions.</span></span><span class="sig-name descname"><span class="pre">getSome</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">allData</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">moduleName</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">argment</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/api_traitement/apiFunctions.html#getSome"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api_traitement.apiFunctions.getSome" title="Link to this definition">#</a></dt>
+<dd><p>Permet de retouner un dictionnaire de donnée du module dans une liste (tableau)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>allData</strong> (<em>json</em>) – données de references</p></li>
+<li><p><strong>moduleName</strong> (<em>str</em>) – le module de la base de donnée</p></li>
+<li><p><strong>argment</strong> (<em>str</em>) – les arguments de la requete sur le module</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>(list)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="api_traitement.apiFunctions.get_lat_long">
+<span class="sig-prename descclassname"><span class="pre">api_traitement.apiFunctions.</span></span><span class="sig-name descname"><span class="pre">get_lat_long</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">allData</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">harbour</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/api_traitement/apiFunctions.html#get_lat_long"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api_traitement.apiFunctions.get_lat_long" title="Link to this definition">#</a></dt>
+<dd><p>Fonction qui permet de retourner les coordonnées de longitude et de latitude du port de depart ou soit d’arrivé</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>allData</strong> (<em>json</em>) – données de references</p></li>
+<li><p><strong>harbour</strong> (<em>str</em>) – nom du port</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>(float), (float)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="api_traitement.apiFunctions.get_wind_id_interval">
+<span class="sig-prename descclassname"><span class="pre">api_traitement.apiFunctions.</span></span><span class="sig-name descname"><span class="pre">get_wind_id_interval</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">allData</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">moduleName</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">windSpeed</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/api_traitement/apiFunctions.html#get_wind_id_interval"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api_traitement.apiFunctions.get_wind_id_interval" title="Link to this definition">#</a></dt>
+<dd><p>Fonction qui permet de retourner le topiaId de l’interval de vitesse du vent</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>allData</strong> (<em>json</em>) – données de references</p></li>
+<li><p><strong>moduleName</strong> (<em>str</em>) – le module de la base de donnée</p></li>
+<li><p><strong>windSpeed</strong> (<em>str</em>) – vitesse du vent</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>id (str)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="api_traitement.apiFunctions.lat_long">
+<span class="sig-prename descclassname"><span class="pre">api_traitement.apiFunctions.</span></span><span class="sig-name descname"><span class="pre">lat_long</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lat1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lat2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lat3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">long1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">long2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">long3</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/api_traitement/apiFunctions.html#lat_long"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api_traitement.apiFunctions.lat_long" title="Link to this definition">#</a></dt>
+<dd><p>Fonction qui permet de calculer la longitude et la latitude pour l’inserer facilement dans la BD</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>lat1</strong> (<em>str</em>) – position geographique</p></li>
+<li><p><strong>lat2</strong> (<em>str</em>) – position geographique</p></li>
+<li><p><strong>lat3</strong> (<em>str</em>) – position geographique</p></li>
+<li><p><strong>long1</strong> (<em>str</em>) – position geographique</p></li>
+<li><p><strong>long2</strong> (<em>str</em>) – position geographique</p></li>
+<li><p><strong>long3</strong> (<em>str</em>) – position geographique</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>(float), (float), (bool)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="api_traitement.apiFunctions.obj_deja_deploy">
+<span class="sig-prename descclassname"><span class="pre">api_traitement.apiFunctions.</span></span><span class="sig-name descname"><span class="pre">obj_deja_deploy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">js_Transmitts</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dico_trams_oper</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dico_trams</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dico_trams_owner</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allData</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">operation</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/api_traitement/apiFunctions.html#obj_deja_deploy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api_traitement.apiFunctions.obj_deja_deploy" title="Link to this definition">#</a></dt>
+<dd><p>Fonction qui permet de construire les operations sur les objets et retourne l’ensemble des operations sur balise pour une route</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dico_trams</strong> (<em>json</em>) – dictionnaire de données pour les balises</p></li>
+<li><p><strong>dico_trams_oper</strong> (<em>json</em>) – dictionnaire de données pour les operations sur balises</p></li>
+<li><p><strong>dico_trams_owner</strong> (<em>json</em>) – dictionnaire de données pour les  sur balises</p></li>
+<li><p><strong>allData</strong> (<em>json</em>) – données de references</p></li>
+<li><p><strong>js_Transmitts</strong> (<em>json</em>) – structure json pour un enregistrement sur les balises</p></li>
+<li><p><strong>data</strong> (<em>dataFrame</em>) – les données du logbook en cours d’insertion</p></li>
+<li><p><strong>operation</strong> (<em>str</em>) – permet de connaitre le type d’operation (visite, transfert, mise à l’eau…)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>liste de structure de données Json</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tab2_Transmitt (liste)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="api_traitement.apiFunctions.obj_deja_deploy_v23">
+<span class="sig-prename descclassname"><span class="pre">api_traitement.apiFunctions.</span></span><span class="sig-name descname"><span class="pre">obj_deja_deploy_v23</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_ob</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">js_Transmitts</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dico_trams_oper</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dico_trams</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dico_trams_owner</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allData</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">operation</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/api_traitement/apiFunctions.html#obj_deja_deploy_v23"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api_traitement.apiFunctions.obj_deja_deploy_v23" title="Link to this definition">#</a></dt>
+<dd><p>Fonction qui permet de construire les operations sur les objets et retourne l’ensemble des operations sur balise pour une route</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dico_trams</strong> (<em>json</em>) – dictionnaire de données pour les balises</p></li>
+<li><p><strong>dico_trams_oper</strong> (<em>json</em>) – dictionnaire de données pour les operations sur balises</p></li>
+<li><p><strong>dico_trams_owner</strong> (<em>json</em>) – dictionnaire de données pour les  sur balises</p></li>
+<li><p><strong>allData</strong> (<em>json</em>) – données de references</p></li>
+<li><p><strong>js_Transmitts</strong> (<em>json</em>) – structure json pour un enregistrement sur les balises</p></li>
+<li><p><strong>data_ob</strong> (<em>dataFrame</em>) – les données du logbook sur operation sur objet</p></li>
+<li><p><strong>operation</strong> (<em>str</em>) – permet de connaitre le type d’operation (visite, transfert, mise à l’eau…)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>liste de structure de données Json</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tab2_Transmitt (liste)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="api_traitement.apiFunctions.obj_ob_part_body_">
+<span class="sig-prename descclassname"><span class="pre">api_traitement.apiFunctions.</span></span><span class="sig-name descname"><span class="pre">obj_ob_part_body_</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">temp_float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tab1_Float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">js_Floats</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bool_tuple</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">('false',</span> <span class="pre">'false')</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/api_traitement/apiFunctions.html#obj_ob_part_body_"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api_traitement.apiFunctions.obj_ob_part_body_" title="Link to this definition">#</a></dt>
+<dd><p>Fonction qui permet de traiter les materiels</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tab1_Float</strong> (<em>list</em>) – liste de données pour les materiels</p></li>
+<li><p><strong>js_Floats</strong> (<em>json</em>) – structure json pour un enregistrement sur les materiels</p></li>
+</ul>
+</dd>
+</dl>
+<p>Returns:</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="api_traitement.apiFunctions.read_data">
+<span class="sig-prename descclassname"><span class="pre">api_traitement.apiFunctions.</span></span><span class="sig-name descname"><span class="pre">read_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type_doc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'v21'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/api_traitement/apiFunctions.html#read_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api_traitement.apiFunctions.read_data" title="Link to this definition">#</a></dt>
+<dd><p>Fonction qui permet de faire appel à la fonction de traitement du logbook</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file</strong> (<em>str</em>) – fichier logbook à traiter</p></li>
+<li><p><strong>type_doc</strong> (<em>str</em>) – logbook “v21” ou “v23”</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>info_bat (json), data_bat (dataframe), obs (json), message (str)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="api_traitement.apiFunctions.traiLogbook">
+<span class="sig-prename descclassname"><span class="pre">api_traitement.apiFunctions.</span></span><span class="sig-name descname"><span class="pre">traiLogbook</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">logB</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/api_traitement/apiFunctions.html#traiLogbook"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api_traitement.apiFunctions.traiLogbook" title="Link to this definition">#</a></dt>
+<dd><dl class="simple">
+<dt>Fonction qui permet d’extraire les informations d’un logbook SENNE dans ces variables</dt><dd><p>–&gt; info_bat : contient les informations sur le navire, le port (D/A) et heure (D/A)
+–&gt; observ : contient les informations sur le capitaine et le mar_homeid
+–&gt; df_data : contient les données du logbook</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>logB</strong> (<em>str</em>) – fichier logbook à traiter</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>info_bat (json), df_data (dataframe), observ (json), (str)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="api_traitement.apiFunctions.traiLogbook_v23">
+<span class="sig-prename descclassname"><span class="pre">api_traitement.apiFunctions.</span></span><span class="sig-name descname"><span class="pre">traiLogbook_v23</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">logB</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/api_traitement/apiFunctions.html#traiLogbook_v23"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api_traitement.apiFunctions.traiLogbook_v23" title="Link to this definition">#</a></dt>
+<dd><dl>
+<dt>Fonction qui permet d’extraire les informations d’un logbook SENNE dans ces variables</dt><dd><dl class="simple">
+<dt>–&gt; info_bat<span class="classifier">contient les informations sur le navire, le port (D/A) et heure (D/A)</span></dt><dd><p>et contient les informations sur le capitaine et le mar_homeid</p>
+</dd>
+</dl>
+<p>–&gt; df_data : contient les données du logbook</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>logB</strong> (<em>str</em>) – fichier logbook à traiter</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>info_bat (json), df_data (dataframe), (str)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="api_traitement.apiFunctions.transmittingBType">
+<span class="sig-prename descclassname"><span class="pre">api_traitement.apiFunctions.</span></span><span class="sig-name descname"><span class="pre">transmittingBType</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">chaine</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dico</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/api_traitement/apiFunctions.html#transmittingBType"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api_traitement.apiFunctions.transmittingBType" title="Link to this definition">#</a></dt>
+<dd><p>Fonction qui permet de retourner le topiaId du type de balise et un commentaire lorsqu’on ne retrouve pas la balise passée en paramettre</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dico</strong> (<em>json</em>) – dictionnaire de données pour les balises</p></li>
+<li><p><strong>chaine</strong> (<em>str</em>) – balise à rechercher</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>id (str), ‘’ (str) ou commentaire (str)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="api_traitement.apiFunctions.weightCategory">
+<span class="sig-prename descclassname"><span class="pre">api_traitement.apiFunctions.</span></span><span class="sig-name descname"><span class="pre">weightCategory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">allData</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chaine</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">specise</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/api_traitement/apiFunctions.html#weightCategory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api_traitement.apiFunctions.weightCategory" title="Link to this definition">#</a></dt>
+<dd><p>Fonction qui permet de retourner le topiaId de la categorie d’especes trouvées</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>allData</strong> (<em>json</em>) – données de references</p></li>
+<li><p><strong>chaine</strong> (<em>str</em>) – chaine contenant la categorie</p></li>
+<li><p><strong>specise</strong> (<em>str</em>) – type d’especes</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>id (str)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-api_traitement.api_functions">
+<span id="api-traitement-api-functions-module"></span><h2>api_traitement.api_functions module<a class="headerlink" href="#module-api_traitement.api_functions" title="Link to this heading">#</a></h2>
+<p># Fonctions relatives à la connexion et requêtes faites à l’api
+#
+#######################################################</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="api_traitement.api_functions.check_trip">
+<span class="sig-prename descclassname"><span class="pre">api_traitement.api_functions.</span></span><span class="sig-name descname"><span class="pre">check_trip</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">token</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">content</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">base_url</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/api_traitement/api_functions.html#check_trip"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api_traitement.api_functions.check_trip" title="Link to this definition">#</a></dt>
+<dd><p>Fonction qui permet de verifier si la marée a inserer existe déjà dans la base de donnée</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>token</strong> (<em>str</em>) – token</p></li>
+<li><p><strong>base_url</strong> (<em>str</em>) – url de base de l’API</p></li>
+<li><p><strong>content</strong> (<em>json</em>) – fragment json de la donnée logbook</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>topid de la marée si elle existe
+<a href="#id1"><span class="problematic" id="id2">ms_</span></a> (bool): Utilisée pour verifier le statut de la fonction (True == id trouvé)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a href="#id3"><span class="problematic" id="id4">id_</span></a> (str)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="api_traitement.api_functions.del_trip">
+<span class="sig-prename descclassname"><span class="pre">api_traitement.api_functions.</span></span><span class="sig-name descname"><span class="pre">del_trip</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">base_url</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">token</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">content</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/api_traitement/api_functions.html#del_trip"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api_traitement.api_functions.del_trip" title="Link to this definition">#</a></dt>
+<dd><p>Fonction qui permet de verifier si la marée a inserer existe déjà dans la base de donnée</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>token</strong> (<em>str</em>) – token</p></li>
+<li><p><strong>content</strong> (<em>json</em>) – fragment json de la donnée logbook</p></li>
+</ul>
+</dd>
+</dl>
+<p>Returns: (json)</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="api_traitement.api_functions.error_filter">
+<span class="sig-prename descclassname"><span class="pre">api_traitement.api_functions.</span></span><span class="sig-name descname"><span class="pre">error_filter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">response</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/api_traitement/api_functions.html#error_filter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api_traitement.api_functions.error_filter" title="Link to this definition">#</a></dt>
+<dd><p>Permet de simplifier l’afficharge des erreurs dans le programme lors de l’insertion des données</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="api_traitement.api_functions.getId_Data">
+<span class="sig-prename descclassname"><span class="pre">api_traitement.api_functions.</span></span><span class="sig-name descname"><span class="pre">getId_Data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">token</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">base_url</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">moduleName</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">argment</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">route</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/api_traitement/api_functions.html#getId_Data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api_traitement.api_functions.getId_Data" title="Link to this definition">#</a></dt>
+<dd><p>Fonction qui permet de retourner un id en fonction du module et de la route envoyé</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>token</strong> (<em>str</em>) – token</p></li>
+<li><p><strong>base_url</strong> (<em>str</em>) – url de base de l’API</p></li>
+<li><p><strong>moduleName</strong> (<em>str</em>) – le module de la base de donnée</p></li>
+<li><p><strong>argment</strong> (<em>str</em>) – les arguments de la requete sur le module</p></li>
+<li><p><strong>route</strong> (<em>str</em>) – chemin de l’API de la requete en fonction de la structure de la base de données.</p></li>
+<li><p><strong>exemple</strong> – moduleName = “Trip”
+route = “/data/ps/common/”
+argment = “startDate=” + … + “&amp;filters.endDate=” + … + “&amp;filters.vessel_id=” + …
+OU
+argment = “startDate=” + …</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>id (str)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="api_traitement.api_functions.get_all_referential_data">
+<span class="sig-prename descclassname"><span class="pre">api_traitement.api_functions.</span></span><span class="sig-name descname"><span class="pre">get_all_referential_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">token</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">module</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">base_url</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/api_traitement/api_functions.html#get_all_referential_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api_traitement.api_functions.get_all_referential_data" title="Link to this definition">#</a></dt>
+<dd><p>Fonction qui récupère les données de références sur le webservice</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>token</strong></p></li>
+<li><p><strong>module</strong> – ps ou ll</p></li>
+<li><p><strong>base_url</strong> – url de connexion - ‘<a class="reference external" href="https://observe.ob7.ird.fr/observeweb/api/public">https://observe.ob7.ird.fr/observeweb/api/public</a>’</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="api_traitement.api_functions.get_one_from_ws">
+<span class="sig-prename descclassname"><span class="pre">api_traitement.api_functions.</span></span><span class="sig-name descname"><span class="pre">get_one_from_ws</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">token</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">base_url</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">route</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">topiaid</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/api_traitement/api_functions.html#get_one_from_ws"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api_traitement.api_functions.get_one_from_ws" title="Link to this definition">#</a></dt>
+<dd><p>Fonction qui interroge le web service (ws) pour récupérer toutes les données relatives à une route et un topiaid</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>token</strong> (<em>str</em>) – token</p></li>
+<li><p><strong>base_url</strong> – chemin d’accès à la connexion (’<a class="reference external" href="https://observe.ob7.ird.fr/observeweb/api/public">https://observe.ob7.ird.fr/observeweb/api/public</a>’)</p></li>
+<li><p><strong>route</strong> – chemin d’accès plus précis (par ex : ‘/data/ll/common/Trip/’)</p></li>
+<li><p><strong>topiaid</strong> – topiaid avec des ‘-’ à la place des ‘#’</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>informations relatives au topiaid fourni</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>file.json</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="api_traitement.api_functions.get_token">
+<span class="sig-prename descclassname"><span class="pre">api_traitement.api_functions.</span></span><span class="sig-name descname"><span class="pre">get_token</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">base_url</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/api_traitement/api_functions.html#get_token"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api_traitement.api_functions.get_token" title="Link to this definition">#</a></dt>
+<dd><p>Fonction qui permet d’avoir un token</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>base_url</strong> (<em>str</em>) – url de base de l’API</p></li>
+<li><p><strong>data</strong> (<em>json</em>) – <p>format de données json exemple ci-dessous
+exemple:</p>
+<blockquote>
+<div><dl class="simple">
+<dt>data = {</dt><dd><p>“config.login”: “username”,
+“config.password”: “password”,
+“config.databaseName”: “database”,
+“referentialLocale”: “fr_FR”</p>
+</dd>
+</dl>
+<p>}</p>
+</div></blockquote>
+</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>token (str)
+:rtype: object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="api_traitement.api_functions.is_valid">
+<span class="sig-prename descclassname"><span class="pre">api_traitement.api_functions.</span></span><span class="sig-name descname"><span class="pre">is_valid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">base_url</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">token</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/api_traitement/api_functions.html#is_valid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api_traitement.api_functions.is_valid" title="Link to this definition">#</a></dt>
+<dd><p>Fonction booléenne qui test si le token est encore valide
+:param token:
+:type token: str</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="api_traitement.api_functions.load_data">
+<span class="sig-prename descclassname"><span class="pre">api_traitement.api_functions.</span></span><span class="sig-name descname"><span class="pre">load_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">token</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">base_url</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">forceUpdate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/api_traitement/api_functions.html#load_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api_traitement.api_functions.load_data" title="Link to this definition">#</a></dt>
+<dd><dl class="simple">
+<dt>Fonction qui recupere toutes les données de refences au format JSON de la base de données et stocke ces données</dt><dd><p>dans un fichier en local.
+Elle recupere les données de references une fois par jour et elle est utilisé pour faire
+mise à jour des données de references sur le site</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>token</strong> (<em>str</em>) – token recuperé</p></li>
+<li><p><strong>base_url</strong> (<em>str</em>) – url de base de l’API</p></li>
+<li><p><strong>forceUpdate</strong> (<em>bool</em>) – True ou False =&gt; utilisée dans le cas de la mise à jour des données de references forcées par l’utilisateur</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>allData (json)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="api_traitement.api_functions.reload_token">
+<span class="sig-prename descclassname"><span class="pre">api_traitement.api_functions.</span></span><span class="sig-name descname"><span class="pre">reload_token</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">username</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">password</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">base_url</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">database</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/api_traitement/api_functions.html#reload_token"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api_traitement.api_functions.reload_token" title="Link to this definition">#</a></dt>
+<dd><p>Fonction qui recharge un token</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>username</strong> – identifiant de connexion</p></li>
+<li><p><strong>password</strong> – mot de passe de connexion</p></li>
+<li><p><strong>base_url</strong> – l’url de base du profile</p></li>
+<li><p><strong>database</strong> – la base de données pour la connexion</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>token</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="api_traitement.api_functions.send_trip">
+<span class="sig-prename descclassname"><span class="pre">api_traitement.api_functions.</span></span><span class="sig-name descname"><span class="pre">send_trip</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">token</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">base_url</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">route</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/api_traitement/api_functions.html#send_trip"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api_traitement.api_functions.send_trip" title="Link to this definition">#</a></dt>
+<dd><p>Fonction qui ajoute un trip (marée) dans la base</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>token</strong> (<em>str</em>) – token</p></li>
+<li><p><strong>data</strong> (<em>json</em>) – json file (trip) que l’on envoie dans la base</p></li>
+<li><p><strong>base_url</strong> (<em>str</em>) – ‘<a class="reference external" href="https://observe.ob7.ird.fr/observeweb/api/public">https://observe.ob7.ird.fr/observeweb/api/public</a>’ base de connexion à l’api</p></li>
+<li><p><strong>route</strong> (<em>str</em>) – ‘/data/ps/common/Trip’ ou ‘/data/ll/common/Trip’</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>le json inséré dans le temporary_files
+text message: logbook bien inséré, ou bien un json d’erreur</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="api_traitement.api_functions.trip_for_prog_vessel">
+<span class="sig-prename descclassname"><span class="pre">api_traitement.api_functions.</span></span><span class="sig-name descname"><span class="pre">trip_for_prog_vessel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">token</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">base_url</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">route</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vessel_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">programme_topiaid</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/api_traitement/api_functions.html#trip_for_prog_vessel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api_traitement.api_functions.trip_for_prog_vessel" title="Link to this definition">#</a></dt>
+<dd><p>Pour un navire et un programme donnée, renvoie le topiaid du dernier trip saisi</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>token</strong></p></li>
+<li><p><strong>base_url</strong> – ‘<a class="reference external" href="https://observe.ob7.ird.fr/observeweb/api/public">https://observe.ob7.ird.fr/observeweb/api/public</a>’</p></li>
+<li><p><strong>vessel_id</strong> – topiaid du navire (avec les ‘-‘)</p></li>
+<li><p><strong>programme_topiaid</strong> – topiaid du programme choisi (avec les ‘-‘)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>trip topiaid</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="api_traitement.api_functions.update_trip">
+<span class="sig-prename descclassname"><span class="pre">api_traitement.api_functions.</span></span><span class="sig-name descname"><span class="pre">update_trip</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">token</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">base_url</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">topiaid</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/api_traitement/api_functions.html#update_trip"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api_traitement.api_functions.update_trip" title="Link to this definition">#</a></dt>
+<dd><p>Fonction qui met à jour un trip dans la base de données, donc supprime le trip existant pour insérer le nouveau data_json sous le même topiaid</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>token</strong> (<em>str</em>) – token</p></li>
+<li><p><strong>data</strong> (<em>json</em>) – json file qu’on envoie dans la base</p></li>
+<li><p><strong>base_url</strong> (<em>str</em>) – ‘<a class="reference external" href="https://observe.ob7.ird.fr/observeweb/api/public">https://observe.ob7.ird.fr/observeweb/api/public</a>’ base de connexion à l’api</p></li>
+<li><p><strong>update</strong> (<em>topiaid du trip que l'on veut</em>)</p></li>
+</ul>
+</dd>
+</dl>
+<p>Returns:</p>
+</dd></dl>
+
+</section>
+<section id="module-api_traitement.common_functions">
+<span id="api-traitement-common-functions-module"></span><h2>api_traitement.common_functions module<a class="headerlink" href="#module-api_traitement.common_functions" title="Link to this heading">#</a></h2>
+<p>Module de fonctions communes et générales à l’application indépendamment de la pêcherie.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="api_traitement.common_functions.convert_to_int">
+<span class="sig-prename descclassname"><span class="pre">api_traitement.common_functions.</span></span><span class="sig-name descname"><span class="pre">convert_to_int</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/api_traitement/common_functions.html#convert_to_int"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api_traitement.common_functions.convert_to_int" title="Link to this definition">#</a></dt>
+<dd><p>Vérifie si la valeur est numérique ou peut être transformée en numérique (integer).</p>
+<p>Args:
+value: L’élément à vérifier.</p>
+<p>Returns:
+bool: la valeur si elle est de type numérique et un message sinon.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="api_traitement.common_functions.convert_to_time_or_text">
+<span class="sig-prename descclassname"><span class="pre">api_traitement.common_functions.</span></span><span class="sig-name descname"><span class="pre">convert_to_time_or_text</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/api_traitement/common_functions.html#convert_to_time_or_text"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api_traitement.common_functions.convert_to_time_or_text" title="Link to this definition">#</a></dt>
+<dd><p>Fonction qui converti la cellule en time si elle est au format type time ou date dans le excel
+et qui laisse au format texte (cruising, in port etc) si la cellule est au format texte</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="api_traitement.common_functions.del_empty_col">
+<span class="sig-prename descclassname"><span class="pre">api_traitement.common_functions.</span></span><span class="sig-name descname"><span class="pre">del_empty_col</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataframe</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/api_traitement/common_functions.html#del_empty_col"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api_traitement.common_functions.del_empty_col" title="Link to this definition">#</a></dt>
+<dd><p>Fonction qui supprime la colonne si elle ne contient pas d’information</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>dataframe</strong> – avec des potentielles colonnes vides (cellules mergées)</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>uniquement avec des éléments</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dataframe</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="api_traitement.common_functions.dms_to_decimal">
+<span class="sig-prename descclassname"><span class="pre">api_traitement.common_functions.</span></span><span class="sig-name descname"><span class="pre">dms_to_decimal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">degrees</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">minutes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">direction</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/api_traitement/common_functions.html#dms_to_decimal"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api_traitement.common_functions.dms_to_decimal" title="Link to this definition">#</a></dt>
+<dd><p>Transforme des degrés minutes secondes en décimal</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>degrees</strong> (<em>int</em><em>)</em><em>, </em><em>minutes</em><em> (</em><em>int</em>) – value</p></li>
+<li><p><strong>direction</strong> (<em>str</em>) – N S E W</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>value</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="api_traitement.common_functions.from_topiaid_to_value">
+<span class="sig-prename descclassname"><span class="pre">api_traitement.common_functions.</span></span><span class="sig-name descname"><span class="pre">from_topiaid_to_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">topiaid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lookingfor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_output</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allData</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domaine</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/api_traitement/common_functions.html#from_topiaid_to_value"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api_traitement.common_functions.from_topiaid_to_value" title="Link to this definition">#</a></dt>
+<dd><p>Fonction générale qui retourne le label output pour un topiad donné
+dans la base common ou longliner</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>topiad</strong></p></li>
+<li><p><strong>lookingfor</strong> – catégorie issu du WS dans laquelle on veut chercher notre topiaid</p></li>
+<li><p><strong>label_output</strong> – ce qu’on veut présenter (label, nom, espèce …)</p></li>
+<li><p><strong>nécessaire</strong> (<em>domaine si</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>nom souhaité associé au topotiad</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="api_traitement.common_functions.getAll">
+<span class="sig-prename descclassname"><span class="pre">api_traitement.common_functions.</span></span><span class="sig-name descname"><span class="pre">getAll</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">allData</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">moduleName</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'dictionnaire'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/api_traitement/common_functions.html#getAll"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api_traitement.common_functions.getAll" title="Link to this definition">#</a></dt>
+<dd><p>Permet de retourner un dictionnaire ou un tableau</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>allData</strong> (<em>json</em>) – données de references</p></li>
+<li><p><strong>moduleName</strong> (<em>str</em>) – le module de la base de donnée</p></li>
+<li><p><strong>type_data</strong> (<em>str</em>) – “dictionnaire” ou “tableau”</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>tab (list)
+dico (dict)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="api_traitement.common_functions.getId">
+<span class="sig-prename descclassname"><span class="pre">api_traitement.common_functions.</span></span><span class="sig-name descname"><span class="pre">getId</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">allData</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">moduleName</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">argment</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nbArg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domaine</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/api_traitement/common_functions.html#getId"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api_traitement.common_functions.getId" title="Link to this definition">#</a></dt>
+<dd><p>Fonction qui retourne l’ID d’un module en fonction des arguments donnés</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>allData</strong> (<em>json</em>) – données de references</p></li>
+<li><p><strong>moduleName</strong> (<em>str</em>) – le module de la base de donnée</p></li>
+<li><p><strong>argment</strong> (<em>str</em>) – les arguments de la requete sur le module</p></li>
+<li><p><strong>domaine</strong> (<em>str</em>) – “seine” ou “longline” dans le cas ou nous voulons recuperer les id de VesselActivity</p></li>
+<li><p><strong>nbArg</strong> (<em>bool</em>) – permet de signifier le nombre d’argument dont on aura besoin pour trouver l’ID
+par defaut quand c’est False nous avons 1 argument en paramentre
+si c’est True, nous avons 2 arguments en parametre</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>topiad (str)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="api_traitement.common_functions.getSome">
+<span class="sig-prename descclassname"><span class="pre">api_traitement.common_functions.</span></span><span class="sig-name descname"><span class="pre">getSome</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">allData</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">moduleName</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">argment</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/api_traitement/common_functions.html#getSome"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api_traitement.common_functions.getSome" title="Link to this definition">#</a></dt>
+<dd><p>Permet de retouner un dictionnaire de donnée du module dans une liste (tableau)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>allData</strong> (<em>json</em>) – données de references</p></li>
+<li><p><strong>moduleName</strong> (<em>str</em>) – le module de la base de donnée</p></li>
+<li><p><strong>argment</strong> (<em>str</em>) – les arguments de la requete sur le module</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>(list)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="api_traitement.common_functions.get_list_harbours">
+<span class="sig-prename descclassname"><span class="pre">api_traitement.common_functions.</span></span><span class="sig-name descname"><span class="pre">get_list_harbours</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">allData</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/api_traitement/common_functions.html#get_list_harbours"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api_traitement.common_functions.get_list_harbours" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>allData</strong></p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>all the enabled ports (topiaId and label2)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="api_traitement.common_functions.load_json_file">
+<span class="sig-prename descclassname"><span class="pre">api_traitement.common_functions.</span></span><span class="sig-name descname"><span class="pre">load_json_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/api_traitement/common_functions.html#load_json_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api_traitement.common_functions.load_json_file" title="Link to this definition">#</a></dt>
+<dd><p>Fonction qui charge un fichier json enregistré dans un dossier donné en argument et le renvoie</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>file_path</strong></p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>fichier json en format dictionnaire</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="api_traitement.common_functions.np_removing_semicolon">
+<span class="sig-prename descclassname"><span class="pre">api_traitement.common_functions.</span></span><span class="sig-name descname"><span class="pre">np_removing_semicolon</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">numpy_table</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_col</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/api_traitement/common_functions.html#np_removing_semicolon"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api_traitement.common_functions.np_removing_semicolon" title="Link to this definition">#</a></dt>
+<dd><p>Fonction qui prend une numpy table et ne retourne que la partie avant les deux point (:) de la colonne demandée</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="api_traitement.common_functions.pretty_print">
+<span class="sig-prename descclassname"><span class="pre">api_traitement.common_functions.</span></span><span class="sig-name descname"><span class="pre">pretty_print</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">json_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'media/temporary_files/created_json_file.json'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'a'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/api_traitement/common_functions.html#pretty_print"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api_traitement.common_functions.pretty_print" title="Link to this definition">#</a></dt>
+<dd><p>Fonction qui affiche le fichier json avec les bonnes indentations un fichier json</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>json_data</strong> (<em>json</em>) – Données json en entrée</p></li>
+<li><p><strong>file</strong> (<em>str</em><em>, </em><em>optional</em>) – Nom de fichier json de sortie “created_json_file.json”.</p></li>
+<li><p><strong>mode</strong> (<em>str</em><em>, </em><em>optional</em>) – Defaults to “a” pour “append” - “w” pour “write”</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="api_traitement.common_functions.read_excel">
+<span class="sig-prename descclassname"><span class="pre">api_traitement.common_functions.</span></span><span class="sig-name descname"><span class="pre">read_excel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">logbook_file_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_page</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/api_traitement/common_functions.html#read_excel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api_traitement.common_functions.read_excel" title="Link to this definition">#</a></dt>
+<dd><p>Fonction qui extrait les informations d’un fichier excel en dataframe</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>logbook_file_path</strong> – lien vers le fichier contenant le logbook</p></li>
+<li><p><strong>num_page</strong> (<em>int</em>) – numéro de page à extraire (1, 2 etc …)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>du fichier excel</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>(dataframe)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="api_traitement.common_functions.remove_if_nul">
+<span class="sig-prename descclassname"><span class="pre">api_traitement.common_functions.</span></span><span class="sig-name descname"><span class="pre">remove_if_nul</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/api_traitement/common_functions.html#remove_if_nul"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api_traitement.common_functions.remove_if_nul" title="Link to this definition">#</a></dt>
+<dd><p>Function that remove the last rows if the value is null in a specific column
+:param df:
+:type df: dataframe
+:param column: column you want to check</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="api_traitement.common_functions.remove_spec_char_from_list">
+<span class="sig-prename descclassname"><span class="pre">api_traitement.common_functions.</span></span><span class="sig-name descname"><span class="pre">remove_spec_char_from_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">char_list</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/api_traitement/common_functions.html#remove_spec_char_from_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api_traitement.common_functions.remove_spec_char_from_list" title="Link to this definition">#</a></dt>
+<dd><p>Fonction qui applique remove_spec_char à chaque élément d’une liste de chaînes</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="api_traitement.common_functions.search_in">
+<span class="sig-prename descclassname"><span class="pre">api_traitement.common_functions.</span></span><span class="sig-name descname"><span class="pre">search_in</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">allData</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">search</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Ocean'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/api_traitement/common_functions.html#search_in"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api_traitement.common_functions.search_in" title="Link to this definition">#</a></dt>
+<dd><p>Fonction permet d’avoir à partir des données de references les oceans ou les programmes</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>allData</strong> (<em>json</em>) – données de references</p></li>
+<li><p><strong>search</strong> (<em>str</em>) – “Ocean” ou “Program”</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>prog_dic (json)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="api_traitement.common_functions.serialize">
+<span class="sig-prename descclassname"><span class="pre">api_traitement.common_functions.</span></span><span class="sig-name descname"><span class="pre">serialize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/api_traitement/common_functions.html#serialize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api_traitement.common_functions.serialize" title="Link to this definition">#</a></dt>
+<dd><p>Serialize obj dans un format json de type date, int ou str.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="api_traitement.common_functions.strip_if_string">
+<span class="sig-prename descclassname"><span class="pre">api_traitement.common_functions.</span></span><span class="sig-name descname"><span class="pre">strip_if_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">element</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/api_traitement/common_functions.html#strip_if_string"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api_traitement.common_functions.strip_if_string" title="Link to this definition">#</a></dt>
+<dd><p>Fonction qui applique la fonction python strip() si l’élement est bien de type texte</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="api_traitement.common_functions.zero_if_empty">
+<span class="sig-prename descclassname"><span class="pre">api_traitement.common_functions.</span></span><span class="sig-name descname"><span class="pre">zero_if_empty</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/api_traitement/common_functions.html#zero_if_empty"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api_traitement.common_functions.zero_if_empty" title="Link to this definition">#</a></dt>
+<dd><p>Remplace par 0 quand la case est vide</p>
+</dd></dl>
+
+</section>
+<section id="module-api_traitement.ps_build_json_fonctions">
+<span id="api-traitement-ps-build-json-fonctions-module"></span><h2>api_traitement.ps_build_json_fonctions module<a class="headerlink" href="#module-api_traitement.ps_build_json_fonctions" title="Link to this heading">#</a></h2>
+<p># Fonctions relatives à la constitution du json pour la seine
+# selon le logbook version 23
+#
+#######################################################</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="api_traitement.ps_build_json_fonctions.js_Float">
+<span class="sig-prename descclassname"><span class="pre">api_traitement.ps_build_json_fonctions.</span></span><span class="sig-name descname"><span class="pre">js_Float</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/api_traitement/ps_build_json_fonctions.html#js_Float"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api_traitement.ps_build_json_fonctions.js_Float" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="api_traitement.ps_build_json_fonctions.js_Transmitt">
+<span class="sig-prename descclassname"><span class="pre">api_traitement.ps_build_json_fonctions.</span></span><span class="sig-name descname"><span class="pre">js_Transmitt</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/api_traitement/ps_build_json_fonctions.html#js_Transmitt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api_traitement.ps_build_json_fonctions.js_Transmitt" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="api_traitement.ps_build_json_fonctions.js_activity">
+<span class="sig-prename descclassname"><span class="pre">api_traitement.ps_build_json_fonctions.</span></span><span class="sig-name descname"><span class="pre">js_activity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tab4_catches</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tab3_floatingObject</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sommeThon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/api_traitement/ps_build_json_fonctions.html#js_activity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api_traitement.ps_build_json_fonctions.js_activity" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="api_traitement.ps_build_json_fonctions.js_activity2">
+<span class="sig-prename descclassname"><span class="pre">api_traitement.ps_build_json_fonctions.</span></span><span class="sig-name descname"><span class="pre">js_activity2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tab4_catches</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tab3_floatingObject</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sommeThon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/api_traitement/ps_build_json_fonctions.html#js_activity2"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api_traitement.ps_build_json_fonctions.js_activity2" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="api_traitement.ps_build_json_fonctions.js_catche">
+<span class="sig-prename descclassname"><span class="pre">api_traitement.ps_build_json_fonctions.</span></span><span class="sig-name descname"><span class="pre">js_catche</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/api_traitement/ps_build_json_fonctions.html#js_catche"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api_traitement.ps_build_json_fonctions.js_catche" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="api_traitement.ps_build_json_fonctions.js_content">
+<span class="sig-prename descclassname"><span class="pre">api_traitement.ps_build_json_fonctions.</span></span><span class="sig-name descname"><span class="pre">js_content</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tab6_routeLogbook</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">oce</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">program</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/api_traitement/ps_build_json_fonctions.html#js_content"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api_traitement.ps_build_json_fonctions.js_content" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="api_traitement.ps_build_json_fonctions.js_floatingObject">
+<span class="sig-prename descclassname"><span class="pre">api_traitement.ps_build_json_fonctions.</span></span><span class="sig-name descname"><span class="pre">js_floatingObject</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tab2_Transmitt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tab1_Float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/api_traitement/ps_build_json_fonctions.html#js_floatingObject"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api_traitement.ps_build_json_fonctions.js_floatingObject" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="api_traitement.ps_build_json_fonctions.js_routeLogbook">
+<span class="sig-prename descclassname"><span class="pre">api_traitement.ps_build_json_fonctions.</span></span><span class="sig-name descname"><span class="pre">js_routeLogbook</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tab5_activity</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/api_traitement/ps_build_json_fonctions.html#js_routeLogbook"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api_traitement.ps_build_json_fonctions.js_routeLogbook" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-api_traitement">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-api_traitement" title="Link to this heading">#</a></h2>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="webapps.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">webapps package</p>
+      </div>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#submodules">Submodules</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-api_traitement.apiFunctions">api_traitement.apiFunctions module</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#api_traitement.apiFunctions.TransmitException"><code class="docutils literal notranslate"><span class="pre">TransmitException</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#api_traitement.apiFunctions.build_trip"><code class="docutils literal notranslate"><span class="pre">build_trip()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#api_traitement.apiFunctions.build_trip_v23"><code class="docutils literal notranslate"><span class="pre">build_trip_v23()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#api_traitement.apiFunctions.cap_obs_sea"><code class="docutils literal notranslate"><span class="pre">cap_obs_sea()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#api_traitement.apiFunctions.errorFilter"><code class="docutils literal notranslate"><span class="pre">errorFilter()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#api_traitement.apiFunctions.floatingObjectPart"><code class="docutils literal notranslate"><span class="pre">floatingObjectPart()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#api_traitement.apiFunctions.fpaZone_id"><code class="docutils literal notranslate"><span class="pre">fpaZone_id()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#api_traitement.apiFunctions.getAll"><code class="docutils literal notranslate"><span class="pre">getAll()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#api_traitement.apiFunctions.getId"><code class="docutils literal notranslate"><span class="pre">getId()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#api_traitement.apiFunctions.getSome"><code class="docutils literal notranslate"><span class="pre">getSome()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#api_traitement.apiFunctions.get_lat_long"><code class="docutils literal notranslate"><span class="pre">get_lat_long()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#api_traitement.apiFunctions.get_wind_id_interval"><code class="docutils literal notranslate"><span class="pre">get_wind_id_interval()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#api_traitement.apiFunctions.lat_long"><code class="docutils literal notranslate"><span class="pre">lat_long()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#api_traitement.apiFunctions.obj_deja_deploy"><code class="docutils literal notranslate"><span class="pre">obj_deja_deploy()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#api_traitement.apiFunctions.obj_deja_deploy_v23"><code class="docutils literal notranslate"><span class="pre">obj_deja_deploy_v23()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#api_traitement.apiFunctions.obj_ob_part_body_"><code class="docutils literal notranslate"><span class="pre">obj_ob_part_body_()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#api_traitement.apiFunctions.read_data"><code class="docutils literal notranslate"><span class="pre">read_data()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#api_traitement.apiFunctions.traiLogbook"><code class="docutils literal notranslate"><span class="pre">traiLogbook()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#api_traitement.apiFunctions.traiLogbook_v23"><code class="docutils literal notranslate"><span class="pre">traiLogbook_v23()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#api_traitement.apiFunctions.transmittingBType"><code class="docutils literal notranslate"><span class="pre">transmittingBType()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#api_traitement.apiFunctions.weightCategory"><code class="docutils literal notranslate"><span class="pre">weightCategory()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-api_traitement.api_functions">api_traitement.api_functions module</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#api_traitement.api_functions.check_trip"><code class="docutils literal notranslate"><span class="pre">check_trip()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#api_traitement.api_functions.del_trip"><code class="docutils literal notranslate"><span class="pre">del_trip()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#api_traitement.api_functions.error_filter"><code class="docutils literal notranslate"><span class="pre">error_filter()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#api_traitement.api_functions.getId_Data"><code class="docutils literal notranslate"><span class="pre">getId_Data()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#api_traitement.api_functions.get_all_referential_data"><code class="docutils literal notranslate"><span class="pre">get_all_referential_data()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#api_traitement.api_functions.get_one_from_ws"><code class="docutils literal notranslate"><span class="pre">get_one_from_ws()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#api_traitement.api_functions.get_token"><code class="docutils literal notranslate"><span class="pre">get_token()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#api_traitement.api_functions.is_valid"><code class="docutils literal notranslate"><span class="pre">is_valid()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#api_traitement.api_functions.load_data"><code class="docutils literal notranslate"><span class="pre">load_data()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#api_traitement.api_functions.reload_token"><code class="docutils literal notranslate"><span class="pre">reload_token()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#api_traitement.api_functions.send_trip"><code class="docutils literal notranslate"><span class="pre">send_trip()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#api_traitement.api_functions.trip_for_prog_vessel"><code class="docutils literal notranslate"><span class="pre">trip_for_prog_vessel()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#api_traitement.api_functions.update_trip"><code class="docutils literal notranslate"><span class="pre">update_trip()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-api_traitement.common_functions">api_traitement.common_functions module</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#api_traitement.common_functions.convert_to_int"><code class="docutils literal notranslate"><span class="pre">convert_to_int()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#api_traitement.common_functions.convert_to_time_or_text"><code class="docutils literal notranslate"><span class="pre">convert_to_time_or_text()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#api_traitement.common_functions.del_empty_col"><code class="docutils literal notranslate"><span class="pre">del_empty_col()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#api_traitement.common_functions.dms_to_decimal"><code class="docutils literal notranslate"><span class="pre">dms_to_decimal()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#api_traitement.common_functions.from_topiaid_to_value"><code class="docutils literal notranslate"><span class="pre">from_topiaid_to_value()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#api_traitement.common_functions.getAll"><code class="docutils literal notranslate"><span class="pre">getAll()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#api_traitement.common_functions.getId"><code class="docutils literal notranslate"><span class="pre">getId()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#api_traitement.common_functions.getSome"><code class="docutils literal notranslate"><span class="pre">getSome()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#api_traitement.common_functions.get_list_harbours"><code class="docutils literal notranslate"><span class="pre">get_list_harbours()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#api_traitement.common_functions.load_json_file"><code class="docutils literal notranslate"><span class="pre">load_json_file()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#api_traitement.common_functions.np_removing_semicolon"><code class="docutils literal notranslate"><span class="pre">np_removing_semicolon()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#api_traitement.common_functions.pretty_print"><code class="docutils literal notranslate"><span class="pre">pretty_print()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#api_traitement.common_functions.read_excel"><code class="docutils literal notranslate"><span class="pre">read_excel()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#api_traitement.common_functions.remove_if_nul"><code class="docutils literal notranslate"><span class="pre">remove_if_nul()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#api_traitement.common_functions.remove_spec_char_from_list"><code class="docutils literal notranslate"><span class="pre">remove_spec_char_from_list()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#api_traitement.common_functions.search_in"><code class="docutils literal notranslate"><span class="pre">search_in()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#api_traitement.common_functions.serialize"><code class="docutils literal notranslate"><span class="pre">serialize()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#api_traitement.common_functions.strip_if_string"><code class="docutils literal notranslate"><span class="pre">strip_if_string()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#api_traitement.common_functions.zero_if_empty"><code class="docutils literal notranslate"><span class="pre">zero_if_empty()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-api_traitement.ps_build_json_fonctions">api_traitement.ps_build_json_fonctions module</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#api_traitement.ps_build_json_fonctions.js_Float"><code class="docutils literal notranslate"><span class="pre">js_Float()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#api_traitement.ps_build_json_fonctions.js_Transmitt"><code class="docutils literal notranslate"><span class="pre">js_Transmitt()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#api_traitement.ps_build_json_fonctions.js_activity"><code class="docutils literal notranslate"><span class="pre">js_activity()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#api_traitement.ps_build_json_fonctions.js_activity2"><code class="docutils literal notranslate"><span class="pre">js_activity2()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#api_traitement.ps_build_json_fonctions.js_catche"><code class="docutils literal notranslate"><span class="pre">js_catche()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#api_traitement.ps_build_json_fonctions.js_content"><code class="docutils literal notranslate"><span class="pre">js_content()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#api_traitement.ps_build_json_fonctions.js_floatingObject"><code class="docutils literal notranslate"><span class="pre">js_floatingObject()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#api_traitement.ps_build_json_fonctions.js_routeLogbook"><code class="docutils literal notranslate"><span class="pre">js_routeLogbook()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-api_traitement">Module contents</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+<div id="searchbox"></div></div>
+
+  <div class="sidebar-secondary-item">
+  
+  <div class="tocsection editthispage">
+    <a href="https://github.com/OB7-IRD/observe-logbooks-reader-webapp/edit/main/docs/source/api/api_traitement.rst">
+      <i class="fa-solid fa-pencil"></i>
+      
+      
+        
+          Edit on GitHub
+        
+      
+    </a>
+  </div>
+</div>
+
+  <div class="sidebar-secondary-item">
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/api/api_traitement.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+
+<script>
+  $(document).ready(function () {
+    const content = $('<div class="alert-danger">ArviZ docs will now be available at <a href="https://python.arviz.org">python.arviz.org</a>!</div>')
+    $('#banner').append(content);
+  })
+</script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2024, Ob7.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.4.7.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>
