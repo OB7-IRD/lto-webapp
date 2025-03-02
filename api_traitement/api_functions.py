@@ -15,7 +15,6 @@ import requests
 from django.contrib.auth import authenticate
 from django.utils.html import format_html
 
-from api_traitement.apiFunctions import errorFilter
 from api_traitement.common_functions import serialize, pretty_print
 
 # from webapps.models import User
@@ -326,6 +325,7 @@ def send_trip(token, data, base_url, route):
             outfile.write(response.text)
         try:
             return (error_filter(response.text), 2)
+            # return (error_filter(response.text), 6) # 6 pour utiliser le niveau d'erreur personnalisée
             # return json.loads(res.text), 2
         except KeyError:
             # Faire une fonction pour mieux traiter ce type d'erreur
@@ -473,7 +473,7 @@ def del_trip(base_url, token, content):
             return json.loads(res.text)
         else:
             try:
-                return errorFilter(res.text)
+                return error_filter(res.text)
             except KeyError:
                 print("Message d'erreur: ", json.loads(res.text))
 
@@ -525,20 +525,53 @@ def error_filter(response):
             text_list.remove(heure)
             text_list.remove(date)
 
-            # Génération du format HTML
+            # Génération du format HTML sous forme de tableau Tailwind
             if date != "" and heure != "":
-                return (f"<div class='ml-3 text-sm font-medium text-red-700'>"
-                        f"Date: {date} ; Heure: {heure} <br>\
-                        {''.join([f'{t}<br>' for t in text_list])}\
-                        <strong>Champs erreur: </strong>{str(temp[0]['fieldName'])} <br>\
-                        <strong>Message Erreur: </strong>{str(temp[0]['message'])} <br>"
-                        f"</div>")
+                return f"""
+                <div class="p-4 mb-4 bg-red-100 border-t-4 border-red-500 dark:bg-red-200 rounded-lg" role="alert">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-left text-red-700 border border-red-400 rounded-lg">
+                            <thead class="text-xs uppercase bg-red-200 text-red-800">
+                                <tr>
+                                    <th scope="col" class="px-4 py-2">Date</th>
+                                    <th scope="col" class="px-4 py-2">Heure</th>
+                                    <th scope="col" class="px-4 py-2">Champs Erreur</th>
+                                    <th scope="col" class="px-4 py-2">Message Erreur</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="border-t border-red-400">
+                                    <td class="px-4 py-2">{date}</td>
+                                    <td class="px-4 py-2">{heure}</td>
+                                    <td class="px-4 py-2">{temp[0]['fieldName']}</td>
+                                    <td class="px-4 py-2">{temp[0]['message']}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                """
             else:
-                return (f"<div class='ml-3 text-sm font-medium text-red-700'>"
-                        f"{''.join([f'{t}<br>' for t in text_list])}\
-                        <strong>Champs erreur: </strong>{str(temp[0]['fieldName'])} <br>\
-                        <strong>Message Erreur: </strong>{str(temp[0]['message'])} <br>"
-                        f"</div>")
+                return f"""
+                <div class="p-4 mb-4 bg-red-100 border-t-4 border-red-500 dark:bg-red-200 rounded-lg" role="alert">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-left text-red-700 border border-red-400 rounded-lg">
+                            <thead class="text-xs uppercase bg-red-200 text-red-800">
+                                <tr>
+                                    <th scope="col" class="px-4 py-2">Champs Erreur</th>
+                                    <th scope="col" class="px-4 py-2">Message Erreur</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="border-t border-red-400">
+                                    <td class="px-4 py-2">{temp[0]['fieldName']}</td>
+                                    <td class="px-4 py-2">{temp[0]['message']}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                """
     all_message = []
 
     # Vérifie si le premier nœud contient des messages

@@ -188,24 +188,9 @@
             {% if messages %}
             <div class="message">
                 <span class="aft"></span>
+                <!-- pour afficher les boutons des messages d'erreur par rapport au traitement des logbooks -->
               {% for message in messages %}
-                    {% if message.tags == 'error' %}
-                         <div class="flex p-4 mb-4 bg-red-100 border-t-4 border-red-500 dark:bg-red-200" id="msg" role="alert">
-                            <div class="ml-3 text-sm font-medium text-red-700">
-                                <p class="font-bold">Erreur</p>
-                                <br>
-                                <p>{{ message }}</p>
-                            </div>
-                        </div>
-                    {% elif message.tags == 'error2' %}
-                         <div class="flex p-4 mb-4 bg-red-100 border-t-4 border-red-500 dark:bg-red-200" id="msg" role="alert">
-                            <div class="ml-3 text-sm font-medium text-red-700">
-                                <p class="font-bold">{% translate "Attention signal faible" %}</p>
-                                <br>
-                                <p>{{ message }}</p>
-                            </div>
-                        </div>
-                    {% elif message.tags == 'info' %}
+                    {% if message.tags == 'info' %}
                         <div class="bg-blue-100 border-t border-b border-blue-500 text-blue-700 px-4 py-3" role="alert">
                           <p class="font-bold">{% translate "Info" %}</p>
                           <p class="text-sm"><p>{{ message }}</p>
@@ -245,6 +230,8 @@
                         </div>
                     {% endif %}
               {% endfor %}
+
+              <!-- pour afficher les boutons des messages d'erreur par rapport au traitement des logbooks -->
               {% if tags == 'error' %}
                 <div class="flex">
                     <button data-url="{% url 'sendData' %}" id="send_data2" type="button" class="text-white bg-red-900 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-xs px-3 py-1.5 mr-2 text-center inline-flex items-center dark:bg-red-800 dark:hover:bg-red-900">
