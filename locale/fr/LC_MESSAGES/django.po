@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-19 11:07+0400\n"
+"POT-Creation-Date: 2024-12-20 05:53+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,15 +18,15 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: api_traitement/api_functions.py:121
+#: api_traitement/api_functions.py:120
 msgid "Problème de connexion pour recuperer les données"
 msgstr ""
 
-#: api_traitement/api_functions.py:323 api_traitement/api_functions.py:362
+#: api_traitement/api_functions.py:322 api_traitement/api_functions.py:361
 msgid "Logbook inséré avec success"
 msgstr ""
 
-#: api_traitement/api_functions.py:334 api_traitement/api_functions.py:366
+#: api_traitement/api_functions.py:333 api_traitement/api_functions.py:365
 msgid ""
 "L'insertion de cet logbook n'est pas possible. Désolé veuillez essayer un "
 "autre"
@@ -48,8 +48,8 @@ msgid ""
 "Veuillez vérifier les données."
 msgstr ""
 
-#: .\palangre_syc\templates\LL_presenting_logbook.html:7
-#: .\palangre_syc\templates\LL_previoustrippage.html:7
+#: palangre_syc/templates/LL_homepage.html:7
+#: palangre_syc/templates/LL_previoustrippage.html:7
 msgid "Palangre aux Seychelles"
 msgstr ""
 

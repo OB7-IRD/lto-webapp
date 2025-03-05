@@ -14,6 +14,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 from pathlib import Path
 from django.utils.translation import gettext_lazy as _
 import os
+from django.contrib.messages import constants as message_constants
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -36,7 +37,7 @@ DEBUG = True
 # CSRF_COOKIE_SECURE=True
 
 ALLOWED_HOSTS = ['*']
-CSRF_TRUSTED_ORIGINS = ["http://localhost:8000"]
+CSRF_TRUSTED_ORIGINS = ["http://localhost:8000", "http://10.9.8.133:8000"]
 
 AUTH_USER_MODEL = "webapps.LTOUser"
 # AUTH_USER_MODEL = "webapps.User"
@@ -47,8 +48,16 @@ TAILWIND_APP_NAME = "theme"
 #     "127.0.0.1"
 # ]
 
-# Application definition
+MESSAGE_TAGS = {
+    message_constants.SUCCESS: 'success',   # 1
+    message_constants.ERROR: 'error',       # 2
+    message_constants.WARNING: 'warning',   # 3
+    message_constants.INFO: 'info',         # 4
+    message_constants.DEBUG: 'debug',       # 5
+    6: 'error2',  # Nouveau niveau personnalisé "error2"
+}
 
+# Application definition
 INSTALLED_APPS = [
 #    'daphne',
     'webapps',

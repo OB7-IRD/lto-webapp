@@ -643,14 +643,15 @@ def cap_obs_sea(allData, ob):
             logbookDataEntryOperator.append((val["topiaId"], val["firstName"].lower(), val["lastName"].lower()))
 
     def sou_fonc(arra):
-        print(ob['captain'])
+        print(ob['captain'], len(ob['captain'].split(" ")))
         trouv_id = None
         inconnu_id = [val[0] for val in arra if (("[inconnu]" == val[1]) and ("[inconnu]" == val[2]))]
 
         if ob['captain'] != None:
             if len(ob['captain'].split(" ")) > 2:
                 nom = ob['captain'].split(" ")[0]
-                lisPren = ob['captain'].split(" ")[1:]
+                lisPren_s = ob['captain'].split(" ")[1:]
+                lisPren = [x for x in lisPren_s if x != ""]
                 prenoms = " ".join(lisPren)
             else:
                 try:
@@ -952,76 +953,6 @@ def obj_ob_part_body_(temp_float, tab1_Float, js_Floats, bool_tuple=("false", "f
         js_Floats["whenArriving"] = bool_tuple[0]
         js_Floats["whenLeaving"] = bool_tuple[1]
         tab1_Float.append(js_Floats)
-
-
-def errorFilter(response):
-    """Permet de simplifier l'afficharge des erreurs dans le programme lors de l'insertion des données
-    """
-    error = json.loads(response)
-
-    # print(error) ['exception']['result']['nodes']
-
-    def errorFonction(nodes):
-        if ('children' in nodes.keys()):
-            return errorFonction(nodes['children'][0])
-
-        if ('messages' in nodes.keys()):
-            temp = nodes['messages']
-            text = nodes['datum']['text']
-
-            return "<strong>Texte : </strong>" + str(text) + "  <br>   <strong>Champs erreur: </strong>" + str(
-                temp[0]['fieldName']) + " <br>  <strong>Message Erreur: </strong>" + str(temp[0]['message'])
-
-    all_message = []
-
-    if 'messages' in error['exception']['result']['nodes'][0].keys():
-        all_message.append(errorFonction(error['exception']['result']['nodes'][0]))
-    try:
-        for val in error['exception']['result']['nodes'][0]['children']:
-            all_message.append(errorFonction(val))
-    except:
-        pass
-
-    return all_message
-
-
-# # Supprimer un trip
-# def del_trip(token, content):
-#     dict = content
-#     dicts = json.dumps(dict)
-
-#     headers = {
-#         "Content-Type": "application/json",
-#         'authenticationToken': token
-#     }
-
-#     id_, ms_ = check_trip(token, content)
-
-#     if ms_ == True:
-
-#         id_ = id_.replace("#", "-")
-
-#         url = 'https://observe.ob7.ird.fr/observeweb/api/public/data/ps/common/Trip/' + id_
-
-#         print(id_)
-
-#         print("Supprimer")
-
-#         res = requests.delete(url, data=dicts, headers=headers)
-
-#         print(res.status_code, "\n")
-
-#         if res.status_code == 200:
-#             print("Supprimer avec succes")
-#             return json.loads(res.text)
-#         else:
-#             try:
-#                 return errorFilter(res.text)
-#             except KeyError:
-#                 print("Message d'erreur: ", json.loads(res.text))
-
-
-# Constitution de contents
 
 
 # Si la premiere activité n'a pas de possition prendre la possition du port d'arriver
@@ -1707,7 +1638,6 @@ def build_trip(allData, info_bat, data_log, oce, prg, ob):
     js_contents['logbookComment'] = "NB: Service Web"
 
     return allMessages, js_contents
-
 
 def build_trip_v23(allData, info_bat, data_log, oce, prg):
     """Fonction qui permet de contruire le gros fragment json de la marée et retourner des messages par rapport à la construction

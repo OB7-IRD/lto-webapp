@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 
 from api_traitement import api_functions
-from api_traitement.apiFunctions import *
+from api_traitement.common_functions import *
 from api_traitement.api_functions import *
 # from palangre_syc import api
 
@@ -517,13 +517,14 @@ def sendData(request):
             messages.success(request, message)
             print(1, message)
         elif code == 2:
-            for msg in message:
-                messages.error(request, msg)
-            print(2, message)
+            messages.error(request, message)
+            print(code, message)
         else:
             messages.warning(request, message)
             print(3, message)
 
+        # elif code == 6:
+            # messages.add_message(request, code, message) # Tags "error2" cree pour les erreur du serveur
         return JsonResponse({"message": "Success", "code": code, "msg": message})
     return JsonResponse({"message": _("Veuillez ressayer svp.")})
 
