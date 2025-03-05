@@ -401,7 +401,7 @@ $(document).ready(function(){
                         $(".message").find('.aft').after('<div class="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md" role="alert"><div class="flex"><div class="py-1"><svg class="fill-current h-6 w-6 text-teal-500 mr-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z"/></svg></div><div><p class="font-bold">Effectué</p><p class="text-sm">'+ response.msg +'</p></div></div></div><br>');
                         $('.btn_success').show();
                     }else if (response.code == 2){
-                        $(".message").find('.aft').after('<div class="flex p-4 mb-4 bg-red-100 border-t-4 border-red-500 dark:bg-red-200" id="msg" role="alert"><div class="ml-3 text-sm font-medium text-red-700"><p class="font-bold">Erreur</p><br><p>'+ response.msg +'</p></div></div>');
+                        $(".message").find('.aft').after('<div id="msg">'+ response.msg +'</div>');
                         $('.btn_error').show();
                     }else{
                         $(".message").find('.aft').after('<div class="flex p-4 mb-4 bg-yellow-100 border-t-4 border-yellow-500 dark:bg-yellow-200" role="alert"><div class="ml-3 text-sm font-medium text-red-700"><p class="font-bold">Attention</p><br><p>'+ response.msg +'</p></div></div>');

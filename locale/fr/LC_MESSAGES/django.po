@@ -157,9 +157,342 @@ msgstr ""
 msgid "Donnes jour par jour"
 msgstr ""
 
-#: palangre_syc/templates/LL_presenting_logbook.html:596
-msgid "Accder au haut de la page"
+#: webapps/templates/logbook.html:232
+msgid "Effectué"
 msgstr ""
+
+#: webapps/templates/logbook.html:240 webapps/templates/logbook.html:298
+msgid "Charger un nouveau logbook"
+msgstr ""
+
+#: webapps/templates/logbook.html:256
+msgid "Forcer l'envoie des données"
+msgstr ""
+
+#: webapps/templates/logbook.html:259
+msgid "Corriger et envoyer à nouveau"
+msgstr ""
+
+#: webapps/templates/logbook.html:267
+msgid "NB:"
+msgstr ""
+
+#: webapps/templates/logbook.html:267
+msgid ""
+"Il est possible de forcer l'envoi si les erreurs ne concernent que "
+"l'opération objet incorrectement saisie et/ou le code espèce rejeté à trois "
+"(3) caractères."
+msgstr ""
+
+#: webapps/templates/logbook.html:303 webapps/templates/logbook.html:308
+msgid "Charger un logbook"
+msgstr ""
+
+#: webapps/templates/login.html:18
+msgid "login-welcome"
+msgstr "Bienvenue!"
+
+#: webapps/templates/login.html:28
+msgid "login-credentials"
+msgstr "Saisissez vos identifiants pour accéder à l'application."
+
+#: webapps/templates/login.html:40
+msgid "login-username"
+msgstr "Nom d'utilisateur"
+
+#: webapps/templates/login.html:44
+msgid "login-password"
+msgstr "Mot de passe"
+
+#: webapps/templates/login.html:47
+msgid "login-submit"
+msgstr "Envoyer"
+
+#: webapps/views.py:159
+msgid "Impossible de se connecter au serveur verifier la connexion"
+msgstr ""
+
+#: webapps/views.py:161
+msgid "serveur incorrect"
+msgstr ""
+
+#: webapps/views.py:163
+msgid "username ou mot de passe incorrect"
+msgstr ""
+
+#: webapps/views.py:242
+msgid ""
+"Merci de déposer un fichier excel avant de lancer l'extraction de données !"
+msgstr ""
+
+#: webapps/views.py:248
+msgid "Merci de téléverser un fichier excel"
+msgstr ""
+
+#: webapps/views.py:304
+msgid "Extration des données avec succès vous pouvez les soumettre maintenant."
+msgstr ""
+
+#: webapps/views.py:317
+msgid "Veuillez recharger la page et reprendre votre opération SVP."
+msgstr "Veuillez recharger la page et reprendre votre opération SVP."
+
+#: webapps/views.py:414 webapps/views.py:471
+msgid "Veuillez ressayer svp."
+msgstr "Veuillez ressayer svp."
+
+#: website/settings.py:134
+msgid "English"
+msgstr "Anglais"
+
+#: website/settings.py:135
+msgid "Français"
+msgstr "Français"
+
+
+#~ msgid "PM"
+#~ msgstr "après-midi"
+
+#~ msgid "AM"
+#~ msgstr "matin"
+
+#~ msgid "midnight"
+#~ msgstr "minuit"
+
+#~ msgid "noon"
+#~ msgstr "midi"
+
+#~ msgid "Monday"
+#~ msgstr "Lundi"
+
+#~ msgid "Tuesday"
+#~ msgstr "Mardi"
+
+#~ msgid "Wednesday"
+#~ msgstr "Mercedi"
+
+#~ msgid "Thursday"
+#~ msgstr "Jeudi"
+
+#~ msgid "Friday"
+#~ msgstr "Vendredi"
+
+#~ msgid "Saturday"
+#~ msgstr "Samedi"
+
+#~ msgid "Sunday"
+#~ msgstr "Dimanche"
+
+#~ msgid "Mon"
+#~ msgstr "Lun"
+
+#~ msgid "Tue"
+#~ msgstr "Mar"
+
+#~ msgid "Wed"
+#~ msgstr "Mer"
+
+#~ msgid "Thu"
+#~ msgstr "Jeu"
+
+#~ msgid "Fri"
+#~ msgstr "Ven"
+
+#~ msgid "Sat"
+#~ msgstr "Sam"
+
+#~ msgid "Sun"
+#~ msgstr "Dim"
+
+#~ msgid "January"
+#~ msgstr "Janvier"
+
+#~ msgid "February"
+#~ msgstr "Février"
+
+#~ msgid "March"
+#~ msgstr "Mars"
+
+#~ msgid "April"
+#~ msgstr "Avril"
+
+#~ msgid "May"
+#~ msgstr "Mai"
+
+#~ msgid "June"
+#~ msgstr "Juin"
+
+#~ msgid "July"
+#~ msgstr "Juillet"
+
+#~ msgid "August"
+#~ msgstr "Août"
+
+#~ msgid "September"
+#~ msgstr "Septembre"
+
+#~ msgid "October"
+#~ msgstr "Octobre"
+
+#~ msgid "November"
+#~ msgstr "Novembre"
+
+#~ msgid "December"
+#~ msgstr "Décembre"
+
+#, fuzzy
+#~| msgid "Sun"
+#~ msgid "jan"
+#~ msgstr "Dim"
+
+#, fuzzy
+#~| msgid "May"
+#~ msgid "mar"
+#~ msgstr "Mai"
+
+#, fuzzy
+#~| msgid "May"
+#~ msgid "may"
+#~ msgstr "Mai"
+
+#, fuzzy
+#~| msgid "Sun"
+#~ msgid "jun"
+#~ msgstr "Dim"
+
+#, fuzzy
+#~| msgid "Sun"
+#~ msgid "jul"
+#~ msgstr "Dim"
+
+#~ msgctxt "abbrev. month"
+#~ msgid "Jan."
+#~ msgstr "Janv."
+
+#~ msgctxt "abbrev. month"
+#~ msgid "Feb."
+#~ msgstr "Fev."
+
+#~ msgctxt "abbrev. month"
+#~ msgid "March"
+#~ msgstr "Mars"
+
+#~ msgctxt "abbrev. month"
+#~ msgid "April"
+#~ msgstr "Avril"
+
+#~ msgctxt "abbrev. month"
+#~ msgid "May"
+#~ msgstr "Mai"
+
+#~ msgctxt "abbrev. month"
+#~ msgid "June"
+#~ msgstr "Juin"
+
+#~ msgctxt "abbrev. month"
+#~ msgid "July"
+#~ msgstr "Jul."
+
+#~ msgctxt "abbrev. month"
+#~ msgid "Aug."
+#~ msgstr "Août"
+
+#~ msgctxt "abbrev. month"
+#~ msgid "Sept."
+#~ msgstr "Sept."
+
+#~ msgctxt "abbrev. month"
+#~ msgid "Oct."
+#~ msgstr "Oct."
+
+#~ msgctxt "abbrev. month"
+#~ msgid "Nov."
+#~ msgstr "Nov."
+
+#~ msgctxt "abbrev. month"
+#~ msgid "Dec."
+#~ msgstr "Déc."
+
+#, fuzzy
+#~| msgid "January"
+#~ msgctxt "alt. month"
+#~ msgid "January"
+#~ msgstr "Janvier"
+
+#, fuzzy
+#~| msgid "February"
+#~ msgctxt "alt. month"
+#~ msgid "February"
+#~ msgstr "Février"
+
+#, fuzzy
+#~| msgid "March"
+#~ msgctxt "alt. month"
+#~ msgid "March"
+#~ msgstr "Mars"
+
+#, fuzzy
+#~| msgid "April"
+#~ msgctxt "alt. month"
+#~ msgid "April"
+#~ msgstr "Avril"
+
+#, fuzzy
+#~| msgid "May"
+#~ msgctxt "alt. month"
+#~ msgid "May"
+#~ msgstr "Mai"
+
+#, fuzzy
+#~| msgid "June"
+#~ msgctxt "alt. month"
+#~ msgid "June"
+#~ msgstr "Juin"
+
+#, fuzzy
+#~| msgid "July"
+#~ msgctxt "alt. month"
+#~ msgid "July"
+#~ msgstr "Juillet"
+
+#, fuzzy
+#~| msgid "August"
+#~ msgctxt "alt. month"
+#~ msgid "August"
+#~ msgstr "Août"
+
+#, fuzzy
+#~| msgid "September"
+#~ msgctxt "alt. month"
+#~ msgid "September"
+#~ msgstr "Septembre"
+
+#, fuzzy
+#~| msgid "October"
+#~ msgctxt "alt. month"
+#~ msgid "October"
+#~ msgstr "Octobre"
+
+#, fuzzy
+#~| msgid "November"
+#~ msgctxt "alt. month"
+#~ msgid "November"
+#~ msgstr "Novembre"
+
+#, fuzzy
+#| msgid "December"
+msgctxt "alt. month"
+msgid "December"
+msgstr "Décembre"
+
+#: .\venv\Lib\site-packages\django\utils\ipv6.py:8
+msgid "This is not a valid IPv6 address."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\text.py:78
+#, python-format
+msgctxt "String to return when truncating text"
+msgid "%(truncated_text)s…"
 
 #: palangre_syc/templates/LL_previoustrippage.html:29
 msgid "Donnes de mares associes au programme : "
