@@ -73,15 +73,18 @@ def get_vessel_topiaid(df_donnees_p1, allData):
     """
     vessel_logbook = palangre_syc.excel_extractions.extract_vessel_info(df_donnees_p1).loc[palangre_syc.excel_extractions.extract_vessel_info(df_donnees_p1)['Logbook_name'] == 'Official Number', 'Value'].values[0]
     #vessel_logbook = vessel_logbook.strip()
-    for vessel in allData["Vessel"]:
-        if 'nationalId' in vessel:
-            vessel_json = vessel['nationalId']
-            if vessel_logbook == vessel_json:
-                return vessel['topiaId']
-
-    # il faudrait faire un message qui dit de vérifier si le bateau est bien existant et présent dans la base
-    # si 'nationalId' n'est pas dans vessel
-    return None
+    vessels = allData.get("Vessel", [])
+    # We are getting all the output for the same nationalId (in case the vessel changed flag)
+    matching_vessels = [
+        vessel for vessel in vessels
+        if "nationalId" in vessel and vessel["nationalId"] == vessel_logbook
+    ]
+    if not matching_vessels:
+        return None  # No matching vessel found
+    # Find vessel with status "enable"
+    enabled_vessel = [v for v in matching_vessels if v.get("status") == "enabled"]
+    # Return the "enable" vessel if found, otherwise return the first match
+    return enabled_vessel[0]["topiaId"] if enabled_vessel else matching_vessels[0]["topiaId"]
 
 
 def get_baittype_topiaid(row, allData):
