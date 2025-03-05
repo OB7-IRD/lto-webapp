@@ -1,0 +1,1230 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" data-theme="light">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>palangre_syc.json_construction &#8212; LB2Observe  documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-codeautolink.css?v=125d5c1c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=0b5196b5" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=30646c52"></script>
+    <script src="../../_static/design-tabs.js?v=36754332"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/palangre_syc/json_construction';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="light">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+    
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="LB2Observe  documentation - Home"/>
+    <img src="" class="logo__image only-dark pst-js-only" alt="LB2Observe  documentation - Home"/>
+  
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../getting_started/index.html">
+    Getting Started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../user_guide/index.html">
+    User Guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/index.html">
+    API
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-external" href="https://ob7-ird.science">
+    The Ob7's team
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/OB7-IRD/observe-logbooks-reader-webapp" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../getting_started/index.html">
+    Getting Started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../user_guide/index.html">
+    User Guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/index.html">
+    API
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-external" href="https://ob7-ird.science">
+    The Ob7's team
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/OB7-IRD/observe-logbooks-reader-webapp" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">palangre_syc.json_construction</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for palangre_syc.json_construction</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot; </span>
+
+<span class="sd">Module de fonctions qui permettent la construction du json </span>
+<span class="sd">palangre, tel qu&#39;il est envoyé à Observe</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="c1"># import json</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">palangre_syc.api</span>
+<span class="kn">import</span> <span class="nn">palangre_syc.views</span>
+<span class="kn">import</span> <span class="nn">palangre_syc.excel_extractions</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">timedelta</span>
+
+<div class="viewcode-block" id="get_captain_topiaid">
+<a class="viewcode-back" href="../../api/palangre_syc.html#palangre_syc.json_construction.get_captain_topiaid">[docs]</a>
+<span class="k">def</span> <span class="nf">get_captain_topiaid</span><span class="p">(</span><span class="n">df_donnees_p1</span><span class="p">,</span> <span class="n">allData</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Fonction qui propose le topiaID associé au capitaine du logbook </span>
+<span class="sd">    (ou inconnu is non présent dans les données de référence)</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        df_donnees_p1 (dataframe): page 1 du doc excel</span>
+<span class="sd">        allData (json): Données de références</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        _type_: topiaID du capitaine présenté dans le logbook</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">captain</span> <span class="ow">in</span> <span class="n">allData</span><span class="p">[</span><span class="s1">&#39;Person&#39;</span><span class="p">]:</span>
+
+        <span class="n">captain_logbook</span> <span class="o">=</span> <span class="n">palangre_syc</span><span class="o">.</span><span class="n">excel_extractions</span><span class="o">.</span><span class="n">extract_cruise_info</span><span class="p">(</span><span class="n">df_donnees_p1</span><span class="p">)</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">palangre_syc</span><span class="o">.</span><span class="n">excel_extractions</span><span class="o">.</span><span class="n">extract_cruise_info</span><span class="p">(</span><span class="n">df_donnees_p1</span><span class="p">)[</span><span class="s1">&#39;Logbook_name&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Captain&#39;</span><span class="p">,</span> <span class="s1">&#39;Value&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">captain_json</span> <span class="o">=</span> <span class="n">captain</span><span class="p">[</span><span class="s1">&#39;firstName&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="n">captain</span><span class="p">[</span><span class="s1">&#39;lastName&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">captain_logbook</span> <span class="o">==</span> <span class="n">captain_json</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">captain</span><span class="p">[</span><span class="s1">&#39;topiaId&#39;</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">captain_logbook</span> <span class="o">=</span> <span class="s1">&#39;[inconnu] [inconnu]&#39;</span>
+            <span class="k">if</span> <span class="n">captain_logbook</span> <span class="o">==</span> <span class="n">captain_json</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">captain</span><span class="p">[</span><span class="s1">&#39;topiaId&#39;</span><span class="p">]</span>
+    <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="get_operator_topiaid">
+<a class="viewcode-back" href="../../api/palangre_syc.html#palangre_syc.json_construction.get_operator_topiaid">[docs]</a>
+<span class="k">def</span> <span class="nf">get_operator_topiaid</span><span class="p">(</span><span class="n">df_donnees_p1</span><span class="p">,</span> <span class="n">allData</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Fonction qui propose le topiaID de la personne qui a saisi les données du logbook (ou inconnu is non présent dans les données de référence)</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        df_donnees_p1 (dataframe): page 1 du doc excel</span>
+<span class="sd">        allData (json): Données de références</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        _type_: topiaID de l&#39;opérateur </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">person</span> <span class="ow">in</span> <span class="n">allData</span><span class="p">[</span><span class="s1">&#39;Person&#39;</span><span class="p">]:</span>
+
+        <span class="n">reported_logbook</span> <span class="o">=</span> <span class="n">palangre_syc</span><span class="o">.</span><span class="n">excel_extractions</span><span class="o">.</span><span class="n">extract_report_info</span><span class="p">(</span><span class="n">df_donnees_p1</span><span class="p">)</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">palangre_syc</span><span class="o">.</span><span class="n">excel_extractions</span><span class="o">.</span><span class="n">extract_report_info</span><span class="p">(</span>
+            <span class="n">df_donnees_p1</span><span class="p">)[</span><span class="s1">&#39;Logbook_name&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Person reported&#39;</span><span class="p">,</span> <span class="s1">&#39;Value&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">reported_json</span> <span class="o">=</span> <span class="n">person</span><span class="p">[</span><span class="s1">&#39;firstName&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="n">person</span><span class="p">[</span><span class="s1">&#39;lastName&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">reported_logbook</span> <span class="o">==</span> <span class="n">reported_json</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">person</span><span class="p">[</span><span class="s1">&#39;topiaId&#39;</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">reported_logbook</span> <span class="o">=</span> <span class="s1">&#39;[inconnu] [inconnu]&#39;</span>
+            <span class="k">if</span> <span class="n">reported_logbook</span> <span class="o">==</span> <span class="n">reported_json</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">person</span><span class="p">[</span><span class="s1">&#39;topiaId&#39;</span><span class="p">]</span>
+    <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="get_vessel_topiaid">
+<a class="viewcode-back" href="../../api/palangre_syc.html#palangre_syc.json_construction.get_vessel_topiaid">[docs]</a>
+<span class="k">def</span> <span class="nf">get_vessel_topiaid</span><span class="p">(</span><span class="n">df_donnees_p1</span><span class="p">,</span> <span class="n">allData</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Fonction qui propose le topiaId du navire cité dans le logbook à partir de son &#39;nationlId&#39; s&#39;il existe </span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        df_donnees_p1 (dataframe): page 1 du doc excel</span>
+<span class="sd">        allData (json): Données de références</span>
+<span class="sd">        </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        _type_: topiaID du navire (vessel)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">vessel_logbook</span> <span class="o">=</span> <span class="n">palangre_syc</span><span class="o">.</span><span class="n">excel_extractions</span><span class="o">.</span><span class="n">extract_vessel_info</span><span class="p">(</span><span class="n">df_donnees_p1</span><span class="p">)</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">palangre_syc</span><span class="o">.</span><span class="n">excel_extractions</span><span class="o">.</span><span class="n">extract_vessel_info</span><span class="p">(</span><span class="n">df_donnees_p1</span><span class="p">)[</span><span class="s1">&#39;Logbook_name&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Official Number&#39;</span><span class="p">,</span> <span class="s1">&#39;Value&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="c1">#vessel_logbook = vessel_logbook.strip()</span>
+    <span class="k">for</span> <span class="n">vessel</span> <span class="ow">in</span> <span class="n">allData</span><span class="p">[</span><span class="s2">&quot;Vessel&quot;</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="s1">&#39;nationalId&#39;</span> <span class="ow">in</span> <span class="n">vessel</span><span class="p">:</span>
+            <span class="n">vessel_json</span> <span class="o">=</span> <span class="n">vessel</span><span class="p">[</span><span class="s1">&#39;nationalId&#39;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">vessel_logbook</span> <span class="o">==</span> <span class="n">vessel_json</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">vessel</span><span class="p">[</span><span class="s1">&#39;topiaId&#39;</span><span class="p">]</span>
+
+    <span class="c1"># il faudrait faire un message qui dit de vérifier si le bateau est bien existant et présent dans la base</span>
+    <span class="c1"># si &#39;nationalId&#39; n&#39;est pas dans vessel</span>
+    <span class="k">return</span> <span class="kc">None</span></div>
+
+
+
+<div class="viewcode-block" id="get_baittype_topiaid">
+<a class="viewcode-back" href="../../api/palangre_syc.html#palangre_syc.json_construction.get_baittype_topiaid">[docs]</a>
+<span class="k">def</span> <span class="nf">get_baittype_topiaid</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">allData</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Fonction qui propose le topiaId de l&#39;appat coché dans le logbook </span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        row (dataframe): nom de l&#39;appât </span>
+<span class="sd">        allData (json):  Données de références</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        str: topiaID de l&#39;appât utilisé</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">baittypes</span> <span class="o">=</span> <span class="n">allData</span><span class="p">[</span><span class="s2">&quot;BaitType&quot;</span><span class="p">]</span>
+    <span class="n">bait_logbook</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;Logbook_name&#39;</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">baittype</span> <span class="ow">in</span> <span class="n">baittypes</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">baittype</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;label1&quot;</span><span class="p">)[:</span><span class="nb">len</span><span class="p">(</span><span class="n">bait_logbook</span><span class="p">)]</span> <span class="o">==</span> <span class="n">bait_logbook</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">baittype</span><span class="p">[</span><span class="s2">&quot;topiaId&quot;</span><span class="p">]</span></div>
+
+
+
+<div class="viewcode-block" id="get_species_topiaid">
+<a class="viewcode-back" href="../../api/palangre_syc.html#palangre_syc.json_construction.get_species_topiaid">[docs]</a>
+<span class="k">def</span> <span class="nf">get_species_topiaid</span><span class="p">(</span><span class="n">fao_code_logbook</span><span class="p">,</span> <span class="n">allData</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Fonction qui propose le topiaId pour une espèce à partir de son code FAO (saisi manuellement dans la trascription du excel)</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        FAO_code_logbook (_type_): Code FAO (3 caractères) extrait du datatable de prises créé depuis la page 1 et 2</span>
+<span class="sd">        allData (json): Données de références</span>
+<span class="sd">        </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        str: topiaID de l&#39;espèce demandée</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">species</span> <span class="o">=</span> <span class="n">allData</span><span class="p">[</span><span class="s2">&quot;Species&quot;</span><span class="p">]</span>
+
+    <span class="k">for</span> <span class="n">specie</span> <span class="ow">in</span> <span class="n">species</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">fao_code_logbook</span> <span class="o">==</span> <span class="n">specie</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;faoCode&quot;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">specie</span><span class="p">[</span><span class="s2">&quot;topiaId&quot;</span><span class="p">]</span>
+        <span class="c1"># On part du principe que si le code fao n&#39;est pas exactement trouvé, c&#39;est qu&#39;il s&#39;agit d&#39;une espèce non identifié</span>
+        
+    <span class="k">return</span> <span class="s2">&quot;fr.ird.referential.common.Species#1433499266610#0.696541526820511&quot;</span></div>
+
+
+
+<div class="viewcode-block" id="get_catchfate_topiaid">
+<a class="viewcode-back" href="../../api/palangre_syc.html#palangre_syc.json_construction.get_catchfate_topiaid">[docs]</a>
+<span class="k">def</span> <span class="nf">get_catchfate_topiaid</span><span class="p">(</span><span class="n">catchfate_logbook</span><span class="p">,</span> <span class="n">allData</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Fonction qui propose le topiaId du devenir de l&#39;espèce (associé manuellement à l&#39;espèce dans la trascription du excel)</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        catchFate_logbook (str): Code catchFate (3 caractères) extrait du datatable de prises créé depuis la page 1 et 2</span>
+<span class="sd">        allData (json): Données de références</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        str: topiaID du devenir de l&#39;espèce demandée</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">fates</span> <span class="o">=</span> <span class="n">allData</span><span class="p">[</span><span class="s2">&quot;CatchFate&quot;</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">catchfate</span> <span class="ow">in</span> <span class="n">fates</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s1">&#39;code&#39;</span> <span class="ow">in</span> <span class="n">catchfate</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">catchfate</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;code&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="n">catchfate_logbook</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">catchfate</span><span class="p">[</span><span class="s2">&quot;topiaId&quot;</span><span class="p">]</span>
+        <span class="k">else</span> <span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span></div>
+
+
+
+<span class="c1"># Opimisation éventuelle : ajouter unparamètre qui permettrait de distinguer les fish des bycatch</span>
+<span class="c1"># notamment si les by catch son relachées A alive ou D dead</span>
+
+
+<div class="viewcode-block" id="get_processing_topiaid">
+<a class="viewcode-back" href="../../api/palangre_syc.html#palangre_syc.json_construction.get_processing_topiaid">[docs]</a>
+<span class="k">def</span> <span class="nf">get_processing_topiaid</span><span class="p">(</span><span class="n">fao_code</span><span class="p">,</span> <span class="n">allData</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Fonction qui associe un process on board à une espèce de poisson</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        fao_code (str): espèce de poisson</span>
+<span class="sd">        allData (json):  Données de références</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        topiaid: OnBoardProcess</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">fao_code</span> <span class="o">==</span> <span class="s1">&#39;SBF&#39;</span> <span class="ow">or</span> <span class="n">fao_code</span> <span class="o">==</span> <span class="s1">&#39;BET&#39;</span> <span class="ow">or</span> <span class="n">fao_code</span> <span class="o">==</span> <span class="s1">&#39;YFT&#39;</span><span class="p">:</span>
+        <span class="n">processing_code</span> <span class="o">=</span> <span class="s2">&quot;GG&quot;</span>
+    <span class="k">elif</span> <span class="n">fao_code</span> <span class="o">==</span> <span class="s1">&#39;SWO&#39;</span> <span class="ow">or</span> <span class="n">fao_code</span> <span class="o">==</span> <span class="s1">&#39;MLS&#39;</span> <span class="ow">or</span> <span class="n">fao_code</span> <span class="o">==</span> <span class="s1">&#39;BUM&#39;</span> <span class="ow">or</span> <span class="n">fao_code</span> <span class="o">==</span> <span class="s1">&#39;BLM&#39;</span> <span class="ow">or</span> <span class="n">fao_code</span> <span class="o">==</span> <span class="s1">&#39;SFA&#39;</span> <span class="ow">or</span> <span class="n">fao_code</span> <span class="o">==</span> <span class="s1">&#39;SSP&#39;</span><span class="p">:</span>
+        <span class="n">processing_code</span> <span class="o">=</span> <span class="s2">&quot;HG&quot;</span>
+    <span class="k">elif</span> <span class="n">fao_code</span> <span class="o">==</span> <span class="s1">&#39;ALB&#39;</span> <span class="ow">or</span>  <span class="n">fao_code</span> <span class="o">==</span> <span class="s1">&#39;OIL&#39;</span> <span class="ow">or</span> <span class="n">fao_code</span> <span class="o">==</span> <span class="s1">&#39;MZZ&#39;</span><span class="p">:</span>
+        <span class="n">processing_code</span> <span class="o">=</span> <span class="s2">&quot;WL&quot;</span>
+    <span class="k">else</span> <span class="p">:</span> 
+        <span class="n">processing_code</span> <span class="o">=</span> <span class="s2">&quot;UNK&quot;</span>
+    
+    <span class="n">processings</span> <span class="o">=</span> <span class="n">allData</span><span class="p">[</span><span class="s2">&quot;OnBoardProcessing&quot;</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">processing</span> <span class="ow">in</span> <span class="n">processings</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s1">&#39;code&#39;</span> <span class="ow">in</span> <span class="n">processing</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">processing</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;code&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="n">processing_code</span><span class="p">:</span>
+                
+                <span class="k">return</span> <span class="n">processing</span><span class="p">[</span><span class="s2">&quot;topiaId&quot;</span><span class="p">]</span>
+        <span class="k">else</span> <span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="get_target_species_topiaid">
+<a class="viewcode-back" href="../../api/palangre_syc.html#palangre_syc.json_construction.get_target_species_topiaid">[docs]</a>
+<span class="k">def</span> <span class="nf">get_target_species_topiaid</span><span class="p">(</span><span class="n">df_donnees_p1</span><span class="p">,</span> <span class="n">allData</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Fonction qui va récupérer les topiaid de chacune des espèces visées dans une liste</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        df_donnees_p1 (dataframe): page 1 du doc excel</span>
+<span class="sd">        allData (json):  Données de références</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        list de topiaid</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">palangre_syc</span><span class="o">.</span><span class="n">excel_extractions</span><span class="o">.</span><span class="n">extract_target_species</span><span class="p">(</span><span class="n">df_donnees_p1</span><span class="p">)</span>
+    <span class="n">list_target_topiaid</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">target</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;Logbook_name&#39;</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="s1">&#39;Tropical Tuna&#39;</span> <span class="ow">in</span> <span class="n">target</span><span class="p">:</span> 
+            <span class="c1"># list_target_topiaid.loc[len(list_target_topiaid)] = get_species_topiaid(&quot;YFT&quot;, data_common)</span>
+            <span class="n">list_target_topiaid</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">get_species_topiaid</span><span class="p">(</span><span class="s2">&quot;YFT&quot;</span><span class="p">,</span> <span class="n">allData</span><span class="p">))</span>
+            <span class="n">list_target_topiaid</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">get_species_topiaid</span><span class="p">(</span><span class="s2">&quot;BET&quot;</span><span class="p">,</span> <span class="n">allData</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="s1">&#39;Albacore Tuna&#39;</span> <span class="ow">in</span> <span class="n">target</span><span class="p">:</span>
+            <span class="n">list_target_topiaid</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">get_species_topiaid</span><span class="p">(</span><span class="s2">&quot;ALB&quot;</span><span class="p">,</span> <span class="n">allData</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="s1">&#39;Swordfish&#39;</span> <span class="ow">in</span> <span class="n">target</span><span class="p">:</span> 
+            <span class="n">list_target_topiaid</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">get_species_topiaid</span><span class="p">(</span><span class="s2">&quot;SWO&quot;</span><span class="p">,</span> <span class="n">allData</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span> 
+            <span class="n">list_target_topiaid</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">get_species_topiaid</span><span class="p">(</span><span class="s2">&quot;MZZ&quot;</span><span class="p">,</span> <span class="n">allData</span><span class="p">))</span>
+        
+    <span class="k">return</span> <span class="n">list_target_topiaid</span></div>
+
+
+<div class="viewcode-block" id="construction_catch_table">
+<a class="viewcode-back" href="../../api/palangre_syc.html#palangre_syc.json_construction.construction_catch_table">[docs]</a>
+<span class="k">def</span> <span class="nf">construction_catch_table</span><span class="p">(</span><span class="n">fish_file</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        fish_file (dataframe): Issu des fonction d&#39;extraction propre à chaque espèce ou groupe d&#39;espèce</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        dataframe: Construction d&#39;un df avec chaque code FAO et le catchfate associée en lignes</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">df_catches</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;fao_code&#39;</span><span class="p">,</span> <span class="s1">&#39;catch_fate&#39;</span><span class="p">,</span> <span class="s1">&#39;count&#39;</span><span class="p">,</span> <span class="s1">&#39;totalWeight&#39;</span><span class="p">])</span>
+
+    <span class="c1"># On récupère les données des colonnes de FAO et catchFate</span>
+    <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">fish_file</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="n">fao_code</span> <span class="o">=</span> <span class="n">col</span><span class="p">[</span><span class="o">-</span><span class="mi">3</span><span class="p">:]</span>
+        <span class="n">catchfate</span> <span class="o">=</span> <span class="n">col</span><span class="p">[</span><span class="o">-</span><span class="mi">7</span><span class="p">:</span><span class="o">-</span><span class="mi">4</span><span class="p">]</span>
+        <span class="n">df_catches</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">df_catches</span><span class="p">)]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;fao_code&#39;</span><span class="p">:</span> <span class="n">fao_code</span><span class="p">,</span> <span class="s1">&#39;catch_fate&#39;</span><span class="p">:</span> <span class="n">catchfate</span><span class="p">}</span>
+
+    <span class="c1"># On supprime les doublons</span>
+    <span class="n">df_catches</span> <span class="o">=</span> <span class="n">df_catches</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span>
+    <span class="n">df_catches</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">df_catches</span></div>
+
+
+<span class="c1"># a voir si c&#39;est pertinent en terme de gain de temps de découper la fonction ici en 2</span>
+<span class="c1"># on pourrait avoir une fonctionn qui gère les lignes issues des noms de colonnes</span>
+<span class="c1"># et une seconde fonction qui remplirait les lignes count et totalWeight en allant chercher les infos dans le excel</span>
+
+
+<div class="viewcode-block" id="create_catch_table_fish_perday">
+<a class="viewcode-back" href="../../api/palangre_syc.html#palangre_syc.json_construction.create_catch_table_fish_perday">[docs]</a>
+<span class="k">def</span> <span class="nf">create_catch_table_fish_perday</span><span class="p">(</span><span class="n">fish_file</span><span class="p">,</span> <span class="n">row_number</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Args:</span>
+<span class="sd">        fish_file (datatable): issu des extraction, donc un datatable par groupe d&#39;espèce</span>
+<span class="sd">        row_number (int): ligne (ou un jour de pêche) à extraire</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        dataframe: par type de poisson pêché et par jour de pêche de 4 colonnes </span>
+<span class="sd">    Ce dataframe contient les champs obligatoires à remplir dans la table &#39;catch&#39; de Observe</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">df_catches</span> <span class="o">=</span> <span class="n">construction_catch_table</span><span class="p">(</span><span class="n">fish_file</span><span class="p">)</span>
+
+    <span class="c1"># On rempli la suite du dataframe pour count et totalWeight (pour une ligne donnée)</span>
+    <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">df_catches</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+        <span class="n">col_end_name</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;catch_fate&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;fao_code&#39;</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">fish_file</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">col</span><span class="p">[</span><span class="o">-</span><span class="mi">7</span><span class="p">:]</span> <span class="o">==</span> <span class="n">col_end_name</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">col</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;No&#39;</span><span class="p">:</span>
+                    <span class="n">fish_file_colname</span> <span class="o">=</span> <span class="s1">&#39;No&#39;</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="n">col_end_name</span>
+                    <span class="n">count</span> <span class="o">=</span> <span class="n">fish_file</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">row_number</span><span class="p">,</span> <span class="n">fish_file_colname</span><span class="p">]</span>
+                    <span class="n">df_catches</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">index</span><span class="p">,</span> <span class="s1">&#39;count&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">count</span>
+                    <span class="c1"># df_catches.loc[index, &#39;count&#39;] = int(df_catches.loc[index, &#39;count&#39;])</span>
+
+                <span class="k">if</span> <span class="n">col</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Kg&#39;</span><span class="p">:</span>
+                    <span class="n">fish_file_colname</span> <span class="o">=</span> <span class="s1">&#39;Kg&#39;</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="n">col_end_name</span>
+                    <span class="n">total_weight</span> <span class="o">=</span> <span class="n">fish_file</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">row_number</span><span class="p">,</span> <span class="n">fish_file_colname</span><span class="p">]</span>
+                    <span class="n">df_catches</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">index</span><span class="p">,</span> <span class="s1">&#39;totalWeight&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">total_weight</span>
+                    <span class="c1"># df_catches.loc[index, &#39;totalWeight&#39;] = int(df_catches.loc[index, &#39;totalWeight&#39;])</span>
+
+                <span class="c1"># a voir si on veut des Nan car il n&#39;y a pas de donnée ou des 0</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">df_catches</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">index</span><span class="p">,</span> <span class="s1">&#39;totalWeight&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">df_catches</span></div>
+
+
+
+<div class="viewcode-block" id="create_catch_table_fishes">
+<a class="viewcode-back" href="../../api/palangre_syc.html#palangre_syc.json_construction.create_catch_table_fishes">[docs]</a>
+<span class="k">def</span> <span class="nf">create_catch_table_fishes</span><span class="p">(</span><span class="n">df_donnees_p1</span><span class="p">,</span> <span class="n">df_donnees_p2</span><span class="p">,</span> <span class="n">row_number</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Args:</span>
+<span class="sd">        df_donnees_p1 (dataframe): page 1 du doc excel</span>
+<span class="sd">        df_donnees_p2 (dataframe): page 2 du doc excel</span>
+<span class="sd">        row_number (int): ligne ou jour du set</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        dataframe: avec les prises réalisées pour une journée de pêche (code FAO, catchFate, nombre de prise et Poids tot)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">liste_fct_extraction</span> <span class="o">=</span> <span class="p">[</span><span class="n">palangre_syc</span><span class="o">.</span><span class="n">excel_extractions</span><span class="o">.</span><span class="n">extract_fish_p1</span><span class="p">(</span><span class="n">df_donnees_p1</span><span class="p">),</span>
+                            <span class="n">palangre_syc</span><span class="o">.</span><span class="n">excel_extractions</span><span class="o">.</span><span class="n">extract_bycatch_p2</span><span class="p">(</span><span class="n">df_donnees_p2</span><span class="p">)</span>
+                            <span class="p">]</span>
+
+    <span class="n">df_catches</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+        <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;fao_code&#39;</span><span class="p">,</span> <span class="s1">&#39;catch_fate&#39;</span><span class="p">,</span> <span class="s1">&#39;count&#39;</span><span class="p">,</span> <span class="s1">&#39;totalWeight&#39;</span><span class="p">])</span>
+
+    <span class="k">for</span> <span class="n">fish_file</span> <span class="ow">in</span> <span class="n">liste_fct_extraction</span><span class="p">:</span>
+        <span class="n">df_per_extraction</span> <span class="o">=</span> <span class="n">create_catch_table_fish_perday</span><span class="p">(</span>
+            <span class="n">fish_file</span><span class="p">,</span> <span class="n">row_number</span><span class="p">)</span>
+        <span class="n">df_catches</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span>
+            <span class="p">[</span><span class="n">df_catches</span><span class="p">,</span> <span class="n">df_per_extraction</span><span class="p">],</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="c1"># Tester si les colonnes &#39;count&#39; et &#39;totalWeight&#39; contiennent des zéros</span>
+    <span class="n">not_catch</span> <span class="o">=</span> <span class="n">df_catches</span><span class="p">[(</span><span class="n">df_catches</span><span class="p">[</span><span class="s1">&#39;count&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span>
+                           <span class="p">(</span><span class="n">df_catches</span><span class="p">[</span><span class="s1">&#39;totalWeight&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)]</span>
+    <span class="c1"># Supprimer les lignes qui contiennent des zéros dans ces colonnes</span>
+    <span class="n">df_catches</span> <span class="o">=</span> <span class="n">df_catches</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">not_catch</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+    <span class="n">df_catches</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">df_catches</span></div>
+
+
+<span class="c1"># TopType et tracelineType sont unknown</span>
+
+
+<div class="viewcode-block" id="create_branchline_composition">
+<a class="viewcode-back" href="../../api/palangre_syc.html#palangre_syc.json_construction.create_branchline_composition">[docs]</a>
+<span class="k">def</span> <span class="nf">create_branchline_composition</span><span class="p">(</span><span class="n">df_gear</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Fonction de construction du json pour les branchlineComposition</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        df_donnees_p1 (dataframe): page 1 du doc excel</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        _type_: le json rempli à partir des infos de mon logbook</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">branchlines_composition</span> <span class="o">=</span> <span class="p">[{</span>
+        <span class="s1">&#39;homeId&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="c1"># &#39;length&#39;: palangre_syc.excel_extractions.extract_gear_info(df_donnees_p1).loc[palangre_syc.excel_extractions.extract_gear_info(df_donnees_p1)[&#39;Logbook_name&#39;] == &#39;Set Line length m&#39;, &#39;Value&#39;].values[0],</span>
+        <span class="s1">&#39;length&#39;</span><span class="p">:</span> <span class="n">df_gear</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df_gear</span><span class="p">[</span><span class="s1">&#39;Logbook_name&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Branchline length m&#39;</span><span class="p">,</span> <span class="s1">&#39;Value&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+        <span class="s1">&#39;proportion&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s1">&#39;tracelineLength&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s1">&#39;topType&#39;</span><span class="p">:</span> <span class="s2">&quot;fr.ird.referential.ll.common.LineType#1239832686157#0.9&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;tracelineType&#39;</span><span class="p">:</span> <span class="s2">&quot;fr.ird.referential.ll.common.LineType#1239832686157#0.9&quot;</span><span class="p">,</span>
+    <span class="p">}]</span>
+    <span class="k">return</span> <span class="n">branchlines_composition</span></div>
+
+
+
+<div class="viewcode-block" id="create_bait_composition">
+<a class="viewcode-back" href="../../api/palangre_syc.html#palangre_syc.json_construction.create_bait_composition">[docs]</a>
+<span class="k">def</span> <span class="nf">create_bait_composition</span><span class="p">(</span><span class="n">bait_datatable</span><span class="p">,</span> <span class="n">allData</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Fonction de construction du json pour les BaitComposition</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        bait_datatable (datatable): datatable non vide &#39;Baits&#39; construite in views.py</span>
+<span class="sd">        allData (json):  Données de références</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        _type_: le json rempli à partir des infos de mon logbook</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">total_baits</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">bait_datatable</span><span class="p">)</span>
+    <span class="n">MultipleBaits</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">bait_datatable</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+        <span class="n">BaitsComposition</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;homeId&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;proportion&quot;</span><span class="p">:</span> <span class="mi">100</span><span class="o">/</span><span class="n">total_baits</span><span class="p">,</span>
+            <span class="s2">&quot;individualSize&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;individualWeight&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;baitSettingStatus&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;baitType&quot;</span><span class="p">:</span> <span class="n">get_baittype_topiaid</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">allData</span><span class="p">),</span>
+        <span class="p">}</span>
+        <span class="n">MultipleBaits</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">BaitsComposition</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">MultipleBaits</span></div>
+
+
+
+<div class="viewcode-block" id="create_floatline_composition">
+<a class="viewcode-back" href="../../api/palangre_syc.html#palangre_syc.json_construction.create_floatline_composition">[docs]</a>
+<span class="k">def</span> <span class="nf">create_floatline_composition</span><span class="p">(</span><span class="n">df_gear</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Fonction de construction du json pour les FloatlineComposition</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        df_donnees_p1 (dataframe): page 1 du doc excel</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        _type_: le json rempli à partir des infos de mon logbook</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">floatlines_composition</span> <span class="o">=</span> <span class="p">[{</span>
+        <span class="s2">&quot;homeId&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="c1"># &quot;length&quot;: palangre_syc.excel_extractions.extract_gear_info(df_donnees_p1).loc[palangre_syc.excel_extractions.extract_gear_info(df_donnees_p1)[&#39;Logbook_name&#39;] == &#39;Floatline length m&#39;, &#39;Value&#39;].values[0],</span>
+        <span class="s2">&quot;length&quot;</span><span class="p">:</span> <span class="n">df_gear</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df_gear</span><span class="p">[</span><span class="s1">&#39;Logbook_name&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Floatline length m&#39;</span><span class="p">,</span> <span class="s1">&#39;Value&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+        <span class="s2">&quot;proportion&quot;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span>
+        <span class="s2">&quot;lineType&quot;</span><span class="p">:</span> <span class="s2">&quot;fr.ird.referential.ll.common.LineType#1239832686157#0.9&quot;</span>
+    <span class="p">}]</span>
+    <span class="k">return</span> <span class="n">floatlines_composition</span></div>
+
+
+<span class="c1"># peut etre ajouter le healthStatus</span>
+
+<div class="viewcode-block" id="create_catches">
+<a class="viewcode-back" href="../../api/palangre_syc.html#palangre_syc.json_construction.create_catches">[docs]</a>
+<span class="k">def</span> <span class="nf">create_catches</span><span class="p">(</span><span class="n">datatable</span><span class="p">,</span> <span class="n">allData</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Fonction de construction du json pour les catches</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        datatable (datatable): datatable créé pour une journée / un set</span>
+<span class="sd">        allData (json):  Données de références</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        _type_: le json rempli à partir des infos de mon logbook</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">MultipleCatches</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">n_ligne_datatable</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">datatable</span><span class="p">)):</span>
+        <span class="n">catches</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;homeId&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="p">}</span>
+        <span class="k">if</span> <span class="n">get_species_topiaid</span><span class="p">(</span><span class="n">datatable</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">n_ligne_datatable</span><span class="p">,</span> <span class="s1">&#39;fao_code&#39;</span><span class="p">],</span> <span class="n">allData</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;fr.ird.referential.common.Species#1433499266610#0.696541526820511&#39;</span> <span class="ow">or</span> <span class="n">get_species_topiaid</span><span class="p">(</span><span class="n">datatable</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">n_ligne_datatable</span><span class="p">,</span> <span class="s1">&#39;fao_code&#39;</span><span class="p">],</span> <span class="n">allData</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;fr.ird.referential.common.Species#1239832685020#0.7691470969492022&#39;</span><span class="p">:</span>
+            <span class="n">catches</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">&quot;comment&quot;</span><span class="p">:</span> <span class="s2">&quot;Other fish non specified&quot;</span><span class="p">,</span> <span class="p">})</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">catches</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">&quot;comment&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="p">})</span>
+        <span class="n">catches</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">&quot;count&quot;</span><span class="p">:</span> <span class="n">datatable</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">n_ligne_datatable</span><span class="p">,</span> <span class="s1">&#39;count&#39;</span><span class="p">],</span>
+                        <span class="s2">&quot;totalWeight&quot;</span><span class="p">:</span> <span class="n">datatable</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">n_ligne_datatable</span><span class="p">,</span> <span class="s1">&#39;totalWeight&#39;</span><span class="p">],</span>
+                        <span class="s2">&quot;hookWhenDiscarded&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+                        <span class="s2">&quot;depredated&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+                        <span class="s2">&quot;beatDiameter&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+                        <span class="s2">&quot;photoReferences&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+                        <span class="s2">&quot;number&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+                        <span class="s2">&quot;acquisitionMode&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+                        <span class="s2">&quot;countDepredated&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+                        <span class="s2">&quot;depredatedProportion&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+                        <span class="s2">&quot;tagNumber&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+                        <span class="s2">&quot;catchFate&quot;</span><span class="p">:</span> <span class="n">get_catchfate_topiaid</span><span class="p">(</span><span class="n">datatable</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">n_ligne_datatable</span><span class="p">,</span> <span class="s1">&#39;catch_fate&#39;</span><span class="p">],</span> <span class="n">allData</span><span class="p">),</span>
+                        <span class="s2">&quot;discardHealthStatus&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+                        <span class="s2">&quot;species&quot;</span><span class="p">:</span> <span class="n">get_species_topiaid</span><span class="p">(</span><span class="n">datatable</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">n_ligne_datatable</span><span class="p">,</span> <span class="s1">&#39;fao_code&#39;</span><span class="p">],</span> <span class="n">allData</span><span class="p">),</span>
+                        <span class="s2">&quot;predator&quot;</span><span class="p">:</span> <span class="p">[],</span>
+                        <span class="s2">&quot;catchHealthStatus&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+                        <span class="s2">&quot;onBoardProcessing&quot;</span><span class="p">:</span> <span class="n">get_processing_topiaid</span><span class="p">(</span><span class="n">datatable</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">n_ligne_datatable</span><span class="p">,</span> <span class="s1">&#39;fao_code&#39;</span><span class="p">],</span> <span class="n">allData</span><span class="p">),</span>
+                        <span class="s2">&quot;weightMeasureMethod&quot;</span><span class="p">:</span> <span class="kc">None</span>
+                        <span class="p">})</span>
+        <span class="n">MultipleCatches</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">catches</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">MultipleCatches</span></div>
+
+
+
+<div class="viewcode-block" id="create_starttimestamp">
+<a class="viewcode-back" href="../../api/palangre_syc.html#palangre_syc.json_construction.create_starttimestamp">[docs]</a>
+<span class="k">def</span> <span class="nf">create_starttimestamp</span><span class="p">(</span><span class="n">df_donnees_p1</span><span class="p">,</span> <span class="n">allData</span><span class="p">,</span> <span class="n">index_day</span><span class="p">,</span> <span class="n">need_hour</span><span class="o">=</span><span class="nb">bool</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Fonction qui permet d&#39;avoir le bon format de date-time pour envoyer le json</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        df_donnees_p1 (_type_): ma page excel 1</span>
+<span class="sd">        allData (json):  Données de références</span>
+<span class="sd">        index_day (int): le numero de la ligne de mon datatable</span>
+<span class="sd">        need_hour (bool) : si true - on va chercher l&#39;heure correspondante dans le datatable, </span>
+<span class="sd">        si false - on ajoute &#39;00:00:00&#39; cad que le bateau n&#39;est pas en train de pêcher donc il nous faut une horaire juste pour convenir au format demandé</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        _type_: la datetime au format qui permet l&#39;insersion dans la bdd</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">need_hour</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">time_</span> <span class="o">=</span> <span class="n">palangre_syc</span><span class="o">.</span><span class="n">excel_extractions</span><span class="o">.</span><span class="n">extract_time</span><span class="p">(</span><span class="n">df_donnees_p1</span><span class="p">,</span> <span class="n">allData</span><span class="p">)</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">index_day</span><span class="p">,</span> <span class="s1">&#39;Time&#39;</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">time_</span> <span class="o">=</span> <span class="s1">&#39;00:00:00&#39;</span>
+
+    <span class="n">date_formated</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">-</span><span class="si">{:02}</span><span class="s1">-</span><span class="si">{:02}</span><span class="s1">T</span><span class="si">{}</span><span class="s1">.000Z&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="n">palangre_syc</span><span class="o">.</span><span class="n">excel_extractions</span><span class="o">.</span><span class="n">extract_logbook_date</span><span class="p">(</span><span class="n">df_donnees_p1</span><span class="p">)</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">palangre_syc</span><span class="o">.</span><span class="n">excel_extractions</span><span class="o">.</span><span class="n">extract_logbook_date</span><span class="p">(</span>
+            <span class="n">df_donnees_p1</span><span class="p">)[</span><span class="s1">&#39;Logbook_name&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Year&#39;</span><span class="p">,</span> <span class="s1">&#39;Value&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+        <span class="n">palangre_syc</span><span class="o">.</span><span class="n">excel_extractions</span><span class="o">.</span><span class="n">extract_logbook_date</span><span class="p">(</span><span class="n">df_donnees_p1</span><span class="p">)</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">palangre_syc</span><span class="o">.</span><span class="n">excel_extractions</span><span class="o">.</span><span class="n">extract_logbook_date</span><span class="p">(</span>
+            <span class="n">df_donnees_p1</span><span class="p">)[</span><span class="s1">&#39;Logbook_name&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Month&#39;</span><span class="p">,</span> <span class="s1">&#39;Value&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+        <span class="n">palangre_syc</span><span class="o">.</span><span class="n">excel_extractions</span><span class="o">.</span><span class="n">extract_time</span><span class="p">(</span><span class="n">df_donnees_p1</span><span class="p">,</span> <span class="n">allData</span><span class="p">)</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">index_day</span><span class="p">,</span> <span class="s1">&#39;Day&#39;</span><span class="p">],</span> <span class="n">time_</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">date_formated</span></div>
+
+
+<div class="viewcode-block" id="create_starttimestamp_from_field_date">
+<a class="viewcode-back" href="../../api/palangre_syc.html#palangre_syc.json_construction.create_starttimestamp_from_field_date">[docs]</a>
+<span class="k">def</span> <span class="nf">create_starttimestamp_from_field_date</span><span class="p">(</span><span class="n">date</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; </span>
+<span class="sd">    Fonction qui permet d&#39;avoir le bon format de date-time pour envoyer le json</span>
+
+<span class="sd">    Args: </span>
+<span class="sd">        date: issue du input </span>
+<span class="sd">        </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        datetime: pour stratDate et endDAte</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">date_formated</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">-</span><span class="si">{:02}</span><span class="s1">-</span><span class="si">{:02}</span><span class="s1">T</span><span class="si">{}</span><span class="s1">.000Z&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">date</span><span class="p">[:</span><span class="mi">4</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="n">date</span><span class="p">[</span><span class="mi">5</span><span class="p">:</span><span class="mi">7</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="n">date</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:]),</span> <span class="s1">&#39;00:00:00&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">date_formated</span></div>
+
+
+<div class="viewcode-block" id="search_date_into_json">
+<a class="viewcode-back" href="../../api/palangre_syc.html#palangre_syc.json_construction.search_date_into_json">[docs]</a>
+<span class="k">def</span> <span class="nf">search_date_into_json</span><span class="p">(</span><span class="n">json_previoustrip</span><span class="p">,</span> <span class="n">date_to_look_for</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Fonction qui cherche une date est présente dans un précédent trip (json file)</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        json_previoustrip (json): du précédent trip qu&#39;on veut continuer</span>
+<span class="sd">        date_to_look_for (date): aaaa-mm-jj </span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        bool: True si la date est dans le json, False sinon</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">for</span> <span class="n">content</span> <span class="ow">in</span> <span class="n">json_previoustrip</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">activity</span> <span class="ow">in</span> <span class="n">content</span><span class="p">[</span><span class="s1">&#39;activityLogbook&#39;</span><span class="p">]</span> <span class="p">:</span>
+            <span class="n">start_time</span> <span class="o">=</span> <span class="n">activity</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;startTimeStamp&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">start_time</span> <span class="ow">and</span> <span class="n">start_time</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">date_to_look_for</span><span class="p">)</span> <span class="p">:</span>
+                <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">return</span> <span class="kc">False</span></div>
+
+            
+<div class="viewcode-block" id="create_activity_and_set">
+<a class="viewcode-back" href="../../api/palangre_syc.html#palangre_syc.json_construction.create_activity_and_set">[docs]</a>
+<span class="k">def</span> <span class="nf">create_activity_and_set</span><span class="p">(</span><span class="n">df_donnees_p1</span><span class="p">,</span> <span class="n">df_donnees_p2</span><span class="p">,</span> <span class="n">allData</span><span class="p">,</span> <span class="n">start_extraction</span><span class="p">,</span> <span class="n">end_extraction</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; </span>
+<span class="sd">    Fonction qui créé les activités et les set selon le format json attendu dans la base de données Observe</span>
+
+<span class="sd">    Args: </span>
+<span class="sd">        df_donnees_p1 (dataframe): page 1 du logbook excel</span>
+<span class="sd">        df_donnees_p2 (dataframe): page 2 du logbook excel  </span>
+<span class="sd">        allData (json):  Données de références</span>
+<span class="sd">        start_extraction (int): numéro qui indique la ligne du logbook à partir de laquelle on commence à remplir le json (0 si on commence au 1er jour, 5 si la marée commence au 6 du mois)</span>
+<span class="sd">        end_extraction (int): numéro qui indique la ligne du logbook à laquelle on arrête de remplir le json (len(excel_p1) si on considère le logbook entier, 15 si la marée s&#39;arrête au 16 du mois)</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        json: des activités et set pour la période et le logbook soumis par l&#39;utilisateur</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="c1">#############################</span>
+    <span class="c1"># messages d&#39;erreurs</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">palangre_syc</span><span class="o">.</span><span class="n">excel_extractions</span><span class="o">.</span><span class="n">extract_gear_info</span><span class="p">(</span><span class="n">df_donnees_p1</span><span class="p">),</span> <span class="nb">tuple</span><span class="p">):</span>
+        <span class="n">df_gear</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">palangre_syc</span><span class="o">.</span><span class="n">excel_extractions</span><span class="o">.</span><span class="n">extract_gear_info</span><span class="p">(</span><span class="n">df_donnees_p1</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">df_gear</span> <span class="o">=</span> <span class="n">palangre_syc</span><span class="o">.</span><span class="n">excel_extractions</span><span class="o">.</span><span class="n">extract_gear_info</span><span class="p">(</span><span class="n">df_donnees_p1</span><span class="p">)</span>
+        
+    <span class="c1"># mais pour l&#39;instant on ne traite pas cette info anyways </span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">palangre_syc</span><span class="o">.</span><span class="n">excel_extractions</span><span class="o">.</span><span class="n">extract_line_material</span><span class="p">(</span><span class="n">df_donnees_p1</span><span class="p">),</span> <span class="nb">tuple</span><span class="p">):</span>
+        <span class="n">df_line</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">palangre_syc</span><span class="o">.</span><span class="n">excel_extractions</span><span class="o">.</span><span class="n">extract_line_material</span><span class="p">(</span><span class="n">df_donnees_p1</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">df_line</span> <span class="o">=</span> <span class="n">palangre_syc</span><span class="o">.</span><span class="n">excel_extractions</span><span class="o">.</span><span class="n">extract_line_material</span><span class="p">(</span><span class="n">df_donnees_p1</span><span class="p">)</span>  
+    <span class="c1">#############################</span>
+
+    
+    <span class="n">MultipleActivity</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">start_extraction</span><span class="p">,</span> <span class="n">end_extraction</span><span class="p">):</span>
+        <span class="nb">set</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;homeId&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s1">&#39;comment&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s1">&#39;number&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s1">&#39;basketsPerSectionCount&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s1">&#39;branchlinesPerBasketCount&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s1">&#39;totalSectionsCount&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s1">&#39;totalBasketsCount&#39;</span><span class="p">:</span> <span class="n">palangre_syc</span><span class="o">.</span><span class="n">excel_extractions</span><span class="o">.</span><span class="n">extract_fishing_effort</span><span class="p">(</span><span class="n">df_donnees_p1</span><span class="p">)</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="s1">&#39;Total hooks / Hooks per basket&#39;</span><span class="p">],</span>
+            <span class="s1">&#39;totalHooksCount&#39;</span><span class="p">:</span> <span class="n">palangre_syc</span><span class="o">.</span><span class="n">excel_extractions</span><span class="o">.</span><span class="n">extract_fishing_effort</span><span class="p">(</span><span class="n">df_donnees_p1</span><span class="p">)</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="s1">&#39;Total hooks&#39;</span><span class="p">],</span>
+            <span class="s1">&#39;totalLightsticksCount&#39;</span><span class="p">:</span> <span class="n">palangre_syc</span><span class="o">.</span><span class="n">excel_extractions</span><span class="o">.</span><span class="n">extract_fishing_effort</span><span class="p">(</span><span class="n">df_donnees_p1</span><span class="p">)</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="s1">&#39;Total lightsticks&#39;</span><span class="p">],</span>
+            <span class="s1">&#39;weightedSnap&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="s1">&#39;snapWeight&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s1">&#39;weightedSwivel&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="s1">&#39;swivelWeight&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s1">&#39;timeBetweenHooks&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s1">&#39;shooterUsed&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="s1">&#39;shooterSpeed&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s1">&#39;maxDepthTargeted&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="p">}</span>
+
+        <span class="nb">set</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;settingStartTimeStamp&#39;</span><span class="p">:</span> <span class="n">create_starttimestamp</span><span class="p">(</span><span class="n">df_donnees_p1</span><span class="p">,</span> <span class="n">allData</span><span class="p">,</span> <span class="n">index_day</span><span class="o">=</span><span class="n">i</span><span class="p">,</span> <span class="n">need_hour</span><span class="o">=</span><span class="kc">True</span><span class="p">)})</span>
+
+        <span class="nb">set</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;settingStartLatitude&#39;</span><span class="p">:</span> <span class="n">palangre_syc</span><span class="o">.</span><span class="n">excel_extractions</span><span class="o">.</span><span class="n">extract_positions</span><span class="p">(</span><span class="n">df_donnees_p1</span><span class="p">)</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="s1">&#39;Latitude&#39;</span><span class="p">],</span>
+                    <span class="s1">&#39;settingStartLongitude&#39;</span><span class="p">:</span> <span class="n">palangre_syc</span><span class="o">.</span><span class="n">excel_extractions</span><span class="o">.</span><span class="n">extract_positions</span><span class="p">(</span><span class="n">df_donnees_p1</span><span class="p">)</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="s1">&#39;Longitude&#39;</span><span class="p">],</span>
+                    <span class="s1">&#39;settingEndTimeStamp&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+                    <span class="s1">&#39;settingEndLatitude&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+                    <span class="s1">&#39;settingEndLongitude&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+                    <span class="s1">&#39;settingVesselSpeed&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+                    <span class="s1">&#39;haulingDirectionSameAsSetting&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+                    <span class="s1">&#39;haulingStartTimeStamp&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+                    <span class="s1">&#39;haulingStartLatitude&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+                    <span class="s1">&#39;haulingStartLongitude&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+                    <span class="s1">&#39;haulingEndTimeStamp&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+                    <span class="s1">&#39;haulingEndLatitude&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+                    <span class="s1">&#39;haulingEndLongitude&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+                    <span class="s1">&#39;haulingBreaks&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+                    <span class="s1">&#39;monitored&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+                    <span class="c1"># En fait &quot;totalLineLength&quot; serait de plusierus km, ce qui ne correspond pas avec le champ &quot;Set Line length m&quot;</span>
+                    <span class="s1">&#39;totalLineLength&#39;</span> <span class="p">:</span> <span class="n">palangre_syc</span><span class="o">.</span><span class="n">excel_extractions</span><span class="o">.</span><span class="n">extract_gear_info</span><span class="p">(</span><span class="n">df_donnees_p1</span><span class="p">)</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">palangre_syc</span><span class="o">.</span><span class="n">excel_extractions</span><span class="o">.</span><span class="n">extract_gear_info</span><span class="p">(</span><span class="n">df_donnees_p1</span><span class="p">)[</span><span class="s1">&#39;Logbook_name&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Set Line length m&#39;</span><span class="p">,</span> <span class="s1">&#39;Value&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                    <span class="c1"># &#39;totalLineLength&#39;: None,</span>
+                    <span class="s1">&#39;basketLineLength&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+                    <span class="s1">&#39;lengthBetweenBranchlines&#39;</span><span class="p">:</span> <span class="n">df_gear</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df_gear</span><span class="p">[</span><span class="s1">&#39;Logbook_name&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Length between branches m&#39;</span><span class="p">,</span> <span class="s1">&#39;Value&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="p">})</span>
+
+        <span class="n">bait_datatable</span> <span class="o">=</span> <span class="n">palangre_syc</span><span class="o">.</span><span class="n">excel_extractions</span><span class="o">.</span><span class="n">extract_bait</span><span class="p">(</span><span class="n">df_donnees_p1</span><span class="p">)</span>
+        <span class="nb">set</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;baitsComposition&#39;</span><span class="p">:</span> <span class="n">create_bait_composition</span><span class="p">(</span><span class="n">bait_datatable</span><span class="p">,</span> <span class="n">allData</span><span class="p">),})</span>
+
+        <span class="nb">set</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;floatlinesComposition&#39;</span><span class="p">:</span> <span class="n">create_floatline_composition</span><span class="p">(</span><span class="n">df_gear</span><span class="p">),</span>
+                    <span class="s1">&#39;hooksComposition&#39;</span><span class="p">:</span> <span class="p">[],</span> 
+                    <span class="s1">&#39;settingShape&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="p">})</span>
+
+        <span class="n">datatable</span> <span class="o">=</span> <span class="n">create_catch_table_fishes</span><span class="p">(</span>
+            <span class="n">df_donnees_p1</span><span class="p">,</span> <span class="n">df_donnees_p2</span><span class="p">,</span> <span class="n">row_number</span><span class="o">=</span><span class="n">i</span><span class="p">)</span>
+        <span class="nb">set</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
+            <span class="s1">&#39;catches&#39;</span><span class="p">:</span> <span class="n">create_catches</span><span class="p">(</span><span class="n">datatable</span><span class="p">,</span> <span class="n">allData</span><span class="p">),</span>
+            <span class="s1">&#39;lineType&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s1">&#39;lightsticksUsed&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="s1">&#39;lightsticksType&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s1">&#39;lightsticksColor&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s1">&#39;mitigationType&#39;</span><span class="p">:</span> <span class="p">[],</span>
+            <span class="s1">&#39;branchlinesComposition&#39;</span><span class="p">:</span> <span class="n">create_branchline_composition</span><span class="p">(</span><span class="n">df_gear</span><span class="p">)</span>
+        <span class="p">})</span>
+
+        <span class="n">activity</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;homeId&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s1">&#39;comment&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="p">}</span>
+        <span class="k">if</span> <span class="n">palangre_syc</span><span class="o">.</span><span class="n">excel_extractions</span><span class="o">.</span><span class="n">extract_time</span><span class="p">(</span><span class="n">df_donnees_p1</span><span class="p">,</span> <span class="n">allData</span><span class="p">)</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="s1">&#39;VesselActivity&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;fr.ird.referential.ll.common.VesselActivity#1239832686138#0.1&#39;</span><span class="p">:</span>
+            <span class="n">activity</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;startTimeStamp&#39;</span><span class="p">:</span> <span class="n">create_starttimestamp</span><span class="p">(</span>
+                <span class="n">df_donnees_p1</span><span class="p">,</span> <span class="n">allData</span><span class="p">,</span> <span class="n">index_day</span><span class="o">=</span><span class="n">i</span><span class="p">,</span> <span class="n">need_hour</span><span class="o">=</span><span class="kc">True</span><span class="p">)})</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">activity</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;startTimeStamp&#39;</span><span class="p">:</span> <span class="n">create_starttimestamp</span><span class="p">(</span><span class="n">df_donnees_p1</span><span class="p">,</span> <span class="n">allData</span><span class="p">,</span> <span class="n">index_day</span><span class="o">=</span><span class="n">i</span><span class="p">,</span> <span class="n">need_hour</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>                             <span class="c1"># &#39;startTimeStamp&#39; : &#39;2022-07-26T00:00:00.000Z&#39;</span>
+                            <span class="p">,</span> <span class="p">})</span>
+
+        <span class="n">activity</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;endTimeStamp&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+                        <span class="s1">&#39;latitude&#39;</span><span class="p">:</span> <span class="n">palangre_syc</span><span class="o">.</span><span class="n">excel_extractions</span><span class="o">.</span><span class="n">extract_positions</span><span class="p">(</span><span class="n">df_donnees_p1</span><span class="p">)</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="s1">&#39;Latitude&#39;</span><span class="p">],</span>
+                        <span class="s1">&#39;longitude&#39;</span><span class="p">:</span> <span class="n">palangre_syc</span><span class="o">.</span><span class="n">excel_extractions</span><span class="o">.</span><span class="n">extract_positions</span><span class="p">(</span><span class="n">df_donnees_p1</span><span class="p">)</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="s1">&#39;Longitude&#39;</span><span class="p">],</span>
+                        <span class="s1">&#39;seaSurfaceTemperature&#39;</span><span class="p">:</span> <span class="n">palangre_syc</span><span class="o">.</span><span class="n">excel_extractions</span><span class="o">.</span><span class="n">extract_temperature</span><span class="p">(</span><span class="n">df_donnees_p1</span><span class="p">)</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="s1">&#39;Temperature&#39;</span><span class="p">],</span>
+                        <span class="s1">&#39;wind&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+                        <span class="s1">&#39;windDirection&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+                        <span class="s1">&#39;currentSpeed&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+                        <span class="s1">&#39;currentDirection&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,})</span>
+        
+        <span class="k">if</span> <span class="p">(</span><span class="n">context</span><span class="p">[</span><span class="s1">&#39;at_port_checkbox&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;true&quot;</span><span class="p">):</span>
+            <span class="n">activity</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;vesselActivity&#39;</span> <span class="p">:</span> <span class="s1">&#39;fr.ird.referential.ll.common.VesselActivity#666#03&#39;</span><span class="p">,})</span>
+        <span class="k">elif</span> <span class="p">((</span><span class="n">context</span><span class="p">[</span><span class="s1">&#39;continuetrip&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">i</span> <span class="o">==</span> <span class="n">start_extraction</span><span class="p">)):</span>
+            <span class="n">activity</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;vesselActivity&#39;</span> <span class="p">:</span> <span class="s1">&#39;fr.ird.referential.ll.common.VesselActivity#666#03&#39;</span><span class="p">,})</span>
+        <span class="k">else</span><span class="p">:</span> 
+            <span class="n">activity</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;vesselActivity&#39;</span><span class="p">:</span> <span class="n">palangre_syc</span><span class="o">.</span><span class="n">excel_extractions</span><span class="o">.</span><span class="n">extract_time</span><span class="p">(</span><span class="n">df_donnees_p1</span><span class="p">,</span> <span class="n">allData</span><span class="p">)</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="s1">&#39;VesselActivity&#39;</span><span class="p">],</span>
+                            <span class="p">})</span>
+        
+        <span class="n">activity</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;dataQuality&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+                        <span class="s1">&#39;fpaZone&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+                        <span class="s1">&#39;relatedObservedActivity&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+                        <span class="p">})</span>
+
+        <span class="k">if</span> <span class="n">activity</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;vesselActivity&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;fr.ird.referential.ll.common.VesselActivity#1239832686138#0.1&#39;</span><span class="p">:</span>
+            <span class="n">activity</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;set&#39;</span><span class="p">:</span> <span class="nb">set</span><span class="p">,</span> <span class="p">})</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">activity</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
+                <span class="s1">&#39;set&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+                <span class="s1">&#39;sample&#39;</span><span class="p">:</span> <span class="kc">None</span>
+            <span class="p">})</span>
+
+        <span class="n">MultipleActivity</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">activity</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">MultipleActivity</span></div>
+
+
+
+<div class="viewcode-block" id="create_trip">
+<a class="viewcode-back" href="../../api/palangre_syc.html#palangre_syc.json_construction.create_trip">[docs]</a>
+<span class="k">def</span> <span class="nf">create_trip</span><span class="p">(</span><span class="n">df_donnees_p1</span><span class="p">,</span> <span class="n">MultipleActivity</span><span class="p">,</span> <span class="n">allData</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; </span>
+<span class="sd">    Fonction qui créé un trip selon le format json attendu dans la base de données Observe (avec éventuellement les information d&#39;un précédent trip si l&#39;utilisateur update un trip existant)</span>
+
+<span class="sd">    Args: </span>
+<span class="sd">        df_donnees_p1 (dataframe): page 1 du logbook excel</span>
+<span class="sd">        MultipleActivity (json): Inofrmations de sortie de la fonction &quot;create_activity_and_set(df_donnees_p1, df_donnees_p2, allData, start_extraction, end_extraction)&quot;</span>
+<span class="sd">        allData (json):  Données de références</span>
+<span class="sd">        context (dict): infrormation concernant startDate, endDate, depPort, endPort saisies par l&#39;utilisateur, mais aussi les information du trip à modifier / continuer si l&#39;utilisateur choisi de continuer un trip existant</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        json: trip</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Dans le trip on a fixé :</span>
+    <span class="c1"># tripType = Marée de pêche commerciale</span>
+    <span class="c1"># observer = unknown car information non présente sur le logbook</span>
+
+    <span class="c1"># species semble être TargetSpecies - a voir si on développe</span>
+
+    <span class="n">trip</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;homeId&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s1">&#39;startDate&#39;</span><span class="p">:</span> <span class="n">context</span><span class="p">[</span><span class="s1">&#39;startDate&#39;</span><span class="p">],</span>
+        <span class="s1">&#39;endDate&#39;</span><span class="p">:</span> <span class="n">context</span><span class="p">[</span><span class="s1">&#39;endDate&#39;</span><span class="p">],</span>
+        <span class="s1">&#39;noOfCrewMembers&#39;</span><span class="p">:</span> <span class="n">palangre_syc</span><span class="o">.</span><span class="n">excel_extractions</span><span class="o">.</span><span class="n">extract_cruise_info</span><span class="p">(</span><span class="n">df_donnees_p1</span><span class="p">)</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">palangre_syc</span><span class="o">.</span><span class="n">excel_extractions</span><span class="o">.</span><span class="n">extract_cruise_info</span><span class="p">(</span><span class="n">df_donnees_p1</span><span class="p">)[</span><span class="s1">&#39;Logbook_name&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;No Of Crew&#39;</span><span class="p">,</span> <span class="s1">&#39;Value&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+        <span class="s1">&#39;ersId&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s1">&#39;gearUseFeatures&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s1">&#39;activityObs&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s1">&#39;activityLogbook&#39;</span><span class="p">:</span> <span class="n">MultipleActivity</span><span class="p">,</span>
+        <span class="s1">&#39;landing&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s1">&#39;sample&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s1">&#39;tripType&#39;</span><span class="p">:</span> <span class="s1">&#39;fr.ird.referential.ll.common.TripType#1464000000000#02&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;observationMethod&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s1">&#39;observer&#39;</span><span class="p">:</span> <span class="s1">&#39;fr.ird.referential.common.Person#1254317601353#0.6617065204572095&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;vessel&#39;</span><span class="p">:</span> <span class="n">get_vessel_topiaid</span><span class="p">(</span><span class="n">df_donnees_p1</span><span class="p">,</span> <span class="n">allData</span><span class="p">),</span>
+        <span class="s1">&#39;observationsProgram&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s1">&#39;logbookProgram&#39;</span><span class="p">:</span> <span class="n">context</span><span class="p">[</span><span class="s1">&#39;programtopiaid&#39;</span><span class="p">],</span>
+        <span class="s1">&#39;captain&#39;</span><span class="p">:</span> <span class="n">get_captain_topiaid</span><span class="p">(</span><span class="n">df_donnees_p1</span><span class="p">,</span> <span class="n">allData</span><span class="p">),</span>
+        <span class="s1">&#39;observationsDataEntryOperator&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s1">&#39;logbookDataEntryOperator&#39;</span><span class="p">:</span> <span class="n">get_operator_topiaid</span><span class="p">(</span><span class="n">df_donnees_p1</span><span class="p">,</span> <span class="n">allData</span><span class="p">),</span>
+        <span class="s1">&#39;sampleDataEntryOperator&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s1">&#39;landingDataEntryOperator&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s1">&#39;ocean&#39;</span><span class="p">:</span> <span class="n">context</span><span class="p">[</span><span class="s1">&#39;oceantopiaid&#39;</span><span class="p">],</span>
+        <span class="s1">&#39;departureHarbour&#39;</span><span class="p">:</span> <span class="n">context</span><span class="p">[</span><span class="s1">&#39;depPort&#39;</span><span class="p">],</span>
+        <span class="s1">&#39;landingHarbour&#39;</span><span class="p">:</span> <span class="n">context</span><span class="p">[</span><span class="s1">&#39;endPort&#39;</span><span class="p">],</span>
+        <span class="s1">&#39;observationsDataQuality&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s1">&#39;logbookDataQuality&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s1">&#39;generalComment&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s1">&#39;observationsComment&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s1">&#39;logbookComment&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s1">&#39;species&#39;</span><span class="p">:</span> <span class="n">get_target_species_topiaid</span><span class="p">(</span><span class="n">df_donnees_p1</span><span class="p">,</span> <span class="n">allData</span><span class="p">),</span>
+        <span class="s1">&#39;observationsAvailability&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="s1">&#39;logbookAvailability&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="p">}</span>
+    
+    <span class="k">return</span> <span class="n">trip</span></div>
+
+
+
+<div class="viewcode-block" id="remove_keys">
+<a class="viewcode-back" href="../../api/palangre_syc.html#palangre_syc.json_construction.remove_keys">[docs]</a>
+<span class="k">def</span> <span class="nf">remove_keys</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">keys_to_remove</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys_to_remove</span><span class="p">:</span>
+            <span class="n">obj</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">obj</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="n">remove_keys</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">keys_to_remove</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">obj</span><span class="p">:</span>
+            <span class="n">remove_keys</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">keys_to_remove</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">obj</span></div>
+
+
+<div class="viewcode-block" id="replace_null_false_true">
+<a class="viewcode-back" href="../../api/palangre_syc.html#palangre_syc.json_construction.replace_null_false_true">[docs]</a>
+<span class="k">def</span> <span class="nf">replace_null_false_true</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">replace_null_false_true</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">obj</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">replace_null_false_true</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">obj</span><span class="p">]</span>
+    <span class="k">elif</span> <span class="n">obj</span> <span class="o">==</span> <span class="s2">&quot;null&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">elif</span> <span class="n">obj</span> <span class="o">==</span> <span class="s2">&quot;true&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">elif</span> <span class="n">obj</span> <span class="o">==</span> <span class="s2">&quot;false&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">obj</span></div>
+
+
+
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div id="searchbox"></div></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+
+<script>
+  $(document).ready(function () {
+    const content = $('<div class="alert-danger">ArviZ docs will now be available at <a href="https://python.arviz.org">python.arviz.org</a>!</div>')
+    $('#banner').append(content);
+  })
+</script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2024, Ob7.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.4.7.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>
