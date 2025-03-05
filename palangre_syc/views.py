@@ -468,14 +468,29 @@ def checking_logbook(request):
 
                 #############################
                 # messages d'erreurs
+                prev_month = int(context['df_previous']['endDate'][5:7])
+                prev_year = int(context['df_previous']['endDate'][:4])
+                curr_month =  int(logbook_month) 
+                curr_year = int(logbook_year)
+                
                 if json_construction.search_date_into_json(json_previoustrip['content'], date) is True:
                     messages.warning(request, _("Le logbook soumis n'a pas pu être saisi dans la base de données car il a déjà été envoyé dans un précédent trip. Merci de vérifier sur l'application"))
-                    probleme = True
-
-                elif (int(context['df_previous']['endDate'][5:7]) + int(context['df_previous']['endDate'][:4]) + 1) != (int(logbook_month) + int(logbook_year)):
-                    print(int(context['endDate'][5:7]) + int(context['endDate'][:4]) + 1, "!=", int(logbook_month) + int(logbook_year))
+                    probleme = True                
+                
+                elif prev_month == 12 and curr_month == 1 and curr_year != prev_year + 1:
                     probleme = True
                     messages.warning(request, _("Le logbook soumis n'a pas pu être saisi dans la base de données car il n'est pas consécutif à la marée précédente"))
+                    
+                # elif prev_month + 1 != curr_month and prev_year == curr_year:
+                #     return True
+                # else:
+                #     print(f"{prev_month}/{prev_year} is not consecutive with {curr_month}/{curr_year}")
+                #     return False
+                
+                # if (int(context['df_previous']['endDate'][5:7]) + int(context['df_previous']['endDate'][:4]) + 1) != (int(logbook_month) + int(logbook_year)):
+                #     print(int(context['endDate'][5:7]) + int(context['endDate'][:4]) + 1, "!=", int(logbook_month) + int(logbook_year))
+                #     probleme = True
+                #     messages.warning(request, _("Le logbook soumis n'a pas pu être saisi dans la base de données car il n'est pas consécutif à la marée précédente"))
                 #############################
                                     
                 context.update({'at_port_checkbox': at_port_checkbox, 
@@ -498,7 +513,7 @@ def checking_logbook(request):
                     data_to_homepage.update({'previous_trip': context['df_previous'],
                             'continuetrip': context['continuetrip'],})
                     print("ce qui permet de garder les infos :"*5)
-                    print(data_to_homepage)
+                    # print(data_to_homepage)
                 
                 return render(request, 'LL_presenting_logbook.html', data_to_homepage)
             
