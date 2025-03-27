@@ -511,7 +511,7 @@ def create_activity_and_set(df_donnees_p1, df_donnees_p2, allData, start_extract
             'comment': None,
             'number': None,
             'basketsPerSectionCount': None,
-            'branchlinesPerBasketCount': None,
+            'branchlinesPerBasketCount': palangre_syc.excel_extractions.extract_fishing_effort(df_donnees_p1).loc[i, 'Hooks per basket'],
             'totalSectionsCount': None,
             'totalBasketsCount': palangre_syc.excel_extractions.extract_fishing_effort(df_donnees_p1).loc[i, 'Total hooks / Hooks per basket'],
             'totalHooksCount': palangre_syc.excel_extractions.extract_fishing_effort(df_donnees_p1).loc[i, 'Total hooks'],
