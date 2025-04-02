@@ -72,20 +72,15 @@ def get_vessel_topiaid(df_donnees_p1, allData):
         _type_: topiaID du navire (vessel)
     """
     vessel_logbook = palangre_syc.excel_extractions.extract_vessel_info(df_donnees_p1).loc[palangre_syc.excel_extractions.extract_vessel_info(df_donnees_p1)['Logbook_name'] == 'Official Number', 'Value'].values[0]
-    #vessel_logbook = vessel_logbook.strip()
-    vessels = allData.get("Vessel", [])
-    # We are getting all the output for the same nationalId (in case the vessel changed flag)
-    matching_vessels = [
-        vessel for vessel in vessels
-        if "nationalId" in vessel and vessel["nationalId"] == vessel_logbook
-    ]
-    if not matching_vessels:
-        return None  # No matching vessel found
-    # Find vessel with status "enable"
-    enabled_vessel = [v for v in matching_vessels if v.get("status") == "enabled"]
-    # Return the "enable" vessel if found, otherwise return the first match
-    return enabled_vessel[0]["topiaId"] if enabled_vessel else matching_vessels[0]["topiaId"]
-
+    enabled_topiaids = [
+        vessel["topiaId"] for vessel in allData["Vessel"]
+        if 'nationalId' in vessel and vessel["nationalId"] == vessel_logbook and vessel["status"] == "enabled"
+        ]
+    if len(enabled_topiaids) > 0: 
+        return enabled_topiaids[0]
+    else :
+        return None
+   
 
 def get_baittype_topiaid(row, allData):
     """
@@ -403,7 +398,7 @@ def create_catches(datatable, allData):
                         "beatDiameter": None,
                         "photoReferences": None,
                         "number": None,
-                        "acquisitionMode": None,
+                        "acquisitionMode": 1,
                         "countDepredated": None,
                         "depredatedProportion": None,
                         "tagNumber": None,
@@ -514,7 +509,7 @@ def create_activity_and_set(df_donnees_p1, df_donnees_p2, allData, start_extract
             'comment': None,
             'number': None,
             'basketsPerSectionCount': None,
-            'branchlinesPerBasketCount': None,
+            'branchlinesPerBasketCount': palangre_syc.excel_extractions.extract_fishing_effort(df_donnees_p1).loc[i, 'Hooks per basket'],
             'totalSectionsCount': None,
             'totalBasketsCount': palangre_syc.excel_extractions.extract_fishing_effort(df_donnees_p1).loc[i, 'Total hooks / Hooks per basket'],
             'totalHooksCount': palangre_syc.excel_extractions.extract_fishing_effort(df_donnees_p1).loc[i, 'Total hooks'],

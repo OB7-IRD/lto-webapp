@@ -575,20 +575,15 @@ def checking_logbook(request):
                 f.write(json.dumps(json_previoustrip, ensure_ascii=False, indent=4))
             
             json_previoustrip = json_previoustrip["content"][0]
-            # On récupère les infos qu'on veut afficher
-            print(json_previoustrip)
-            if "captain" not in json_previoustrip:
-                json_previoustrip["captain"] = "NA"
-                captain_name = "None"
-
-            # Récupérer le nom du capitaine (ou "NA" si absent)
+            # On récupère les infos qu'on veut afficher (test si le captain est saisi)
+            if ('captain' in dict.keys(json_previoustrip)) :
+                captain_name = common_functions.from_topiaid_to_value(topiaid=json_previoustrip['captain'],
+                                                lookingfor='Person',
+                                                label_output='lastName',
+                                                allData=allData,
+                                                domaine=None)
             else :
-                captain_name = common_functions.from_topiaid_to_value(
-                topiaid=json_previoustrip['captain'],
-                lookingfor='Person',
-                label_output='lastName',
-                allData=allData,
-                domaine=None)
+                captain_name = None
 
             vessel_name = common_functions.from_topiaid_to_value(topiaid=json_previoustrip['vessel'],
                                                 lookingfor='Vessel',
