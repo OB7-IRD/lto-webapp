@@ -72,16 +72,15 @@ def get_vessel_topiaid(df_donnees_p1, allData):
         _type_: topiaID du navire (vessel)
     """
     vessel_logbook = palangre_syc.excel_extractions.extract_vessel_info(df_donnees_p1).loc[palangre_syc.excel_extractions.extract_vessel_info(df_donnees_p1)['Logbook_name'] == 'Official Number', 'Value'].values[0]
-    #vessel_logbook = vessel_logbook.strip()
-    for vessel in allData["Vessel"]:
-        if 'nationalId' in vessel:
-            vessel_json = vessel['nationalId']
-            if vessel_logbook == vessel_json:
-                return vessel['topiaId']
-
-    # il faudrait faire un message qui dit de vérifier si le bateau est bien existant et présent dans la base
-    # si 'nationalId' n'est pas dans vessel
-    return None
+    enabled_topiaids = [
+        vessel["topiaId"] for vessel in allData["Vessel"]
+        if 'nationalId' in vessel and vessel["nationalId"] == vessel_logbook and vessel["status"] == "enabled"
+        ]
+    if len(enabled_topiaids) > 0: 
+        return enabled_topiaids[0]
+    else :
+        return None
+    
 
 
 def get_baittype_topiaid(row, allData):
@@ -400,7 +399,7 @@ def create_catches(datatable, allData):
                         "beatDiameter": None,
                         "photoReferences": None,
                         "number": None,
-                        "acquisitionMode": None,
+                        "acquisitionMode": 1,
                         "countDepredated": None,
                         "depredatedProportion": None,
                         "tagNumber": None,
