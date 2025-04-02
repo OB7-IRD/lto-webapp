@@ -284,6 +284,7 @@ def trip_for_prog_vessel(token, base_url, route, vessel_id, programme_topiaid):
     api_ordeer_filter = '&orders.endDate=DESC'
 
     api_trip_request = base_url + route + api_trip + token + api_vessel_filter + vessel_id + api_programme_filter + programme_topiaid + api_ordeer_filter
+    # print("&"*30, api_trip_request)
     response = requests.get(api_trip_request, timeout=TIMEOUT_VALUE)
     return response.content
 
@@ -321,7 +322,7 @@ def send_trip(token, data, base_url, route):
         # return json.loads(res.text)
         return (_("Logbook inséré avec success"), 1)
     else:
-        with open(file = "media/temporary_files/error.json", mode = "w") as outfile:
+        with open(file = "media/temporary_files/error.json", mode = "w", encoding="utf-8") as outfile:
             outfile.write(response.text)
         try:
             return (error_filter(response.text), 2)
@@ -361,7 +362,7 @@ def update_trip(token, data, base_url, topiaid):
     if response.status_code == 200:
         return (_("Logbook inséré avec success"), 1)
     else:
-        with open(file = "media/temporary_files/errorupdate.json", mode = "w") as outfile:
+        with open(file = "media/temporary_files/errorupdate.json", mode = "w", encoding="utf-8") as outfile:
             outfile.write(response.text)
             return (_("L'insertion de cet logbook n'est pas possible. Désolé veuillez essayer un autre"), 3)
 
