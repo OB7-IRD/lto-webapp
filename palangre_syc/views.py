@@ -67,8 +67,7 @@ def get_previous_trip_infos(request, token, df_donnees_p1, allData):
     """
     
     base_url = request.session.get('base_url')
-    # base_url = 'https://observe.ob7.ird.fr/observeweb/api/public'
-
+   
     # les topiaid envoyés au WS doivent être avec des '-' à la place des '#'
     vessel_topiaid = json_construction.get_vessel_topiaid(df_donnees_p1, allData)
     # Pour le webservice, il faut remplacer les # par des - dans les topiaid
@@ -481,11 +480,9 @@ def checking_logbook(request):
                     probleme = True
                     messages.warning(request, _("Le logbook soumis n'a pas pu être saisi dans la base de données car il n'est pas consécutif à la marée précédente"))
                     
-                # elif prev_month + 1 != curr_month and prev_year == curr_year:
-                #     return True
-                # else:
-                #     print(f"{prev_month}/{prev_year} is not consecutive with {curr_month}/{curr_year}")
-                #     return False
+                elif prev_month != 12 and curr_month != 1 and curr_year != prev_year and curr_month != prev_month + 1:
+                    probleme = True
+                    messages.warning(request, _("Le logbook soumis n'a pas pu être saisi dans la base de données car il n'est pas consécutif à la marée précédente"))
                 
                 # if (int(context['df_previous']['endDate'][5:7]) + int(context['df_previous']['endDate'][:4]) + 1) != (int(logbook_month) + int(logbook_year)):
                 #     print(int(context['endDate'][5:7]) + int(context['endDate'][:4]) + 1, "!=", int(logbook_month) + int(logbook_year))
@@ -587,7 +584,6 @@ def checking_logbook(request):
                                                 domaine=None)
             else :
                 captain_name = None
-            
 
             vessel_name = common_functions.from_topiaid_to_value(topiaid=json_previoustrip['vessel'],
                                                 lookingfor='Vessel',

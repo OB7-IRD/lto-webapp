@@ -80,8 +80,7 @@ def get_vessel_topiaid(df_donnees_p1, allData):
         return enabled_topiaids[0]
     else :
         return None
-    
-
+   
 
 def get_baittype_topiaid(row, allData):
     """
