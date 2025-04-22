@@ -498,44 +498,47 @@ def traiLogbook_v23(logB):
 
     try:
         wb = openpyxl.load_workbook(logB)
-    except Exception as e:
-        print("Error :", e)
 
-    maree_log = wb[wb.sheetnames[3]]
-    act_sheet = wb[wb.sheetnames[4]]
+        if "Synthèse marée" in wb.sheetnames:
+            # maree_log = wb[wb.sheetnames[3]]
+            # act_sheet = wb[wb.sheetnames[4]]
+            maree_log = wb["Synthèse marée"]
+            act_sheet = wb["Journal toutes activités"]
+        else:
+            raise ValueError("Aucune feuille compatible trouvée pour l'extraction des données")
 
-    info_bat = {
-        "Navire": maree_log["C"][3].value,
-        "Depart_Port": maree_log["C"][17].value,
-        "Depart_Date": str(maree_log["C"][18].value).split(" ")[0],
-        "Depart_heure": str(maree_log["C"][19].value).split(" ")[0],
-        # "Depart_heure": str(maree_log["C"][19].value),
-        "Arrivee_Port": maree_log["C"][22].value,
-        "Arrivee_Date": str(maree_log["C"][23].value).split(" ")[0],
-        "Arrivee_Loch": maree_log["C"][25].value,
-        "captain": str(maree_log["C"][11].value) + " " + str(maree_log["C"][12].value),
-        "mar_homeId": str(maree_log["C"][14].value) + "" + str(maree_log["C"][15].value),
-    }
+        col_C = maree_log["C"]
+        if len(col_C) > 25:
+            info_bat = {
+                "Navire": col_C[3].value,
+                "Depart_Port": col_C[17].value,
+                "Depart_Date": str(col_C[18].value).split(" ")[0],
+                "Depart_heure": str(col_C[19].value).split(" ")[0],
+                "Arrivee_Port": col_C[22].value,
+                "Arrivee_Date": str(col_C[23].value).split(" ")[0],
+                "Arrivee_Loch": col_C[25].value,
+                "captain": str(col_C[11].value) + " " + str(col_C[12].value),
+                "mar_homeId": str(col_C[14].value) + "" + str(col_C[15].value),
+            }
+        else:
+            return None, None, "Colonne incomplète"
 
-    # Variable pour recuperer les donnée dans le logbook
-    data = []
-    obj = []
+        # Variable pour recuperer les donnée dans le logbook
+        data = []
+        obj = []
 
-    # Recuperation des lignes qui nous interesses à partir de la ligne 33 dans le fichier
+        # Recuperation des lignes qui nous interesses à partir de la ligne 33 dans le fichier
+        i = 1
+        for row in act_sheet.rows:
+            if i >= 7:
+                for index in range(len(row)):
+                    obj.append(row[index].value)
+                data.append(obj)
+                obj = []
+            i = i + 1
 
-    i = 1
-    for row in act_sheet.rows:
-        if i >= 7:
-            for index in range(len(row)):
-                obj.append(row[index].value)
-            data.append(obj)
-            obj = []
-        i = i + 1
-
-    # Transformer le tableau "data" en dataFrame pour faciliter la manipulation des données
-    data = pd.DataFrame(np.array(data))
-
-    try:
+        # Transformer le tableau "data" en dataFrame pour faciliter la manipulation des données
+        data = pd.DataFrame(np.array(data))
         data = data.drop(data.columns[[0, data.shape[1]-2]], axis=1)  # supprimer la 1ere et derniere colonne
         data.columns = range(data.columns.size)  # reninitialiser les colonnes à partir de 0
 
@@ -573,7 +576,7 @@ def traiLogbook_v23(logB):
 
         return info_bat, df_data, ""
 
-    except:
+    except :
         return None, None, "Mauvais format de logbook"
 
 def read_data(file, type_doc="v21"):
@@ -790,7 +793,7 @@ def transmittingBType(chaine, dico):
         # https://demo.ultreia.io/observe-9.1.6/doc/api/public/
         # print(dico)
         # Si n'est pas present dans le Getsome
-        return dico['99'], chaine + ": Balise // Type à préciser"
+        return dico['99'], str(chaine) + ": Balise // Type à préciser"
     else:
         # auccun type de balise dans le logbook
         return dico['999'], "Aucun type de balise indiqué dans le logbook"
@@ -881,69 +884,94 @@ def floatingObjectPart(chaine, data, dico, index, perte_act=False):
         return dico['1-1']
 
 def cap_obs_sea(allData, ob):
-    """Fonction qui permet d'appliquer des traitement sur le nom et prenoms du capitaine pour retrouver son topiaId
+    """
+    Recherche le topiaId du capitaine (et potentiellement de l'opérateur de saisie)
+    à partir de son nom complet fourni dans 'ob'.
+
+    Si la recherche échoue, renvoie l'ID "[inconnu]" et un message d'alerte.
 
     Args:
-        allData (json): données de references
-        ob (str): les informations sur le capitaine et le mar_homeid
+        allData (dict): données contenant les personnes avec leur topiaId, prénom, nom
+        ob (dict): objet contenant les informations de saisie (ex: ob["captain"])
 
     Returns:
-         id (str)
+        Tuple[str, str, Optional[str]]: topiaId du capitaine, de l'opérateur (même pour l’instant), et message d’erreur ou None
     """
-    cap = []
-    logbookDataEntryOperator = []
 
-    for val in allData["Person"]:
-        if val["captain"] == True:
-            cap.append((val["topiaId"], val["firstName"].lower(), val["lastName"].lower()))
-        elif val["dataEntryOperator"] == True:
-            logbookDataEntryOperator.append((val["topiaId"], val["firstName"].lower(), val["lastName"].lower()))
+    def normalise(text):
+        """Nettoie une chaîne de caractères : supprime les espaces en trop et met en minuscules."""
+        return re.sub(r"\s+", " ", text.strip().lower())
 
-    def sou_fonc(arra):
-        print(ob['captain'], len(ob['captain'].split(" ")))
-        trouv_id = None
-        inconnu_id = [val[0] for val in arra if (("[inconnu]" == val[1]) and ("[inconnu]" == val[2]))]
-
-        if ob['captain'] != None:
-            if len(ob['captain'].split(" ")) > 2:
-                nom = ob['captain'].split(" ")[0]
-                lisPren_s = ob['captain'].split(" ")[1:]
-                lisPren = [x for x in lisPren_s if x != ""]
-                prenoms = " ".join(lisPren)
-            else:
-                try:
-                    # lorsqu'on a le nom et prenoms; ex: paul kenji
-                    nom, prenoms = ob['captain'].split(" ")
-
-                except ValueError:
-                    # lorsque nous avons une seule informations saisie soit le nom ou le prenom; ex: kenji
-                    nom_prenoms = ob['captain']
-
-            # Lorsqu'on a le nom et prenons dans la base de donnée
-            trouv_id = [val[0] for val in arra if ((nom.lower() in str(val)) and (prenoms.lower() in str(val)))]
-            if trouv_id != None: return trouv_id[0]
-
-
-            # Lorsqu'on a le nom seulement dans la base de donnée
-            trouv_id = [val[0] for val in arra if ((nom_prenoms.lower() in str(val)) and ("[inconnu]" == val[2]))]
-            if trouv_id != None: return trouv_id[0]
-
-            # Lorsqu'on a le prenom seulement dans la base de donnée
-            trouv_id = [val[0] for val in arra if (("[inconnu]" == val[1]) and (nom_prenoms.lower() in str(val)))]
-            if trouv_id != None: return trouv_id[0]
-
-            return inconnu_id[0]
+    def extraire_nom_prenoms(chaine):
+        """Extrait prénom et nom depuis une chaîne. Suppose que le prénom est au début."""
+        chaine = normalise(chaine)
+        # Découpage par espace ou tiret (ex: "Julien MERCIER - KERADENNEC")
+        parts = re.split(r"\s+|-", chaine)
+        if len(parts) == 1:
+            return parts[0], "[inconnu]"
+        elif len(parts) == 2:
+            return parts[0], parts[1]
         else:
-            return inconnu_id[0]
+            prenom = parts[0]
+            nom = " ".join(parts[1:])
+            return prenom, nom
 
-    if cap == logbookDataEntryOperator:
-        id_cap = sou_fonc(cap)
-        return id_cap, id_cap
-    else:
-        id_cap = sou_fonc(cap)
-        # id_op = sou_fonc(logbookDataEntryOperator) # Pas utilisé pour l'instant
+    def rechercher_id(liste_personnes, nom_capitaine):
+        """Cherche un topiaId correspondant à un nom complet. Gère les erreurs et renvoie un message si échec."""
+        try:
+            id_inconnu = next(val[0] for val in liste_personnes if val[1] == "[inconnu]" and val[2] == "[inconnu]")
+        except StopIteration:
+            id_inconnu = None
 
-        return id_cap, id_cap
+        if not nom_capitaine:
+            return id_inconnu, "Nom du capitaine vide"
+
+        try:
+            nom_capitaine = normalise(nom_capitaine)
+            prenom, nom = extraire_nom_prenoms(nom_capitaine)
+
+            for topiaId, firstName, lastName in liste_personnes:
+                # Recherche standard (prenom, nom)
+                if prenom in firstName and nom in lastName:
+                    return topiaId, None
+                # Recherche inversée (nom, prenom)
+                if nom in firstName and prenom in lastName:
+                    return topiaId, None
+                # Cas prénom connu uniquement
+                if prenom in firstName and lastName == "[inconnu]":
+                    return topiaId, None
+                # Cas nom connu uniquement
+                if lastName in nom_capitaine and firstName == "[inconnu]":
+                    return topiaId, None
+
+            return id_inconnu, f"Capitaine non trouvé dans la base : '{nom_capitaine}'"
+
+        except Exception as e:
+            # return id_inconnu, f"Erreur lors de la recherche ID pour '{nom_capitaine}': {str(e)}"
+            return id_inconnu, f"Capitaine non trouvé dans la base : '{nom_capitaine}'"
+
+    # Création des listes (captains et opérateurs) depuis allData
+    cap = [
+        (val["topiaId"], normalise(val["firstName"]), normalise(val["lastName"]))
+        for val in allData["Person"] if val.get("captain")
+    ]
+    logbookDataEntryOperator = [
+        (val["topiaId"], normalise(val["firstName"]), normalise(val["lastName"]))
+        for val in allData["Person"] if val.get("dataEntryOperator")
+    ]
+
+    # Appel de la recherche
+    id_cap, msg1 = rechercher_id(cap, ob.get('captain'))
+
+    # À activer si un jour on utilise l'opérateur de saisie séparément :
+    # id_op, msg2 = rechercher_id(logbookDataEntryOperator, ob.get('dataEntryOperator'))
+    id_op = id_cap  # Actuellement avec double retour identique
+
+    # On garde seulement le message s'il y a une erreur
+    message = msg1 if msg1 else None
+    return id_cap, id_op, message
+
+
 
 class TransmitException(Exception):
     """Classe qui permet de gerer les exceptions sur les activités sur objet
@@ -1881,7 +1909,11 @@ def build_trip(allData, info_bat, data_log, oce, prg, ob):
     else:
         js_contents["endDate"] = info_bat['Arrivee_Date'] + "T00:00:00.000Z"
 
-    js_contents["captain"], js_contents["logbookDataEntryOperator"] = cap_obs_sea(allData, ob)
+    id_cap, id_op, message = cap_obs_sea(allData, ob)
+    js_contents["captain"], js_contents["logbookDataEntryOperator"] = id_cap, id_op
+
+    if message:
+        allMessages.append(message)
 
     js_contents["loch"] = info_bat['Arrivee_Loch']
     js_contents["homeId"] = str(ob["mar_homeId"])
@@ -1911,10 +1943,6 @@ def build_trip_v23(allData, info_bat, data_log, oce, prg):
     oths_rej = []
     data_date = ""
 
-    fpa_suiv = ""
-    type_decla_suiv = ""
-    comment_suiv = ""
-    comment_prece = ""
     nb_prece = 0
     not_time = False
 
@@ -2007,14 +2035,15 @@ def build_trip_v23(allData, info_bat, data_log, oce, prg):
                         total_weight += float(0) # Tonne
                         js_catch = func_tab4_catches(topId_sp=species_id, weight=float(0), WeightMeasureMet=WeightMeasureMet, code_conser_reje=code_conser_autre, wgtCategory=wgtCategory)
 
-                    if pd.notna(row['quant_conser_nb']):
-                        js_catch.update({"count": str(row['quant_conser_nb'])})
-                        js_catch.update({"comment": "CONSERVEE"})
+                    if (row['quant_conser_tonne'] == "") or (row['quant_conser_tonne'] == None) or (row['quant_conser_tonne'] == "0"):
+                        if pd.notna(row['quant_conser_nb']):
+                            js_catch.update({"count": str(row['quant_conser_nb'])})
+                            js_catch.update({"comment": "CONSERVEE"})
 
-                    if pd.notna(row['quant_reje_nb']):
-                        js_catch.update({"count": str(row['quant_reje_nb'])})
-                        js_catch.update({"speciesFate": code_reje})
-                        js_catch.update({"comment": "REJETEE"})
+                        if pd.notna(row['quant_reje_nb']):
+                            js_catch.update({"count": str(row['quant_reje_nb'])})
+                            js_catch.update({"speciesFate": code_reje})
+                            js_catch.update({"comment": "REJETEE"})
 
                     list_catches.append(js_catch)
 
@@ -2077,7 +2106,6 @@ def build_trip_v23(allData, info_bat, data_log, oce, prg):
                 prev = -1
 
                 try:
-                    check_vis_dep = tuple()
                     if (row['obj_flot_act_sur_obj'] != None) and (d_act_obj.loc[index + 1, 'obj_flot_act_sur_obj'] != None):
                         check_vis_dep = row['obj_flot_act_sur_obj'].lower(), d_act_obj.loc[index + 1, 'obj_flot_act_sur_obj'].lower()
                         prev = index + 1
@@ -2259,15 +2287,20 @@ def build_trip_v23(allData, info_bat, data_log, oce, prg):
             def setCo_setSuc_vess(setCount, setSuccessStatus, vesselActivity):
                 return setCount, setSuccessStatus, vesselActivity
 
-            if data_activity["calee_type"] is not None:
+            if pd.notna(data_activity["calee_type"]):
+                if total_weight != 0:
+                    posi_or_null_c = dico_code_setSucc["1"]
+                else:
+                    posi_or_null_c = dico_code_setSucc["0"]
+
                 if ( ("FAR -" in data_activity["type_declaration"].upper()) and ("libre" in data_activity["calee_type"].lower()) ):
                     # Code 6
-                    js_activitys["setCount"], js_activitys["setSuccessStatus"], js_activitys["vesselActivity"] = setCo_setSuc_vess(1, dico_code_setSucc["1"], vers_code_6)
+                    js_activitys["setCount"], js_activitys["setSuccessStatus"], js_activitys["vesselActivity"] = setCo_setSuc_vess(1, posi_or_null_c, vers_code_6)
                     js_activitys["schoolType"] = schoolType(data_activity["calee_type"], dico_code_sch_type)
 
                 elif ( ("FAR -" in data_activity["type_declaration"].upper()) and ("objet" in data_activity["calee_type"].lower()) ):
                     # Code 6
-                    js_activitys["setCount"], js_activitys["setSuccessStatus"], js_activitys["vesselActivity"] = setCo_setSuc_vess(1, dico_code_setSucc["0"], vers_code_6)
+                    js_activitys["setCount"], js_activitys["setSuccessStatus"], js_activitys["vesselActivity"] = setCo_setSuc_vess(1, posi_or_null_c, vers_code_6)
                     js_activitys["schoolType"] = schoolType(data_activity["calee_type"], dico_code_sch_type)
 
             elif ( ("FAR -" in data_activity["type_declaration"].upper()) and (data_activity["calee_type"] is None) ):
@@ -2297,46 +2330,50 @@ def build_trip_v23(allData, info_bat, data_log, oce, prg):
 
             js_activitys["wind"] = get_wind_id_interval(allData, "Wind", data_activity["vent_vit"])
 
-            nb_lignes = len(hour_group)  # Nombre total de lignes dans hour_group
 
-            if nb_lignes >= 2:
-                dernier_element        = hour_group.iloc[-1]  # Récupération de le dernier élément de datas
-                fpa_suiv               = dernier_element["zee"]
-                type_decla_suiv        = dernier_element["type_declaration"].lower()[:3]
-                comment_suiv           = dernier_element["type_declaration"]
+            # Récupération des éléments de datas utilisés pour le changement de zone
+            types_decls = hour_group["type_declaration"].str.lower().str[:3]
 
-            if ( (type_decla_suiv == "cox") and ("coe" == data_activity["type_declaration"].lower()[:3]) or (type_decla_suiv == "coe") and ("cox" == data_activity["type_declaration"].lower()[:3]) or (type_decla_suiv == "coe") and ("coe" == data_activity["type_declaration"].lower()[:3]) or (type_decla_suiv == "cox") and ("cox" == data_activity["type_declaration"].lower()[:3]) ):
+            # Repérer COE et COX dans hour_group
+            index_coe = hour_group[types_decls == "coe"].index
+            index_cox = hour_group[types_decls == "cox"].index
 
-                data_activity   = hour_group.iloc[-1]  # Récupération de le dernier élément de datas
+            # Récupération des types_dec présents dans le groupe
+            types_dec = list(types_decls)
 
-                # faire le changement de zone
-                # js_activitys["number"] = nb_prece
-                js_activitys["previousFpaZone"], comment_temp = fpaZone_id(data_activity["zee"], tab_fpa, allData)
-                js_activitys["nextFpaZone"], comment_temp = fpaZone_id(fpa_suiv, tab_fpa, allData)
+            # Cas d'erreur : plusieurs COX ou plusieurs COE à la même heure
+            if types_dec.count("cox") > 1 or types_dec.count("coe") > 1:
+                data_activity = hour_group.iloc[0]
+                err_message = "Il y a une activité de changement de zone qui semble un peu louche. : Le " + str(data_activity["date"]).replace(" 00:00:00", " à ") + str(data_activity["heure"])
+                allMessages.append(err_message)
+                print("==> Il y a une activité de changement de zone qui semble un peu louche. ")
+
+            # Cas général : un COX et un COE présents (changement de zone correct)
+            elif "cox" in types_dec and "coe" in types_dec:
+
+                ligne_coe = hour_group.loc[index_coe[0]]
+                ligne_cox = hour_group.loc[index_cox[0]]
+
+                comment_suiv = ligne_cox["type_declaration"] + " ==> " + ligne_coe["type_declaration"]
+
+                js_activitys["previousFpaZone"], comment_temp = fpaZone_id(ligne_cox["zee"], tab_fpa, allData)
+                js_activitys["nextFpaZone"], comment_temp = fpaZone_id(ligne_coe["zee"], tab_fpa, allData)
                 js_activitys["currentFpaZone"] = None
 
-                if (comment_prece is not None) and ((js_activitys["comment"] is not None) and (js_activitys["comment"] != "Aucun commentaire")):
-                    js_activitys["comment"] = js_activitys["comment"] + " ==> " + comment_suiv
-                if (comment_prece is not None):
-                    js_activitys["comment"] = data_activity["type_declaration"] + " ==> " + comment_suiv
-                elif (comment_prece is None) and (js_activitys["comment"] is not None):
-                    js_activitys["comment"] = js_activitys["comment"]
-                elif (comment_prece is not None) and ((js_activitys["comment"] is None) or (js_activitys["comment"] == "Aucun commentaire")):
-                    js_activitys["comment"] = data_activity["type_declaration"]
-                else:
-                    js_activitys["comment"] = "Aucun commentaire"
+                js_activitys["comment"] = comment_suiv
 
                 if (comment_temp != "") and (comment_temp != None):
                     js_activitys["comment"] = js_activitys["comment"] + " # " + comment_temp
 
+
                 js_activitys["vesselActivity"] = vers_code_21
 
+                ligne_base = hour_group.loc[min(index_cox[0], index_coe[0])]  # on prend la 1e ligne (niveau info GPS)
 
-                js_activitys["latitude"], js_activitys["longitude"], checkMsg = lat_long(data_activity["lat1"], data_activity["lat2"],
-                                                                                         data_activity["lat3"],
-                                                                                         data_activity["long1"],
-                                                                                         data_activity["long2"],
-                                                                                         data_activity["long3"])
+                js_activitys["latitude"], js_activitys["longitude"], checkMsg = lat_long(
+                    ligne_base["lat1"], ligne_base["lat2"], ligne_base["lat3"],
+                    ligne_base["long1"], ligne_base["long2"], ligne_base["long3"]
+                )
 
                 # ajouter la nouvelle activité
                 activite.append(js_activitys)
@@ -2344,9 +2381,73 @@ def build_trip_v23(allData, info_bat, data_log, oce, prg):
                 # Reinitialliser les variables
                 nb = nb_prece
 
-            else:
+                print(f"Changement de zone standard détecté le {ligne_coe['date']} {ligne_coe['heure']}")
+
+            # Cas particulier 1 : uniquement COE (entrée de zone)
+            elif "coe" in types_dec and "cox" not in types_dec:
+
+                ligne_coe = hour_group.loc[index_coe[0]]
+
+                js_activitys["previousFpaZone"] = getId(allData, "FpaZone", argment="code=XXX*")
+                js_activitys["nextFpaZone"], comment_temp = fpaZone_id(ligne_coe["zee"], tab_fpa, allData)
+                js_activitys["currentFpaZone"] = None
+
+                js_activitys["comment"] = ligne_coe["type_declaration"]
+
+                if (comment_temp != "") and (comment_temp != None):
+                    js_activitys["comment"] = js_activitys["comment"] + " # " + comment_temp
+
+                js_activitys["vesselActivity"] = vers_code_21
+
+                ligne_base = hour_group.loc[index_coe[0]]  # on prend la 1e ligne (niveau info GPS)
+
+                js_activitys["latitude"], js_activitys["longitude"], checkMsg = lat_long(
+                    ligne_base["lat1"], ligne_base["lat2"], ligne_base["lat3"],
+                    ligne_base["long1"], ligne_base["long2"], ligne_base["long3"]
+                )
+
+                # ajouter la nouvelle activité
                 activite.append(js_activitys)
 
+                # Reinitialliser les variables
+                nb = nb_prece
+
+
+                print(f"Entrée de zone uniquement le {ligne_coe['date']} {ligne_coe['heure']}")
+
+            # Cas particulier 2 : uniquement COX (sortie de zone)
+            elif "cox" in types_dec and "coe" not in types_dec:
+                ligne_cox = hour_group.loc[index_cox[0]]
+
+                js_activitys["previousFpaZone"], comment_temp = fpaZone_id(ligne_cox["zee"], tab_fpa, allData)
+                js_activitys["nextFpaZone"] = getId(allData, "FpaZone", argment="code=XXX*")
+                js_activitys["currentFpaZone"] = None
+
+                js_activitys["comment"] = ligne_cox["type_declaration"]
+
+                if (comment_temp != "") and (comment_temp != None):
+                    js_activitys["comment"] = js_activitys["comment"] + " # " + comment_temp
+
+                js_activitys["vesselActivity"] = vers_code_21
+
+                ligne_base = hour_group.loc[index_cox[0]]  # on prend la 1e ligne (niveau info GPS)
+
+                js_activitys["latitude"], js_activitys["longitude"], checkMsg = lat_long(
+                    ligne_base["lat1"], ligne_base["lat2"], ligne_base["lat3"],
+                    ligne_base["long1"], ligne_base["long2"], ligne_base["long3"]
+                )
+
+                # ajouter la nouvelle activité
+                activite.append(js_activitys)
+
+                # Reinitialliser les variables
+                nb = nb_prece
+
+
+                print(f"Sortie de zone uniquement le {ligne_cox['date']} {ligne_cox['heure']}")
+
+            else:
+                activite.append(js_activitys)
 
             js_activitys["number"] = int(number)
             nb += 1
@@ -2415,7 +2516,12 @@ def build_trip_v23(allData, info_bat, data_log, oce, prg):
     else:
         js_contents["endDate"] = info_bat['Arrivee_Date'] + "T00:00:00.000Z"
 
-    js_contents["captain"], js_contents["logbookDataEntryOperator"] = cap_obs_sea(allData, info_bat)
+
+    id_cap, id_op, message = cap_obs_sea(allData, info_bat)
+    js_contents["captain"], js_contents["logbookDataEntryOperator"] = id_cap, id_op
+
+    if message:
+        allMessages.append(message)
 
     js_contents["loch"] = info_bat['Arrivee_Loch']
     js_contents["homeId"] = str(info_bat["mar_homeId"])
