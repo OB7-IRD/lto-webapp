@@ -359,11 +359,29 @@ def update_trip(token, data, base_url, topiaid):
     
     print("Code resultat de la requete", response.status_code)
     
+    # if response.status_code == 200:
+    #     return (_("Logbook inséré avec success"), 1)
+    # else:
+    #     with open(file = "media/temporary_files/errorupdate.json", mode = "w", encoding="utf-8") as outfile:
+    #         outfile.write(response.text)
+    #         return (_("L'insertion de cet logbook n'est pas possible. Désolé veuillez essayer un autre"), 3)
+        
+        
+        
     if response.status_code == 200:
+        # return json.loads(res.text)
         return (_("Logbook inséré avec success"), 1)
     else:
         with open(file = "media/temporary_files/errorupdate.json", mode = "w", encoding="utf-8") as outfile:
             outfile.write(response.text)
+        try:
+            return (error_filter(response.text), 2)
+            # return (error_filter(response.text), 6) # 6 pour utiliser le niveau d'erreur personnalisée
+            # return json.loads(res.text), 2
+        except KeyError:
+            # Faire une fonction pour mieux traiter ce type d'erreur
+            # print("Message d'erreur: ", json.loads(res.text)["exception"]["result"]["nodes"]) # A faire
+            print("Message d'erreur: ", json.loads(response.text)) # A faire
             return (_("L'insertion de cet logbook n'est pas possible. Désolé veuillez essayer un autre"), 3)
 
 
@@ -523,7 +541,7 @@ def error_filter(response):
                     heure = match2.group(1)  # Extraction de l'heure
                     text_list[idx] = heure  # Remplacer l'heure dans text_list
 
-            text_list.remove(heure)
+            # text_list.remove(heure)
             text_list.remove(date)
 
             # Génération du format HTML sous forme de tableau Tailwind

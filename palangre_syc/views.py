@@ -771,6 +771,12 @@ def send_logbook2observe(request):
                             base_url=base_url,
                             topiaid=context['df_previous']['triptopiaid'].replace("#", "-"))
     
+            # print("Creation of a new trip")
+            # route = '/data/ll/common/Trip'
+            # print("base url ::: ", base_url)
+            # print("token ::: ", token)
+            # resultat, code = api_functions.send_trip(token, trip, base_url, route)
+            
         
         if code == 1:
             messages.success(request, _("Le logbook a bien été envoyé dans la base"))
