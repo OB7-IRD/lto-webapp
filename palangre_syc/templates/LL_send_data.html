@@ -13,7 +13,7 @@
 {% endblock heading %}
 
 {% block content %}
-  
+
 <div class="mb-5">
   <div class="flex justify-center h-screen">
     <div class="flex flex-col">
@@ -33,9 +33,9 @@
               ">
             
               <div class="ml-8 mr-12 mb-5 font-sans text-center text-xl font-semibold font-semibold leading-snug tracking-normal text-black antialiased">
-                <ul class="messages">     
-                  <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-                </ul>      
+                <ul class="messages">
+                  <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message | safe}}</li>
+                </ul>
               </div>
             </div>
           {% endfor %}
