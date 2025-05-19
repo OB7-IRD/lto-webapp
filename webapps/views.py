@@ -338,25 +338,51 @@ def logbook(request):
                      if apply_conf["ty_doc"] == "ps2":
                         allMessages, content_json = build_trip_v23(allData=allData, info_bat=info_Navir, data_log=data_logbook, oce=apply_conf['ocean'], prg=apply_conf['programme'])
 
-                     if os.path.exists("media/temporary_files/content_json.json"):
-                         os.remove("media/temporary_files/content_json.json")
-                         # creer le nouveau
+                     try:
+                         # Nettoyage de content_json pour rendre tout sérialisable
+                         def convert_obj(obj):
+                             if isinstance(obj, pd._libs.tslibs.nattype.NaTType):
+                                 return None
+                             elif isinstance(obj, pd.Timestamp):
+                                 return obj.isoformat()
+                             return obj
+
+                         def recursive_convert(obj):
+                             if isinstance(obj, dict):
+                                 return {k: recursive_convert(v) for k, v in obj.items()}
+                             elif isinstance(obj, list):
+                                 return [recursive_convert(v) for v in obj]
+                             else:
+                                 return convert_obj(obj)
+
+                         safe_content_json = recursive_convert(content_json)
+
                          file_name = "media/temporary_files/content_json.json"
 
-                         with open(file_name, 'w', encoding='utf-8') as f:
-                             f.write(json.dumps(content_json, ensure_ascii=False, indent=4))
-                     else:
-                         # creer le nouveau content
-                         file_name = "media/temporary_files/content_json.json"
+                         # créer récursivement tous les dossiers du chemin indiqué, s’ils n’existent pas encore.
+                         os.makedirs(os.path.dirname(file_name), exist_ok=True)
 
                          with open(file_name, 'w', encoding='utf-8') as f:
-                             f.write(json.dumps(content_json, ensure_ascii=False, indent=4))
+                             f.write(json.dumps(safe_content_json, ensure_ascii=False, indent=4))
+
+                     except TypeError as e:
+                         error_msg = f"Erreur lors de la sauvegarde du fichier JSON : {str(e)}"
+                         print(error_msg)
+                         messages.error(request, f"Une erreur est survenue pendant l'extraction des données du fichier logbook. <br>"
+                                                f"Vérifiez les données ou insérez un notre fichier logbook svp")
+
 
                      if allMessages == []:
                          messages.info(request, _("Extration des données avec succès vous pouvez les soumettre maintenant."))
+                     elif len(allMessages) == 1 and "Capitaine" in allMessages[0]:
+                         messages.info(request, _("Extration des données avec succès.<br>" \
+                                                  f"<strong style='color:red;'> Mais : {allMessages[0]} </strong>"))
                      else:
                          for msg in allMessages:
                              messages.error(request, msg)
+                         if apply_conf["ty_doc"] == "ps2":
+                             tags = "error_v23"
+                         else:
                              tags = "error"
 
                          # Mettre les messages d'erreurs dans un fichier log
@@ -376,7 +402,7 @@ def logbook(request):
 
             else:
                 messages.error(request, message)
-                tags = "error"
+                tags = "error2"
 
             return render(request, "logbook.html",{
                 "tags": tags,
