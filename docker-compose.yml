@@ -10,8 +10,8 @@ services:
     depends_on:
       - web
   web:
-    image: ghcr.io/ob7-ird/observe-logbooks-reader-webapp:main
-    command: bash -c "python runserver compilemessages && python manage.py collectstatic --no-input && python manage.py makemigrations && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+    image: ghcr.io/ob7-ird/lto-webapp:main
+    command: bash -c "python manage.py compilemessages && python manage.py collectstatic --no-input && python manage.py makemigrations && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
     volumes:
       - ./database:/home/app/webapp/database
       - /var/www/lto-webapp/static:/var/www/lto-webapp/static

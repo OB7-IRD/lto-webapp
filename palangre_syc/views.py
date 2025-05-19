@@ -67,8 +67,7 @@ def get_previous_trip_infos(request, token, df_donnees_p1, allData):
     """
     
     base_url = request.session.get('base_url')
-    # base_url = 'https://observe.ob7.ird.fr/observeweb/api/public'
-
+   
     # les topiaid envoyés au WS doivent être avec des '-' à la place des '#'
     vessel_topiaid = json_construction.get_vessel_topiaid(df_donnees_p1, allData)
     # Pour le webservice, il faut remplacer les # par des - dans les topiaid
@@ -468,15 +467,23 @@ def checking_logbook(request):
 
                 #############################
                 # messages d'erreurs
+                prev_month = int(context['df_previous']['endDate'][5:7])
+                prev_year = int(context['df_previous']['endDate'][:4])
+                curr_month =  int(logbook_month) 
+                curr_year = int(logbook_year)
+                
                 if json_construction.search_date_into_json(json_previoustrip['content'], date) is True:
                     messages.warning(request, _("Le logbook soumis n'a pas pu être saisi dans la base de données car il a déjà été envoyé dans un précédent trip. Merci de vérifier sur l'application"))
-                    probleme = True
+                    probleme = True                
+                
+                elif prev_month == 12 and curr_month == 1 and curr_year != prev_year + 1:
 
-                elif (int(context['df_previous']['endDate'][5:7]) + int(context['df_previous']['endDate'][:4]) + 1) != (int(logbook_month) + int(logbook_year)):
-                    print(int(context['endDate'][5:7]) + int(context['endDate'][:4]) + 1, "!=", int(logbook_month) + int(logbook_year))
                     probleme = True
                     messages.warning(request, _("Le logbook soumis n'a pas pu être saisi dans la base de données car il n'est pas consécutif à la marée précédente"))
-                #############################
+                    
+                elif prev_month != 12 and curr_month != 1 and curr_year != prev_year and curr_month != prev_month + 1:
+                    probleme = True
+                    messages.warning(request, _("Le logbook soumis n'a pas pu être saisi dans la base de données car il n'est pas consécutif à la marée précédente"))
                                     
                 context.update({'at_port_checkbox': at_port_checkbox, 
                                 'startDate': context['df_previous']['startDate'], 
@@ -498,7 +505,7 @@ def checking_logbook(request):
                     data_to_homepage.update({'previous_trip': context['df_previous'],
                             'continuetrip': context['continuetrip'],})
                     print("ce qui permet de garder les infos :"*5)
-                    print(data_to_homepage)
+                    # print(data_to_homepage)
                 
                 return render(request, 'LL_presenting_logbook.html', data_to_homepage)
             
@@ -563,12 +570,15 @@ def checking_logbook(request):
                 f.write(json.dumps(json_previoustrip, ensure_ascii=False, indent=4))
             
             json_previoustrip = json_previoustrip["content"][0]
-            # On récupère les infos qu'on veut afficher
-            captain_name = common_functions.from_topiaid_to_value(topiaid=json_previoustrip['captain'],
+            # On récupère les infos qu'on veut afficher (test si le captain est saisi)
+            if ('captain' in dict.keys(json_previoustrip)) :
+                captain_name = common_functions.from_topiaid_to_value(topiaid=json_previoustrip['captain'],
                                                 lookingfor='Person',
                                                 label_output='lastName',
                                                 allData=allData,
                                                 domaine=None)
+            else :
+                captain_name = None
 
             vessel_name = common_functions.from_topiaid_to_value(topiaid=json_previoustrip['vessel'],
                                                 lookingfor='Vessel',
@@ -761,6 +771,12 @@ def send_logbook2observe(request):
                             base_url=base_url,
                             topiaid=context['df_previous']['triptopiaid'].replace("#", "-"))
     
+            # print("Creation of a new trip")
+            # route = '/data/ll/common/Trip'
+            # print("base url ::: ", base_url)
+            # print("token ::: ", token)
+            # resultat, code = api_functions.send_trip(token, trip, base_url, route)
+            
         
         if code == 1:
             messages.success(request, _("Le logbook a bien été envoyé dans la base"))

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-17 14:10+0400\n"
+"POT-Creation-Date: 2024-12-20 05:53+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,15 +18,15 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: api_traitement/api_functions.py:121
+#: .\api_traitement\api_functions.py:120
 msgid "Problème de connexion pour recuperer les données"
 msgstr "It seems there is an issue to collect the data"
 
-#: api_traitement/api_functions.py:323 api_traitement/api_functions.py:362
+#: .\api_traitement\api_functions.py:322 .\api_traitement\api_functions.py:361
 msgid "Logbook inséré avec success"
 msgstr "The logbook has been successfully sent"
 
-#: api_traitement/api_functions.py:334 api_traitement/api_functions.py:366
+#: .\api_traitement\api_functions.py:333 .\api_traitement\api_functions.py:365
 msgid ""
 "L'insertion de cet logbook n'est pas possible. Désolé veuillez essayer un "
 "autre"
@@ -52,8 +52,8 @@ msgstr ""
 "The table between lines 13 and 16 in column 'AC' has not been entered. "
 "Please check the data."
 
-#: .\palangre_syc\templates\LL_presenting_logbook.html:7
-#: .\palangre_syc\templates\LL_previoustrippage.html:7
+#: palangre_syc/templates/LL_homepage.html:7
+#: palangre_syc/templates/LL_previoustrippage.html:7
 msgid "Palangre aux Seychelles"
 msgstr "Longliners in Seychelles"
 
@@ -99,60 +99,64 @@ msgstr "%(programme)s program"
 msgid "Rapporté "
 msgstr "Reported "
 
-#: palangre_syc/templates/LL_homepage.html:238
+#: .\palangre_syc\templates\LL_presenting_logbook.html:200
 msgid "par"
 msgstr "by"
 
-#: palangre_syc/templates/LL_homepage.html:243
+#: .\palangre_syc\templates\LL_presenting_logbook.html:205
 msgid "le "
 msgstr "on "
 
-#: palangre_syc/templates/LL_homepage.html:260
+#: .\palangre_syc\templates\LL_presenting_logbook.html:222
 msgid "Informations de marée"
 msgstr "Trip information"
 
-#: palangre_syc/templates/LL_homepage.html:270
-#: palangre_syc/templates/LL_previoustrippage.html:85
+#: .\palangre_syc\templates\LL_presenting_logbook.html:237
+msgid "at-port-trip"
+msgstr ""
+
+#: .\palangre_syc\templates\LL_presenting_logbook.html:245
+#: .\palangre_syc\templates\LL_previoustrippage.html:46
 msgid "Date de départ"
 msgstr "Departure date"
 
-#: palangre_syc/templates/LL_homepage.html:286
-#: palangre_syc/templates/LL_previoustrippage.html:88
+#: .\palangre_syc\templates\LL_presenting_logbook.html:261
+#: .\palangre_syc\templates\LL_previoustrippage.html:49
 msgid "Port de départ"
 msgstr "Departure port"
 
-#: palangre_syc/templates/LL_homepage.html:295
-#: palangre_syc/templates/LL_homepage.html:319
+#: .\palangre_syc\templates\LL_presenting_logbook.html:270
+#: .\palangre_syc\templates\LL_presenting_logbook.html:294
 msgid "Non concerné"
 msgstr "Not concerned"
 
-#: palangre_syc/templates/LL_homepage.html:306
-#: palangre_syc/templates/LL_previoustrippage.html:92
+#: .\palangre_syc\templates\LL_presenting_logbook.html:281
+#: .\palangre_syc\templates\LL_previoustrippage.html:53
 msgid "Date d'arrivée"
 msgstr "Arrival date"
 
-#: palangre_syc/templates/LL_homepage.html:315
-#: palangre_syc/templates/LL_previoustrippage.html:95
+#: .\palangre_syc\templates\LL_presenting_logbook.html:290
+#: .\palangre_syc\templates\LL_previoustrippage.html:56
 msgid "Port d'arrivée"
 msgstr "Arrival port"
 
-#: palangre_syc/templates/LL_homepage.html:349
+#: .\palangre_syc\templates\LL_presenting_logbook.html:325
 msgid "Informations sur le navire"
 msgstr "Vessel information"
 
-#: palangre_syc/templates/LL_homepage.html:384
+#: .\palangre_syc\templates\LL_presenting_logbook.html:360
 msgid "Informations sur le matériel"
 msgstr "Gear information"
 
-#: palangre_syc/templates/LL_homepage.html:433
+#: .\palangre_syc\templates\LL_presenting_logbook.html:409
 msgid "Informations sur la ligne de pêche"
 msgstr "Main line information"
 
-#: palangre_syc/templates/LL_homepage.html:485
+#: .\palangre_syc\templates\LL_presenting_logbook.html:461
 msgid "Espèces visées"
 msgstr "Target species"
 
-#: palangre_syc/templates/LL_homepage.html:511
+#: .\palangre_syc\templates\LL_presenting_logbook.html:487
 msgid "Âppats utilisés"
 msgstr "Baits used"
 
@@ -177,60 +181,56 @@ msgstr ""
 msgid "Annuler"
 msgstr "Cancel"
 
-#: palangre_syc/templates/LL_homepage.html:557
+#: .\palangre_syc\templates\LL_presenting_logbook.html:538
 msgid "Envoyer le journal de bord"
 msgstr "'Send the logbook'"
 
-#: palangre_syc/templates/LL_homepage.html:571
+#: .\palangre_syc\templates\LL_presenting_logbook.html:552
 msgid "Données jour par jour"
 msgstr "Day per day detail"
 
-#: palangre_syc/templates/LL_homepage.html:615
+#: .\palangre_syc\templates\LL_presenting_logbook.html:596
 msgid "Accéder au haut de la page"
 msgstr "Back to the top"
 
-#: palangre_syc/templates/LL_previoustrippage.html:68
+#: .\palangre_syc\templates\LL_previoustrippage.html:29
 msgid "Données de marées associées au programme : "
 msgstr "Trips related to the program: "
 
-#: palangre_syc/templates/LL_previoustrippage.html:98
+#: .\palangre_syc\templates\LL_previoustrippage.html:59
 msgid "Océan"
 msgstr "Ocean"
 
-#: palangre_syc/templates/LL_previoustrippage.html:147
+#: .\palangre_syc\templates\LL_previoustrippage.html:108
 msgid "'Continuer cette marée'"
 msgstr "'Continue the trip'"
 
-#: palangre_syc/templates/LL_previoustrippage.html:151
+#: .\palangre_syc\templates\LL_previoustrippage.html:112
 msgid "'Créer une nouvelle marée'"
 msgstr "'Create a new trip'"
 
-#: palangre_syc/templates/LL_previoustrippage.html:161
+#: .\palangre_syc\templates\LL_previoustrippage.html:122
 msgid "'Cette marée est une nouvelle marée'"
 msgstr "'This trip is a new trip'"
 
-#: palangre_syc/templates/LL_previoustrippage.html:173
-#: palangre_syc/templates/LL_send_data.html:108
+#: .\palangre_syc\templates\LL_previoustrippage.html:134
+#: .\palangre_syc\templates\LL_send_data.html:69
 msgid "En cours de développement"
 msgstr "In development"
 
-#: palangre_syc/templates/LL_send_data.html:90
+#: .\palangre_syc\templates\LL_send_data.html:51
 msgid "Retour à la zone de dépôt"
 msgstr "Back to the drop-off zone"
 
-#: .\palangre_syc\views.py:364
-msgid "msg-error-day1"
+#: .\palangre_syc\views.py:385
+msgid ""
+"L'extraction des données ne semble pas correcte car ne commence pas au jour "
+"1. Veuillez vérifier que le tableau commence ligne 22 sur votre logbook."
 msgstr ""
-"The table extraction doesn't start at day 1. Please check the table starts "
-"line 22 in the excel file."
+"Something went wrong in the data table extraction since it doesn't start at "
+"day 1. Please ensure the datatable starts row 22 in the logbook."
 
-#: .\palangre_syc\views.py:371
-msgid "msg-error-type-date"
-msgstr ""
-"Something went wrong in the date extraction. Please ensure the month and "
-"year are in a numeric type in the F18 and L18 cells of the logbook."
-
-#: .\palangre_syc\views.py:394
+#: .\palangre_syc\views.py:407
 msgid ""
 "La date de fin de trip doit être dans le mois. Saisir le dernier jour du "
 "mois dans le cas où le trip n'est pas réellement fini."
@@ -238,12 +238,15 @@ msgstr ""
 "The trip end date must be within the month. Enter the last day of the month "
 "if the trip is not actually finished."
 
-#: .\palangre_syc\views.py:402
-msgid "msg-error-type-gear"
+#: .\palangre_syc\views.py:414
+msgid ""
+"Les informations concernant la longueur du matériel de pêche doivent être "
+"des entiers."
 msgstr ""
-"Please double check the gear information. We only accept numeric value here."
+"Something went wrong in the gear extraction. Please ensure the gear length "
+"only contains number. If not, please remove the letters from the cells."
 
-#: .\palangre_syc\views.py:431
+#: .\palangre_syc\views.py:472
 msgid ""
 "Le logbook soumis n'a pas pu être saisi dans la base de données car il a "
 "déjà été envoyé dans un précédent trip. Merci de vérifier sur l'application"
@@ -252,13 +255,15 @@ msgstr ""
 "already been sent on a previous trip. Please check on the Observe "
 "application."
 
-#: .\palangre_syc\views.py:441
-msgid "msg-error-not-sequential"
+#: .\palangre_syc\views.py:478
+msgid ""
+"Le logbook soumis n'a pas pu être saisi dans la base de données car il n'est "
+"pas consécutif à la marée précédente"
 msgstr ""
-"The logbook submitted could not be entered in the database because ti is not "
-"consecutive to the previous trip."
+"Looks like this logbook is not following the previous end date entered. "
+"Please check the dates."
 
-#: .\palangre_syc\views.py:725
+#: .\palangre_syc\views.py:766
 msgid "Le logbook a bien été envoyé dans la base"
 msgstr "The logbook has been sent to the database."
 
@@ -1837,27 +1842,37 @@ msgstr ""
 msgid "Permalink to this equation"
 msgstr ""
 
+#: .\webapps\templates\home.html:72
+msgid "Veuillez patienter pendant le chargement"
+msgstr "Charging, please wait"
+
 #: .\webapps\templates\home.html:80
 msgid "Choisir une langue"
 msgstr "Choose a Language"
 
-#: .\webapps\templates\home.html:117
+#: .\webapps\templates\home.html:118
 msgid "Sélectionnez un profil de connexion"
 msgstr "Select a database connexion"
 
-#: .\webapps\templates\home.html:141
+#: .\webapps\templates\home.html:142
 msgid "Connect"
 msgstr ""
 
-#: .\webapps\templates\home.html:189
+#: .\webapps\templates\home.html:190
 msgid "Migration des données de l'observatoire"
 msgstr "Migration of observatory data"
 
-#: .\webapps\templates\home.html:191
-msgid "text-intro"
-msgstr "This web app aims to automatically transfer Logbooks To Observe (LTO)"
+#: .\webapps\templates\home.html:192
+msgid ""
+"L'Observatoire des Écosystèmes Pélagiques Tropicaux exploités de l'IRD a "
+"pour vocation principale la collecte, la validation, l'archivage et "
+"l'analyse des données de la pêche thonière tropicale française dans les "
+"océans indien et atlantique."
+msgstr ""
+"This webapp has been designed to easily send some excel formated logbooks to "
+"the selected Observe database."
 
-#: .\webapps\templates\home.html:242
+#: .\webapps\templates\home.html:243
 msgid "Commencer l'importation"
 msgstr "Start importing"
 
@@ -1885,7 +1900,7 @@ msgstr "Domain-dependent programs..."
 msgid "Ocean..."
 msgstr "Ocean..."
 
-#: webapps/templates/logbook.html:128
+#: .\webapps\templates\logbook.html:128
 msgid "Types de document..."
 msgstr "Type of document..."
 
@@ -1951,105 +1966,105 @@ msgstr ""
 msgid "Charger un logbook"
 msgstr "Load a logbook"
 
-#: webapps/templates/login.html:18
+#: .\webapps\templates\login.html:22
 msgid "login-welcome"
 msgstr "Welcome !"
 
-#: webapps/templates/login.html:28
+#: .\webapps\templates\login.html:44
 msgid "login-credentials"
 msgstr "Enter your credentials to access the application."
 
-#: .\webapps\templates\login.html:31
+#: .\webapps\templates\login.html:47
 msgid "login-username"
 msgstr "Username"
 
-#: .\webapps\templates\login.html:35
+#: .\webapps\templates\login.html:51
 msgid "login-password"
 msgstr "Password"
 
-#: .\webapps\templates\login.html:38
+#: .\webapps\templates\login.html:54
 msgid "login-submit"
 msgstr "Send"
 
-#: .\webapps\templates\login.html:40 .\webapps\templates\register.html:96
-#: .\webapps\templates\register.html:99
+#: .\webapps\templates\login.html:56 .\webapps\templates\register.html:101
+#: .\webapps\templates\register.html:104
 msgid "register-submit"
 msgstr "Submit"
 
-#: .\webapps\templates\login.html:48
+#: .\webapps\templates\login.html:64
 msgid "register"
 msgstr "Create a profile"
 
-#: .\webapps\templates\register.html:17
+#: .\webapps\templates\register.html:22
 msgid "register-welcome"
 msgstr "Welcome!"
 
-#: .\webapps\templates\register.html:27
+#: .\webapps\templates\register.html:32
 msgid "register-instructions"
 msgstr "Please fill the form to create an account:"
 
-#: .\webapps\templates\register.html:34
+#: .\webapps\templates\register.html:39
 msgid "register-firstname"
 msgstr "First name"
 
-#: .\webapps\templates\register.html:46
+#: .\webapps\templates\register.html:51
 msgid "register-lastname"
 msgstr "Last name"
 
-#: .\webapps\templates\register.html:58
+#: .\webapps\templates\register.html:63
 msgid "register-email"
 msgstr "e-mail adress"
 
-#: .\webapps\templates\register.html:70
+#: .\webapps\templates\register.html:75
 msgid "register-username"
 msgstr "Username"
 
-#: .\webapps\templates\register.html:79
+#: .\webapps\templates\register.html:84
 msgid "register-password"
 msgstr "Password"
 
-#: .\webapps\templates\register.html:88
+#: .\webapps\templates\register.html:93
 msgid "register-confirm-password"
 msgstr "Confirm the password"
 
-#: .\webapps\templates\register.html:107
+#: .\webapps\templates\register.html:112
 msgid "login"
 msgstr "Sign in page"
 
-#: .\webapps\views.py:93
+#: .\webapps\views.py:94
 msgid "Votre compte n'a pas encore été validé par l'administrateur."
 msgstr "Your account needs to be validate by the admin."
 
-#: .\webapps\views.py:95
+#: .\webapps\views.py:96
 msgid "Nom d'utilisateur ou mot de passe incorrect"
 msgstr "Username or password incorrect"
 
-#: .\webapps\views.py:223
+#: .\webapps\views.py:224
 msgid "Impossible de se connecter au serveur verifier la connexion"
 msgstr "The connexion to the server is not working"
 
-#: .\webapps\views.py:236
+#: .\webapps\views.py:237
 msgid "Pas de profile pour l'instant ou n'est pas associé à l'utilisateur"
 msgstr "There is no database connexion selected."
 
-#: .\webapps\views.py:282
+#: .\webapps\views.py:283
 msgid ""
 "Merci de déposer un fichier excel avant de lancer l'extraction de données !"
 msgstr "Please submit an excel file before starting the data extraction!"
 
-#: .\webapps\views.py:288
+#: .\webapps\views.py:289
 msgid "Merci de téléverser un fichier excel"
 msgstr "Please upload an excel file"
 
-#: .\webapps\views.py:344
+#: .\webapps\views.py:345
 msgid "Extration des données avec succès vous pouvez les soumettre maintenant."
 msgstr "Data extraction successful you can submit now."
 
-#: .\webapps\views.py:357
+#: .\webapps\views.py:358
 msgid "Veuillez recharger la page et reprendre votre opération SVP."
 msgstr "Please reload and resume your operation."
 
-#: .\webapps\views.py:457 .\webapps\views.py:516
+#: .\webapps\views.py:458 .\webapps\views.py:517
 msgid "Veuillez ressayer svp."
 msgstr "Please try again."
 
@@ -2060,6 +2075,30 @@ msgstr "English"
 #: .\website\settings.py:138
 msgid "Français"
 msgstr "French"
+
+#~ msgid "msg-error-day1"
+#~ msgstr ""
+#~ "The table extraction doesn't start at day 1. Please check the table "
+#~ "starts line 22 in the excel file."
+
+#~ msgid "msg-error-type-date"
+#~ msgstr ""
+#~ "Something went wrong in the date extraction. Please ensure the month and "
+#~ "year are in a numeric type in the F18 and L18 cells of the logbook."
+
+#~ msgid "msg-error-type-gear"
+#~ msgstr ""
+#~ "Please double check the gear information. We only accept numeric value "
+#~ "here."
+
+#~ msgid "msg-error-not-sequential"
+#~ msgstr ""
+#~ "The logbook submitted could not be entered in the database because ti is "
+#~ "not consecutive to the previous trip."
+
+#~ msgid "text-intro"
+#~ msgstr ""
+#~ "This web app aims to automatically transfer Logbooks To Observe (LTO)"
 
 #~ msgid "select-database"
 #~ msgstr "Please select a server connexion"
@@ -2081,38 +2120,6 @@ msgstr "French"
 
 #~ msgid "connexion-doesnt-exist"
 #~ msgstr "Your profil doesn't exist."
-
-#~ msgid ""
-#~ "L'extraction des données ne semble pas correcte car ne commence pas au "
-#~ "jour 1. Veuillez vérifier que le tableau commence ligne 22 sur votre "
-#~ "logbook."
-#~ msgstr ""
-#~ "Something went wrong in the data table extraction since it doesn't start "
-#~ "at day 1. Please ensure the datatable starts row 22 in the logbook."
-
-#~ msgid ""
-#~ "Les informations concernant la longueur du matériel de pêche doivent être "
-#~ "des entiers."
-#~ msgstr ""
-#~ "Something went wrong in the gear extraction. Please ensure the gear "
-#~ "length only contains number. If not, please remove the letters from the "
-#~ "cells."
-
-#~ msgid ""
-#~ "Le logbook soumis n'a pas pu être saisi dans la base de données car il "
-#~ "n'est pas consécutif à la marée précédente"
-#~ msgstr ""
-#~ "Looks like this logbook is not following the previous end date entered. "
-#~ "Please check the dates."
-
-#~ msgid ""
-#~ "L'Observatoire des Écosystèmes Pélagiques Tropicaux exploités de l'IRD a "
-#~ "pour vocation principale la collecte, la validation, l'archivage et "
-#~ "l'analyse des données de la pêche thonière tropicale française dans les "
-#~ "océans indien et atlantique."
-#~ msgstr ""
-#~ "This webapp has been designed to easily send some excel formated logbooks "
-#~ "to the selected Observe database."
 
 #, fuzzy, python-format
 #~| msgid ""

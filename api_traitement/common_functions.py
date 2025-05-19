@@ -117,8 +117,12 @@ def convert_to_time_or_text(value):
             return datetime.datetime.strptime(time_value, '%H:%M:%S').time().strftime('%H:%M:%S')
         if re.match("[0-9]{2}:[0-9]{2}:[0-9]{2}", value):
             return datetime.datetime.strptime(value, '%H:%M:%S').time().strftime('%H:%M:%S')
+    
         elif re.match("[0-9]{2}:[0-9]{2}", value.strip()):
             return value.strip() + ':00'
+        elif re.match("[0-9]{1}:[0-9]{2}", value.strip()):
+            return '0' + value.strip() + ':00'
+        
         return value
     elif isinstance(value, datetime.datetime):
         date_time = value.time()

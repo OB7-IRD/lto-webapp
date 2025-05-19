@@ -148,7 +148,7 @@ html_theme_options = {
     "use_edit_page_button": True,
     # "analytics": {"google_analytics_id": "G-"},
     "external_links": [
-        {"name": "The Ob7's team", "url": "https://www.ob7.ird.fr"},
+        {"name": "The Ob7's team", "url": "https://ob7-ird.science"},
     ],
 }
 html_context = {

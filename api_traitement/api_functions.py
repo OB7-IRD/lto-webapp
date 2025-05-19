@@ -284,6 +284,7 @@ def trip_for_prog_vessel(token, base_url, route, vessel_id, programme_topiaid):
     api_ordeer_filter = '&orders.endDate=DESC'
 
     api_trip_request = base_url + route + api_trip + token + api_vessel_filter + vessel_id + api_programme_filter + programme_topiaid + api_ordeer_filter
+    # print("&"*30, api_trip_request)
     response = requests.get(api_trip_request, timeout=TIMEOUT_VALUE)
     return response.content
 
@@ -321,7 +322,7 @@ def send_trip(token, data, base_url, route):
         # return json.loads(res.text)
         return (_("Logbook inséré avec success"), 1)
     else:
-        with open(file = "media/temporary_files/error.json", mode = "w") as outfile:
+        with open(file = "media/temporary_files/error.json", mode = "w", encoding="utf-8") as outfile:
             outfile.write(response.text)
         try:
             return (error_filter(response.text), 2)
@@ -384,11 +385,29 @@ def update_trip(token, data, base_url, topiaid):
     
     print("Code resultat de la requete", response.status_code)
     
+    # if response.status_code == 200:
+    #     return (_("Logbook inséré avec success"), 1)
+    # else:
+    #     with open(file = "media/temporary_files/errorupdate.json", mode = "w", encoding="utf-8") as outfile:
+    #         outfile.write(response.text)
+    #         return (_("L'insertion de cet logbook n'est pas possible. Désolé veuillez essayer un autre"), 3)
+        
+        
+        
     if response.status_code == 200:
+        # return json.loads(res.text)
         return (_("Logbook inséré avec success"), 1)
     else:
-        with open(file = "media/temporary_files/errorupdate.json", mode = "w") as outfile:
+        with open(file = "media/temporary_files/errorupdate.json", mode = "w", encoding="utf-8") as outfile:
             outfile.write(response.text)
+        try:
+            return (error_filter(response.text), 2)
+            # return (error_filter(response.text), 6) # 6 pour utiliser le niveau d'erreur personnalisée
+            # return json.loads(res.text), 2
+        except KeyError:
+            # Faire une fonction pour mieux traiter ce type d'erreur
+            # print("Message d'erreur: ", json.loads(res.text)["exception"]["result"]["nodes"]) # A faire
+            print("Message d'erreur: ", json.loads(response.text)) # A faire
             return (_("L'insertion de cet logbook n'est pas possible. Désolé veuillez essayer un autre"), 3)
 
 
