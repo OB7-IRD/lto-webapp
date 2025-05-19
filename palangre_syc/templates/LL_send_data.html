@@ -34,7 +34,7 @@
             
               <div class="ml-8 mr-12 mb-5 font-sans text-center text-xl font-semibold font-semibold leading-snug tracking-normal text-black antialiased">
                 <ul class="messages">     
-                  <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                  <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message | safe }}</li>
                 </ul>      
               </div>
             </div>

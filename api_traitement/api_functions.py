@@ -381,8 +381,9 @@ def update_trip(token, data, base_url, topiaid):
         except KeyError:
             # Faire une fonction pour mieux traiter ce type d'erreur
             # print("Message d'erreur: ", json.loads(res.text)["exception"]["result"]["nodes"]) # A faire
-            print("Message d'erreur: ", json.loads(response.text)) # A faire
-            return (_("L'insertion de cet logbook n'est pas possible. Désolé veuillez essayer un autre"), 3)
+            # print("Message d'erreur: ", json.loads(response.text)) # A faire
+            # return (error_filter(response.text), 2)
+            return (_("L'insertion de ce logbook n'est pas possible. Désolé veuillez essayer un autre"), 3)
 
 
 
