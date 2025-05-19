@@ -341,6 +341,9 @@ def get_vessel_activity_topiaid(startTimeStamp, allData):
 
     elif re.findall("cruis", startTimeStamp.lower()):
         code = "CRUISE"
+    
+    elif re.findall("crus", startTimeStamp.lower()):
+        code = "CRUISE"
 
     elif re.findall("port", startTimeStamp.lower()):
         code = "PORT"

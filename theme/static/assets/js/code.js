@@ -302,71 +302,6 @@ $(document).ready(function(){
         console.log($("#my-dropzone").serialize());
     });
 
-    $('#load_data').click(function(e){
-        e.preventDefault();
-        $(".message").hide(1500);
-        $("#div_upload").show(1500);
-
-        $.ajax({
-          type: 'POST',
-          url: $('#load_data').data('url'),
-          data: $("#form_test").serialize(),
-          success: function(response){
-            var domaine = response.domaine;
-            dropZone(domaine);
-          }
-        });
-    });
-
-    $('#load_data2').click(function(e){
-        e.preventDefault();
-        $(".message").hide(1500);
-        $("#div_upload").show(1500);
-
-        $.ajax({
-          type: 'POST',
-          url: $('#load_data2').data('url'),
-          data: $("#form_test").serialize(),
-          success: function(response){
-            var domaine = response.domaine;
-            dropZone(domaine);
-          }
-        });
-    });
-
-    $('#load_data3').click(function(e){
-        e.preventDefault();
-        $(".message").hide(1500);
-        $("#div_upload").show(1500);
-
-        $.ajax({
-          type: 'POST',
-          url: $('#load_data3').data('url'),
-          data: $("#form_test").serialize(),
-          success: function(response){
-            var domaine = response.domaine;
-            dropZone(domaine);
-          }
-        });
-
-    });
-
-    $('#load_data7').click(function(e){
-        e.preventDefault();
-        $(".message").hide(1500);
-        $("#div_upload").show(1500);
-
-        $.ajax({
-          type: 'POST',
-          url: $('#load_data7').data('url'),
-          data: $("#form_test").serialize(),
-          success: function(response){
-            var domaine = response.domaine;
-            dropZone(domaine);
-          }
-        });
-
-    });
 
     $('#cancel_btn').click(function(e){
         // e.preventDefault();
@@ -455,54 +390,28 @@ $(document).ready(function(){
         });
     });
 
-    $('#load_data4').click(function(e){
-        e.preventDefault();
-        $(".card").hide(1500);
-        $("#div_upload").show(1500);
+    function bindLoadDataButton(buttonId) {
+        $(`#${buttonId}`).click(function(e) {
+            e.preventDefault();
+            $(".message").hide(1500);
+            $("#div_upload").show(1500);
 
-        $.ajax({
-          type: 'POST',
-          url: $('#load_data4').data('url'),
-          data: $("#form_test").serialize(),
-          success: function(response){
-            var domaine = response.domaine;
-            dropZone(domaine);
-          }
+            const url = $(this).data('url');
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: $("#form_test").serialize(),
+                success: function(response) {
+                    const domaine = response.domaine;
+                    dropZone(domaine);
+                }
+            });
         });
+    };
 
-    });
+    for (let i = 1; i <= 8; i++) {
+        bindLoadDataButton(`load_data${i}`);
+    };
+    console.log("terminé");
 
-    $('#load_data5').click(function(e){
-        e.preventDefault();
-        $(".card").hide(1500);
-        $("#div_upload").show(1500);
-
-        $.ajax({
-          type: 'POST',
-          url: $('#load_data5').data('url'),
-          data: $("#form_test").serialize(),
-          success: function(response){
-            var domaine = response.domaine;
-            dropZone(domaine);
-          }
-        });
-
-    });
-
-    $('#load_data6').click(function(e){
-        e.preventDefault();
-        $(".card").hide(1500);
-        $("#div_upload").show(1500);
-
-        $.ajax({
-          type: 'POST',
-          url: $('#load_data6').data('url'),
-          data: $("#form_test").serialize(),
-          success: function(response){
-            var domaine = response.domaine;
-            dropZone(domaine);
-          }
-        });
-
-    });
 });

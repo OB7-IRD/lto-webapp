@@ -329,10 +329,36 @@ def send_trip(token, data, base_url, route):
             # return (error_filter(response.text), 6) # 6 pour utiliser le niveau d'erreur personnalisée
             # return json.loads(res.text), 2
         except KeyError:
-            # Faire une fonction pour mieux traiter ce type d'erreur
-            # print("Message d'erreur: ", json.loads(res.text)["exception"]["result"]["nodes"]) # A faire
-            print("Message d'erreur: ", json.loads(response.text)) # A faire
-            return (_("L'insertion de cet logbook n'est pas possible. Désolé veuillez essayer un autre"), 3)
+            try:
+                err_data = json.loads(response.text)
+
+                # Cas où on reçoit une erreur inattendue # httpCode 500 du serveur
+                if isinstance(err_data, dict) and "exception" in err_data:
+                    raw_msg = err_data["exception"]
+                    raw_msg_type = err_data["exceptionType"]
+
+                    if 'java.lang.NumberFormatException' == raw_msg_type:
+                        # Vérifie si l'erreur mentionne une valeur inattendue
+                        if raw_msg['detailMessage']:  # Ex: 'For input string: "2024-12-30T00"'
+                            bad_value_match = re.search(r'for input string:\s*"([^"]+)"', raw_msg['detailMessage'].lower())
+                            bad_value = bad_value_match.group(1) if bad_value_match else "valeur inconnue"
+
+                            return (_(f"<strong>Erreur de format détectée :</strong> une valeur inattendue <i>\"{bad_value}\" </i> a été trouvée dans le fichier, <br> alors qu'un nombre était attendu. Veuillez corriger cette donnée et réessayer."), 2)
+
+                    # Autres cas d'erreur connus à capter ici si besoin...
+
+                    # Sinon, retourne le message brut avec un avertissement
+                    print( f"Erreur inconnue détectée : {raw_msg}.")
+                    return (_("Veuillez vérifier les données du fichier ou contacter un administrateur."), 3)
+
+                # Si la structure n'est pas conforme du tout
+                return (_("Format d'erreur inattendu. Vérifiez le contenu du fichier."), 3)
+
+            except Exception as e:
+                # Si json.loads échoue ou autre erreur
+                print("Erreur interne non gérée :", str(e))
+                return (_("L'insertion de ce logbook n'est pas possible. Désolé, veuillez essayer un autre."), 3)
+
 
 def update_trip(token, data, base_url, topiaid):
     """
@@ -359,12 +385,31 @@ def update_trip(token, data, base_url, topiaid):
     
     print("Code resultat de la requete", response.status_code)
     
+    # if response.status_code == 200:
+    #     return (_("Logbook inséré avec success"), 1)
+    # else:
+    #     with open(file = "media/temporary_files/errorupdate.json", mode = "w", encoding="utf-8") as outfile:
+    #         outfile.write(response.text)
+    #         return (_("L'insertion de cet logbook n'est pas possible. Désolé veuillez essayer un autre"), 3)
+        
+        
+        
     if response.status_code == 200:
+        # return json.loads(res.text)
         return (_("Logbook inséré avec success"), 1)
     else:
         with open(file = "media/temporary_files/errorupdate.json", mode = "w", encoding="utf-8") as outfile:
             outfile.write(response.text)
-            return (_("L'insertion de cet logbook n'est pas possible. Désolé veuillez essayer un autre"), 3)
+        try:
+            return (error_filter(response.text), 2)
+            # return (error_filter(response.text), 6) # 6 pour utiliser le niveau d'erreur personnalisée
+            # return json.loads(res.text), 2
+        except KeyError:
+            # Faire une fonction pour mieux traiter ce type d'erreur
+            # print("Message d'erreur: ", json.loads(res.text)["exception"]["result"]["nodes"]) # A faire
+            # print("Message d'erreur: ", json.loads(response.text)) # A faire
+            # return (error_filter(response.text), 2)
+            return (_("L'insertion de ce logbook n'est pas possible. Désolé veuillez essayer un autre"), 3)
 
 
 
@@ -522,9 +567,11 @@ def error_filter(response):
                 elif match2:
                     heure = match2.group(1)  # Extraction de l'heure
                     text_list[idx] = heure  # Remplacer l'heure dans text_list
-
-            text_list.remove(heure)
-            text_list.remove(date)
+            try:
+                text_list.remove(heure)
+                text_list.remove(date)
+            except ValueError:
+                print("heure ou date non presente dans la liste")
 
             # Génération du format HTML sous forme de tableau Tailwind
             if date != "" and heure != "":
@@ -587,5 +634,7 @@ def error_filter(response):
         pass
     print("Len : ",len(all_message))
     return all_message
+
+
 
 
