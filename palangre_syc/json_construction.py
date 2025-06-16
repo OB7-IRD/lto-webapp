@@ -74,7 +74,7 @@ def get_vessel_topiaid(df_donnees_p1, allData):
     vessel_logbook = palangre_syc.excel_extractions.extract_vessel_info(df_donnees_p1).loc[palangre_syc.excel_extractions.extract_vessel_info(df_donnees_p1)['Logbook_name'] == 'Official Number', 'Value'].values[0]
     enabled_topiaids = [
         vessel["topiaId"] for vessel in allData["Vessel"]
-        if 'nationalId' in vessel and vessel["nationalId"] == vessel_logbook and vessel["status"] == "enabled"
+        if 'nationalId' in vessel and vessel["nationalId"] == vessel_logbook and vessel["status"] == "enabled" and vessel["flagCountry"] == "fr.ird.referential.common.Country#1239832675593#0.3601938043845213"
         ]
     if len(enabled_topiaids) > 0: 
         return enabled_topiaids[0]
