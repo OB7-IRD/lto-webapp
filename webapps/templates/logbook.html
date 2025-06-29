@@ -175,9 +175,6 @@
                       <input data-url="{% url 'domaineSelect' %}" id="cancel_btn" value="{% translate 'Annuler' %}" type="reset" name="submit_annuler" class="text-red-900 bg-transparent border border-red-900 hover:bg-red-900 hover:text-white focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-xs px-3 py-1.5 text-center dark:border-red-800 dark:text-red-800 dark:hover:text-white"/>
                   </div>
               </form>
-
-
-
           </div>
           <!-- /End replace -->
         </div>
@@ -323,6 +320,6 @@
   </main>
 </div>
 
-<script type="text/javascript" src="{% static 'assets/js/code.js' %}"></script>
+<script type="text/javascript" src="{% static 'assets/js/code.js' %}?v={{ timestamp }}"></script>
 </body>
 </html>
