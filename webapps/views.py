@@ -180,6 +180,7 @@ def connect_profile(request):
         profile_id = request.POST.get('profile')
 
         token = ""
+        allData = None
         try:
             # Récupérer le profil sélectionné
             profile = ConnectionProfile.objects.get(id=profile_id, users=request.user)
@@ -208,8 +209,11 @@ def connect_profile(request):
                     print("="*20," Pas de changement de profil ", "="*20)
                     allData = load_data(token=token, base_url=base_url)
 
+            # except Exception as e:
+                #print("Erreur lors du chargement des données de référence :", e)
             except:
-                pass
+                print("Erreur lors du chargement des données de référence :")
+                allData = None  # Pour éviter l'UnboundLocalError
 
             if (token != "") and (allData != []):
                 request.session['token'] = token

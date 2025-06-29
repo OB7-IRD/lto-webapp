@@ -406,6 +406,7 @@ $(document).ready(function(){
                     dropZone(domaine);
                 }
             });
+            $(this).hide(1500);
         });
     };
 
