@@ -370,6 +370,46 @@ def create_floatline_composition(df_gear):
     }]
     return floatlines_composition
 
+
+def create_lineType(df_line):
+    """
+    Fonction de recherche de la line type dans le référentiel
+
+    Args:
+        df_line: les élements cochés du logbook
+
+    Returns:
+        lineType: le topiaId de la ligne
+    """
+    if (len(df_line) == 1) : 
+        logbook_lineType = df_line.loc[df_line["Value"] != "", "Logbook_name"].values[0]
+    
+        # if contains "thick" == PV
+        if "thick" in logbook_lineType.lower():    
+            lineType = "fr.ird.referential.ll.common.LineType#1707486846969#0.09086405093041561"
+        
+        # # if contains "thin" == PR 
+        elif "thin" in logbook_lineType.lower(): 
+            lineType = "fr.ird.referential.ll.common.LineType#1707486754220#0.7999222136319315"
+            
+        # # if contains "braid" == BRL  
+        elif "braid" in logbook_lineType.lower():
+            lineType = "fr.ird.referential.ll.common.LineType#1239832686157#0.6"
+            
+        # if contains "mono" == MON  
+        elif "mono" in logbook_lineType.lower():
+            lineType = "fr.ird.referential.ll.common.LineType#1239832686157#0.1"
+            
+        # else == UNK 
+        else:
+            lineType = "fr.ird.referential.ll.common.LineType#1239832686157#0.9"
+    
+    # si on a plusieurs lignes de cochées 
+    else:
+        lineType = "fr.ird.referential.ll.common.LineType#1239832686157#0.9"
+    
+    return lineType
+
 # peut etre ajouter le healthStatus
 
 def create_catches(datatable, allData):
@@ -541,7 +581,6 @@ def create_activity_and_set(df_donnees_p1, df_donnees_p2, allData, start_extract
                     'monitored': False,
                     # En fait "totalLineLength" serait de plusierus km, ce qui ne correspond pas avec le champ "Set Line length m"
                     'totalLineLength' : palangre_syc.excel_extractions.extract_gear_info(df_donnees_p1).loc[palangre_syc.excel_extractions.extract_gear_info(df_donnees_p1)['Logbook_name'] == 'Set Line length m', 'Value'].values[0],
-                    # 'totalLineLength': None,
                     'basketLineLength': None,
                     'lengthBetweenBranchlines': df_gear.loc[df_gear['Logbook_name'] == 'Length between branches m', 'Value'].values[0]
                     })
@@ -555,9 +594,10 @@ def create_activity_and_set(df_donnees_p1, df_donnees_p2, allData, start_extract
 
         datatable = create_catch_table_fishes(
             df_donnees_p1, df_donnees_p2, row_number=i)
+
         set.update({
             'catches': create_catches(datatable, allData),
-            'lineType': None,
+            'lineType': create_lineType(df_line),
             'lightsticksUsed': False,
             'lightsticksType': None,
             'lightsticksColor': None,
