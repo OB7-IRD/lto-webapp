@@ -404,7 +404,7 @@ def create_lineType(df_line):
         else:
             lineType = "fr.ird.referential.ll.common.LineType#1239832686157#0.9"
     
-    # si on a plusieurs lignes de cochées   
+    # si on a plusieurs lignes de cochées 
     else:
         lineType = "fr.ird.referential.ll.common.LineType#1239832686157#0.9"
     
