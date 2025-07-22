@@ -505,7 +505,7 @@ def search_date_into_json(json_previoustrip, date_to_look_for):
     """
 
     for content in json_previoustrip:
-        for activity in content['activityLogbook'] :
+        for activity in content['logbookActivity'] :
             start_time = activity.get('startTimeStamp')
             if start_time and start_time.startswith(date_to_look_for) :
                 return True
@@ -678,7 +678,7 @@ def create_trip(df_donnees_p1, MultipleActivity, allData, context):
         'ersId': None,
         'gearUseFeatures': None,
         'activityObs': None,
-        'activityLogbook': MultipleActivity,
+        'logbookActivity': MultipleActivity,
         'landing': None,
         'sample': None,
         'tripType': 'fr.ird.referential.ll.common.TripType#1464000000000#02',
