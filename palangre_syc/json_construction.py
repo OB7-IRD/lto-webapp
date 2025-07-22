@@ -638,10 +638,10 @@ def create_activity_and_set(df_donnees_p1, df_donnees_p2, allData, start_extract
                         })
 
         if activity.get('vesselActivity') == 'fr.ird.referential.ll.common.VesselActivity#1239832686138#0.1':
-            activity.update({'set': set, })
+            activity.update({'fishingSet': set, })
         else:
             activity.update({
-                'set': None,
+                'fishingSet': None,
                 'sample': None
             })
 
