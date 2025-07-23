@@ -1,24 +1,24 @@
 from django.core.files.storage import FileSystemStorage
 from django.http import HttpResponseRedirect, JsonResponse, HttpResponse
-from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
+from django.utils.timezone import now
+from django.contrib import messages
+from django.utils.translation import gettext as _
+from django.shortcuts import render, redirect
 
 from api_traitement import api_functions
 from api_traitement.common_functions import *
 from api_traitement.api_functions import *
 # from palangre_syc import api
 
-from django.contrib import messages
 from .form import LTOUserForm
 
 import json
 from zipfile import ZipFile
 import os
-from django.utils.translation import gettext as _
 
-from django.shortcuts import render, redirect
 from .models import ConnectionProfile
 
 # Create your views here.
@@ -180,6 +180,7 @@ def connect_profile(request):
         profile_id = request.POST.get('profile')
 
         token = ""
+        allData = None
         try:
             # Récupérer le profil sélectionné
             profile = ConnectionProfile.objects.get(id=profile_id, users=request.user)
@@ -208,8 +209,11 @@ def connect_profile(request):
                     print("="*20," Pas de changement de profil ", "="*20)
                     allData = load_data(token=token, base_url=base_url)
 
+            # except Exception as e:
+                #print("Erreur lors du chargement des données de référence :", e)
             except:
-                pass
+                print("Erreur lors du chargement des données de référence :")
+                allData = None  # Pour éviter l'UnboundLocalError
 
             if (token != "") and (allData != []):
                 request.session['token'] = token
@@ -301,6 +305,8 @@ def logbook(request):
                     "ocean_data": datat_0c_Pr["ocean"],
                     "ll_context" : json.dumps(apply_conf),
                     'current_profile': current_profile,
+                    "timestamp": now().timestamp()  # pour gérer le cache par rapport au code js
+
                 })
             print(apply_conf)
             # Si le fichier pour les palangre, alors on renvoit vers 'palagre_syc'
@@ -409,6 +415,7 @@ def logbook(request):
                 "ocean_data": datat_0c_Pr["ocean"],
                 "ll_context" : json.dumps(apply_conf),
                 'current_profile': current_profile,
+                "timestamp": now().timestamp()  # pour gérer le cache par rapport au code js
             })
 
         # else :
@@ -424,6 +431,7 @@ def logbook(request):
                     "ocean_data": datat_0c_Pr["ocean"],
                     "ll_context" : json.dumps(apply_conf),
                     'current_profile': current_profile,
+                    "timestamp": now().timestamp()  # pour gérer le cache par rapport au code js
                 })
             elif apply_conf['domaine'] == 'senne' :
                 return render(request, "logbook.html", context={
@@ -431,6 +439,7 @@ def logbook(request):
                     "ocean_data": datat_0c_Pr["ocean"],
                     "ll_context" : json.dumps(apply_conf),
                     'current_profile': current_profile,
+                    "timestamp": now().timestamp()  # pour gérer le cache par rapport au code js
                 })
     # print("="*20, "apply_conf is None", "="*20)
     # print(apply_conf)
@@ -440,6 +449,7 @@ def logbook(request):
                 "ocean_data": datat_0c_Pr["ocean"],
                 "ll_context" : json.dumps(apply_conf),
                 'current_profile': current_profile,
+                "timestamp": now().timestamp()  # pour gérer le cache par rapport au code js
             })
 
 @login_required

@@ -25,7 +25,6 @@
         <div class="flex items-center">
           <div class="flex-shrink-0">
             <img class="h-8 w-8 rounded-xl" src="{% static '/assets/img/ob7-logo-zoom.png' %}" alt="Workflow">
-            <img class="h-8 w-8 rounded-xl" src="{% static '/assets/img/ob7-logo-zoom.png' %}" alt="Workflow">
           </div>
           <div class="hidden md:block">
             <div class="ml-10 flex items-baseline space-x-4">
@@ -91,23 +90,6 @@
 
   </header>
   <main>
-      {% if ll_context != None %}
-            {{ ll_context | json_script:"context-data" }}
-      {% endif %}
-<!--
-    {% if ll_context != None %}
-        <div class="max-w-3xl mx-auto p-2 sm:px-3 lg:px-3">
-            <div class="flex items-baseline space-x-2">
-                <strong class="p-1 text-white bg-green-600">Domaine: </strong>
-                <strong class="px-10">{{ll_context.domaine}}</strong>
-                <strong class="p-1 text-white bg-green-600">Program: </strong>
-                <strong class="px-10">{{ll_context.program}}</strong>
-                <strong class="p-1 text-white bg-green-600">Ocean: </strong>
-                <strong class="px-10">{{ll_context.ocean}}</strong>
-            </div>
-        </div>
-    {% endif %}-->
-
     <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
         {% if ll_context != None %}
             <script id="context-data" type="application/json">
@@ -193,9 +175,6 @@
                       <input data-url="{% url 'domaineSelect' %}" id="cancel_btn" value="{% translate 'Annuler' %}" type="reset" name="submit_annuler" class="text-red-900 bg-transparent border border-red-900 hover:bg-red-900 hover:text-white focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-xs px-3 py-1.5 text-center dark:border-red-800 dark:text-red-800 dark:hover:text-white"/>
                   </div>
               </form>
-
-
-
           </div>
           <!-- /End replace -->
         </div>
@@ -341,6 +320,6 @@
   </main>
 </div>
 
-<script type="text/javascript" src="{% static 'assets/js/code.js' %}"></script>
+<script type="text/javascript" src="{% static 'assets/js/code.js' %}?v={{ timestamp }}"></script>
 </body>
 </html>
