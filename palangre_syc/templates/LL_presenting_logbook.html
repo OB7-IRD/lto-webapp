@@ -412,14 +412,14 @@
                         </div>
             
                         <div class="block w-full overflow-x-auto">
-                            {% if df_line|length == 2 %}    
+                            {% comment %} {% if df_line|length == 2 %}    
                             <table class="items-center w-full bg-transparent border-collapse">
                                 <tbody> 
                                     {% for index, row in df_line.0.iterrows %}
                                         {% if row.Value != None %}
                                             <tr>
                                             {% comment %} {% for cell in row %} {% endcomment %}
-                                            <td class="border-t-0 px-2 align-middle text-center border-l-0 border-r-0 text-m whitespace-nowrap p-2">
+                                            {% comment %} <td class="border-t-0 px-2 align-middle text-center border-l-0 border-r-0 text-m whitespace-nowrap p-2">
                                                 {{ row.Logbook_name }}
                                             </td>
                                         {% endif %}
@@ -433,7 +433,7 @@
                             </div> 
 
 
-                            {% elif df_line|length == 1 %}
+                            {% elif df_line|length == 1 %} {% endcomment %}
                             <table class="items-center w-full bg-transparent border-collapse">
                                 <tbody>                
                                     {% for index, row in df_line.iterrows %}
@@ -447,7 +447,7 @@
                                     {% endfor %}
                                 </tbody>
                             </table>
-                            {% endif %}
+                            {% comment %} {% endif %} {% endcomment %}
                         </div>
                     </div>
 

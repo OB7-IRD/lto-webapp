@@ -351,7 +351,7 @@ def create_bait_composition(bait_datatable, allData):
     return MultipleBaits
 
 
-def create_floatline_composition(df_gear):
+def create_floatline_composition(df_gear, df_line):
     """
     Fonction de construction du json pour les FloatlineComposition
 
@@ -361,52 +361,70 @@ def create_floatline_composition(df_gear):
     Returns:
         _type_: le json rempli à partir des infos de mon logbook
     """
-    floatlines_composition = [{
-        "homeId": None,
-        # "length": palangre_syc.excel_extractions.extract_gear_info(df_donnees_p1).loc[palangre_syc.excel_extractions.extract_gear_info(df_donnees_p1)['Logbook_name'] == 'Floatline length m', 'Value'].values[0],
-        "length": df_gear.loc[df_gear['Logbook_name'] == 'Floatline length m', 'Value'].values[0],
-        "proportion": 100,
-        "lineType": "fr.ird.referential.ll.common.LineType#1239832686157#0.9"
-    }]
+    Multiplefloatlines_composition = []
+    
+    if (len(df_line) >= 1) : 
+        for (row) in df_line.iterrows():
+            
+            if row[1]["Value"] != "":
+                floatlines_composition = {
+                    "homeId": None,
+                    "length": df_gear.loc[df_gear['Logbook_name'] == 'Floatline length m', 'Value'].values[0],
+                    "proportion": 100/len(df_line),
+                    "lineType": create_floatlineType(row[1]["Logbook_name"])
+                }
+            
+            Multiplefloatlines_composition.append(floatlines_composition)
+        
+        return Multiplefloatlines_composition
+            
+    else : 
+        floatlines_composition = [{
+            "homeId": None,
+            "length": df_gear.loc[df_gear['Logbook_name'] == 'Floatline length m', 'Value'].values[0],
+            "proportion": 100,
+            "lineType": "fr.ird.referential.ll.common.LineType#1239832686157#0.9"
+        }]
+        
     return floatlines_composition
 
 
-def create_lineType(df_line):
+def create_floatlineType(logbook_lineType):
     """
     Fonction de recherche de la line type dans le référentiel
 
     Args:
-        df_line: les élements cochés du logbook
+        logbook_lineType: l'élement coché du logbook (e.g. "braided nylon")
 
     Returns:
         lineType: le topiaId de la ligne
     """
-    if (len(df_line) == 1) : 
-        logbook_lineType = df_line.loc[df_line["Value"] != "", "Logbook_name"].values[0]
+    # if (len(df_line) == 1) : 
+    #     logbook_lineType = df_line.loc[df_line["Value"] != "", "Logbook_name"].values[0]
     
         # if contains "thick" == PV
-        if "thick" in logbook_lineType.lower():    
-            lineType = "fr.ird.referential.ll.common.LineType#1707486846969#0.09086405093041561"
-        
-        # # if contains "thin" == PR 
-        elif "thin" in logbook_lineType.lower(): 
-            lineType = "fr.ird.referential.ll.common.LineType#1707486754220#0.7999222136319315"
-            
-        # # if contains "braid" == BRL  
-        elif "braid" in logbook_lineType.lower():
-            lineType = "fr.ird.referential.ll.common.LineType#1239832686157#0.6"
-            
-        # if contains "mono" == MON  
-        elif "mono" in logbook_lineType.lower():
-            lineType = "fr.ird.referential.ll.common.LineType#1239832686157#0.1"
-            
-        # else == UNK 
-        else:
-            lineType = "fr.ird.referential.ll.common.LineType#1239832686157#0.9"
+    if "thick" in logbook_lineType.lower():    
+        lineType = "fr.ird.referential.ll.common.LineType#1707486846969#0.09086405093041561"
     
-    # si on a plusieurs lignes de cochées 
+    # # if contains "thin" == PR 
+    elif "thin" in logbook_lineType.lower(): 
+        lineType = "fr.ird.referential.ll.common.LineType#1707486754220#0.7999222136319315"
+        
+    # # if contains "braid" == BRL  
+    elif "braid" in logbook_lineType.lower():
+        lineType = "fr.ird.referential.ll.common.LineType#1239832686157#0.6"
+        
+    # if contains "mono" == MON  
+    elif "mono" in logbook_lineType.lower():
+        lineType = "fr.ird.referential.ll.common.LineType#1239832686157#0.1"
+        
+    # else == UNK 
     else:
         lineType = "fr.ird.referential.ll.common.LineType#1239832686157#0.9"
+    
+    # # si on a plusieurs lignes de cochées 
+    # else:
+    #     lineType = "fr.ird.referential.ll.common.LineType#1239832686157#0.9"
     
     return lineType
 
@@ -588,7 +606,7 @@ def create_activity_and_set(df_donnees_p1, df_donnees_p2, allData, start_extract
         bait_datatable = palangre_syc.excel_extractions.extract_bait(df_donnees_p1)
         set.update({'baitsComposition': create_bait_composition(bait_datatable, allData),})
 
-        set.update({'floatlinesComposition': create_floatline_composition(df_gear),
+        set.update({'floatlinesComposition': create_floatline_composition(df_gear, df_line),
                     'hooksComposition': [], 
                     'settingShape': None, })
 
@@ -597,7 +615,8 @@ def create_activity_and_set(df_donnees_p1, df_donnees_p2, allData, start_extract
 
         set.update({
             'catches': create_catches(datatable, allData),
-            'lineType': create_lineType(df_line),
+            # 'lineType': create_lineType(df_line),
+            'lineType': None,
             'lightsticksUsed': False,
             'lightsticksType': None,
             'lightsticksColor': None,

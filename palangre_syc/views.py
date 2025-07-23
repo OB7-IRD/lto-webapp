@@ -9,49 +9,16 @@ import warnings
 
 import pandas as pd
 import numpy as np
-# import openpyxl
 
 from django.shortcuts import render
 from django.contrib import messages
 from django.utils.translation import gettext as _
-# from django.utils import translation
-# from django.http import HttpResponseRedirect, JsonResponse
-# from django.utils.translation import activate
-# from django.template import RequestContext
-# from django.urls import reverse
-# from django.utils.translation import gettext
 
 from palangre_syc import excel_extractions
 from palangre_syc import json_construction
 from api_traitement import api_functions, common_functions
-# from webapps.models import User
 
 DIR = "./media/logbooks"
-
-
-# def research_dep(df_donnees_p1, allData, startDate):
-#     """
-#     Fonction qui recherche si 'dep' est présent dans la case à la date donnée par l'utilisateur
-
-#     Args:
-#         df_donnees_p1 (dataframe): _description_
-#         allData (dataframe): données de références
-#         startDate (date): saisie par l'utilisateur quand on créé une marée
-
-#     Returns:
-#         bool: True si la date saisie correspond à un departure, False si non
-#     """
-#     data = excel_extractions.extract_time(df_donnees=df_donnees_p1, allData=allData)
-#     # print("#"*20, "research_dep function", "#"*20)
-#     day = startDate[8:10] 
-#     dep_rows = data[data['Time'].str.lower().str.contains('dep', case=False, na=False)]
-    
-#     if not dep_rows.empty:
-#         dep_dates = dep_rows['Day']
-#         return str(dep_dates.values[0]) in str(day)
-#     else:
-#         return False
-
 
 def get_previous_trip_infos(request, token, df_donnees_p1, allData):
     """Fonction qui va faire appel au WS pour :
