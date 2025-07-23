@@ -371,7 +371,7 @@ def create_floatline_composition(df_gear, df_line):
                     "homeId": None,
                     "length": df_gear.loc[df_gear['Logbook_name'] == 'Floatline length m', 'Value'].values[0],
                     "proportion": 100/len(df_line),
-                    "lineType": create_floatlineType(row[1]["Logbook_name"])
+                    "lineType": create_lineType(row[1]["Logbook_name"])
                 }
             
             Multiplefloatlines_composition.append(floatlines_composition)
@@ -389,7 +389,7 @@ def create_floatline_composition(df_gear, df_line):
     return floatlines_composition
 
 
-def create_floatlineType(logbook_lineType):
+def create_lineType(logbook_lineType):
     """
     Fonction de recherche de la line type dans le référentiel
 
@@ -614,9 +614,14 @@ def create_activity_and_set(df_donnees_p1, df_donnees_p2, allData, start_extract
             df_donnees_p1, df_donnees_p2, row_number=i)
 
         set.update({
-            'catches': create_catches(datatable, allData),
-            # 'lineType': create_lineType(df_line),
-            'lineType': None,
+            'catches': create_catches(datatable, allData), })
+        
+        if (len(df_line) == 1) : 
+            set.update({'lineType': create_lineType(df_line.loc[df_line["Value"] != "", "Logbook_name"].values[0]), })
+        else:
+            set.update({'lineType': None, })
+        
+        set.update({
             'lightsticksUsed': False,
             'lightsticksType': None,
             'lightsticksColor': None,
