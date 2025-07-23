@@ -1,0 +1,20 @@
+{
+  "api/api_traitement": [],
+  "api/index": [],
+  "api/manage": [],
+  "api/modules": [],
+  "api/palangre_syc": [],
+  "api/webapps": [],
+  "api/website": [],
+  "getting_started/index": [],
+  "getting_started/installation_prod": [],
+  "getting_started/introduction": [],
+  "getting_started/palangre": [],
+  "getting_started/senne": [],
+  "index": [],
+  "user_guide/dropzone": [],
+  "user_guide/home": [],
+  "user_guide/index": [],
+  "user_guide/login": [],
+  "user_guide/palangre": []
+}
