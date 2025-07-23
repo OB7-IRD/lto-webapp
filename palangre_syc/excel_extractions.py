@@ -193,7 +193,7 @@ def extract_line_material(df_donnees):
     
     if len(df_line_used) > 1:
         message = _("Ici on n'attend qu'un seul matériau. Veuillez vérifier les données.")
-        return df_line_used, message
+        return df_line_used
 
     if len(df_line_used) == 0:
         message = _("La table entre les lignes 13 à 16 de la colonne 'AC' ne sont pas saisies. Veuillez vérifier les données.")
