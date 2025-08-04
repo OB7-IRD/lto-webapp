@@ -34,9 +34,11 @@ def get_token(base_url, data):
         data (json): format de données json exemple ci-dessous
             exemple:
                     data = {
-                            "config.login": "username",
-                            "config.password": "password",
-                            "config.databaseName": "database",
+                            "config.login": username,
+                            "config.password": password,
+                            "config.databaseName": database,
+                            "config.clientApplicationVersion": client_app_version,
+                            "config.modelVersion": model_version,
                             "referentialLocale": "fr_FR"
                     }
     Returns:
@@ -65,29 +67,32 @@ def is_valid(base_url, token):
     print("reponse of is valid function ", response.status_code)
     return response.status_code == 200
 
-
-def reload_token(username, password, base_url, database):
-    """ Fonction qui recharge un token
+def reload_token(username, password, base_url, database, client_app_version=None, model_version=None, referential_locale="fr_FR"):
+    """ Recharge un token en tenant compte du type de profil
 
     Args:
-        username: identifiant de connexion
-        password: mot de passe de connexion
-        base_url: l'url de base du profile
-        database: la base de données pour la connexion
+        username (str): Login
+        password (str): Mot de passe
+        base_url (str): URL de base
+        database (str): Alias base de données
+        client_app_version (str|None): Version de l'app Client obligatoire
+        model_version (str): Si None → ancien profil
+        referential_locale (str): Langue de référence
 
     Returns:
-        token
+        str: Token
     """
-
-    print("user database: ", database)
-
     data_user_connect = {
         "config.login": username,
         "config.password": password,
         "config.databaseName": database,
-        "referentialLocale": "FR",
-        # "referentialLocale": data_user.ref_language,
+        "referentialLocale": referential_locale
     }
+
+    # Champs supplémentaires uniquement pour les nouveaux profils
+    if client_app_version:
+        data_user_connect["config.clientApplicationVersion"] = client_app_version
+        data_user_connect["config.modelVersion"] = model_version
 
     return get_token(base_url, data_user_connect)
 

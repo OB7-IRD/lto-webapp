@@ -41,10 +41,11 @@ class ConnectionProfileForm(ModelForm):
 # Configuration de l'administration pour ConnectionProfile
 class ConnectionProfileAdmin(admin.ModelAdmin):
     form = ConnectionProfileForm
-    list_display = ('name', 'database_alias', 'url', 'login')
+    list_display = ('name', 'database_alias', 'url', 'login', "model_version", "referential_locale")
     search_fields = ('name', 'database_alias', 'login')
     filter_horizontal = ('users',)  # Affiche une interface pour ajouter des utilisateurs au profil
 
 # Enregistrement des modèles dans l'administration
 admin.site.register(LTOUser, LTOUserAdmin)
 admin.site.register(ConnectionProfile, ConnectionProfileAdmin)
+

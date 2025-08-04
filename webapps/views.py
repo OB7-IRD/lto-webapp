@@ -106,11 +106,24 @@ def auth_login(request):
 
 @login_required
 def update_data(request):
+    base_url = request.session.get('base_url')
     username = request.session.get('username')
     password = request.session.get('password')
     database = request.session.get('database')
-    base_url = request.session.get('base_url')
-    token  = api_functions.reload_token(username, password, base_url, database)
+    client_app_version = request.session.get('client_app_version')  # Peut être None
+    model_version = request.session.get('model_version')  # Peut être None
+    referential_locale = request.session.get('referential_locale')
+
+    # Appel à reload_token avec tous les paramètres requis
+    token = api_functions.reload_token(
+        username=username,
+        password=password,
+        base_url=base_url,
+        database=database,
+        client_app_version=client_app_version,
+        model_version=model_version,
+        referential_locale=referential_locale
+    )
 
     allData = load_data(token=token, base_url=base_url, forceUpdate=True)
     
@@ -175,23 +188,27 @@ def home(request):
 
 @login_required
 def connect_profile(request):
-
     if request.method == 'POST':
         profile_id = request.POST.get('profile')
-
         token = ""
         allData = None
+
         try:
             # Récupérer le profil sélectionné
             profile = ConnectionProfile.objects.get(id=profile_id, users=request.user)
 
-            # Stocker les informations du profil
+            # Construction dynamique de data_user_connect
             data_user_connect = {
                 "config.login": profile.login,
                 "config.password": profile.password,
                 "config.databaseName": profile.database_alias,
-                "referentialLocale": "FR",
+                "referentialLocale": profile.referential_locale or "fr_FR",  # Valeur par défaut
             }
+
+            if profile.client_app_version and profile.model_version:
+                data_user_connect["config.clientApplicationVersion"] = profile.client_app_version
+                data_user_connect["config.modelVersion"] = profile.model_version
+
             base_url = profile.url
 
             try:
@@ -203,56 +220,63 @@ def connect_profile(request):
                 print(" current_profile_id : ", current_profile_id)
 
                 if profile_id != current_profile_id:
-                    print("="*20," Changement des données de references ", "="*20)
+                    print("="*20, " Changement des données de références ", "="*20)
                     allData = load_data(token=token, base_url=base_url, forceUpdate=True)
                 else:
-                    print("="*20," Pas de changement de profil ", "="*20)
+                    print("="*20, " Pas de changement de profil ", "="*20)
                     allData = load_data(token=token, base_url=base_url)
 
-            # except Exception as e:
-                #print("Erreur lors du chargement des données de référence :", e)
-            except:
-                print("Erreur lors du chargement des données de référence :")
-                allData = None  # Pour éviter l'UnboundLocalError
+            except Exception as e:
+                print("Erreur lors du chargement des données de référence :", e)
+                allData = None  # éviter UnboundLocalError
 
-            if (token != "") and (allData != []):
+            # Vérification et mise en session
+            if (token != "") and (allData is not None and allData != []):
                 request.session['token'] = token
                 request.session['base_url'] = base_url
                 request.session['username'] = profile.login
                 request.session['password'] = profile.password
                 request.session['database'] = profile.database_alias
+                request.session['referential_locale'] = profile.referential_locale or "FR"
+
+                if profile.client_app_version and profile.model_version:
+                    request.session['client_app_version'] = profile.client_app_version
+                    request.session['model_version'] = profile.model_version
+                else:
+                    request.session['client_app_version'] = None
+                    request.session['model_version'] = None
 
                 request.session['current_profile_id'] = profile_id
 
-                # print("="*20, "if (token != "") and (allData is not [])", "="*20)
                 datat_0c_Pr = {
                     "ocean": None,
-                    "program" : allData["Program"]
+                    "program": allData["Program"]
                 }
                 request.session['data_Oc_Pr'] = datat_0c_Pr
                 request.session['table_files'] = []
-
                 request.session['message_home'] = ""
 
                 return redirect("home")
             else:
-                request.session['message_home'] = _("Impossible de se connecter au serveur verifier la connexion")
+                request.session['message_home'] = _("Impossible de se connecter au serveur. Veuillez vérifier la connexion.")
                 return redirect('home')
+
         except ConnectionProfile.DoesNotExist:
-            # Si le profile n'existe pas ou n'est pas associé à l'utilisateur
             request.session['base_url'] = None
             request.session['username'] = None
             request.session['password'] = None
             request.session['database'] = None
-            datat_0c_Pr = {
+            request.session['referential_locale'] = None
+            request.session['client_app_version'] = None
+            request.session['model_version'] = None
+            request.session['data_Oc_Pr'] = {
                 "ocean": None,
-                "program" : None
+                "program": None
             }
-            request.session['data_Oc_Pr'] = datat_0c_Pr
-            request.session['message_home'] = _("Pas de profile pour l'instant ou n'est pas associé à l'utilisateur")
+            request.session['message_home'] = _("Pas de profil disponible ou non associé à votre compte.")
             return redirect('home')
-    return redirect('home')
 
+    return redirect('home')
 
 @login_required
 def logbook(request):
@@ -533,12 +557,24 @@ def domaineSelect(request):
 
 @login_required
 def sendData(request):
+    base_url = request.session.get('base_url')
     username = request.session.get('username')
     password = request.session.get('password')
-    base_url = request.session.get('base_url')
     database = request.session.get('database')
+    client_app_version = request.session.get('client_app_version')  # Peut être None
+    model_version = request.session.get('model_version')  # Peut être None
+    referential_locale = request.session.get('referential_locale')
 
-    token  = api_functions.reload_token(username, password, base_url, database)
+    # Appel à reload_token avec tous les paramètres requis
+    token = api_functions.reload_token(
+        username=username,
+        password=password,
+        base_url=base_url,
+        database=database,
+        client_app_version=client_app_version,
+        model_version=model_version,
+        referential_locale=referential_locale
+    )
 
     if request.headers.get('x-requested-with') == 'XMLHttpRequest':
         file_name = "media/temporary_files/content_json.json"
