@@ -22,7 +22,8 @@ def js_content(tab6_routeLogbook, oce = None, program = None):
       "vessel": None,
 
       "logbookProgram": program, # liste generer demander seine dns gearType & logbook = Ture
-      "observationsProgram" : None,
+      "observationsProgram" : None, # Old
+      # "observationProgram" : None, # 9.5
 
       "observer": None,
 
@@ -37,6 +38,9 @@ def js_content(tab6_routeLogbook, oce = None, program = None):
       "logbookDataQuality": "fr.ird.referential.common.DataQuality#0#5",
       "departureWellContentStatus": "fr.ird.referential.ps.logbook.WellContentStatus#1464000000000#03",
       "landingWellContentStatus": "fr.ird.referential.ps.logbook.WellContentStatus#1464000000000#03",
+        # observationAcquisitionStatus => Obs 9.5
+      # "observationAcquisitionStatus": "fr.ird.referential.ps.common.AcquisitionStatus#1464000000000#099",
+       # observationsAcquisitionStatus => Obs old version
       "observationsAcquisitionStatus": "fr.ird.referential.ps.common.AcquisitionStatus#1464000000000#099",
       "logbookAcquisitionStatus": "fr.ird.referential.ps.common.AcquisitionStatus#1464000000000#001",
       "targetWellsSamplingAcquisitionStatus": "fr.ird.referential.ps.common.AcquisitionStatus#1464000000000#999",

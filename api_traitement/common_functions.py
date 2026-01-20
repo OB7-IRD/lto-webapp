@@ -1921,7 +1921,8 @@ def build_trip(allData, info_bat, data_log, oce, prg, ob):
 
     js_contents["loch"] = info_bat['Arrivee_Loch']
     js_contents["homeId"] = str(ob["mar_homeId"])
-    js_contents["observationsProgram"] = None
+    js_contents["observationsProgram"] = None # Old
+    # js_contents["observationProgram"] = None # 9.5
     js_contents['logbookComment'] = "NB: Service Web"
 
     return allMessages, js_contents
@@ -2529,7 +2530,8 @@ def build_trip_v23(allData, info_bat, data_log, oce, prg):
 
     js_contents["loch"] = info_bat['Arrivee_Loch']
     js_contents["homeId"] = str(info_bat["mar_homeId"])
-    js_contents["observationsProgram"] = None
+    # js_contents["observationsProgram"] = None # Old
+    js_contents["observationProgram"] = None  # 9.5
     js_contents['logbookComment'] = "NB: Service Web"
 
     return allMessages, js_contents
