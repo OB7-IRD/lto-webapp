@@ -22,13 +22,8 @@ $(document).ready(function(){
     var group_file   = '.xlsx, .xlsm, .zip';
 
     function dropZone(domaine){
-        if (domaine == "senne"){
-             maxFile = 1;
-             group_file   = '.xlsx, .xlsm';
-        }else{
-             maxFile = 1;
-             group_file   = '.xlsx, .xlsm, .zip';
-        }
+        maxFile = 1;
+        group_file   = '.xlsx, .xlsm';
 
         const myDropzone = new Dropzone("#my-dropzone", {
             url: "upload",
@@ -37,6 +32,24 @@ $(document).ready(function(){
             acceptedFiles: group_file,
         });
     };
+
+
+    function updateTyDocSelect(docs, selected = null) {
+        const $select = $("#apply select[name='ty_doc']");
+
+        // On enlève UNIQUEMENT ce que le JS a ajouté
+        $select.find('option.dyn-tydoc').remove();
+
+        let html = '';
+        docs.forEach(doc => {
+            html += `<option class="dyn-tydoc" value="${doc.id}" ${
+                selected && selected === doc.id ? 'selected' : ''
+            }>${doc.label}</option>`;
+        });
+
+        $select.append(html);
+    }
+
 
     // Récupération des données du contexte via le script JSON intégré
     let scriptElement = document.getElementById('context-data');
@@ -54,31 +67,39 @@ $(document).ready(function(){
                 $("#domaine").val(ll_context.domaine);
             }
             if (ll_context.domaine == "palangre") {
-                console.log(ll_context.domaine)
-                $.ajax({
-                    url: '/palangre',
-                    type: 'GET',
-                    dataType: "json",
-                    success: function(response) {
-                        var option = '';
-                        for (var i = 0; i < response.dataPro.id.length; i++) {
-                            if (!ll_context.programme) {
-                                option += '<option value="' + response.dataPro.id[i] + '">' + response.dataPro.value[i] + '</option>';
-                            } else {
-                                if (ll_context.programme == response.dataPro.id[i]) {
-                                    $("#apply select[name='ty_doc']").find('.after').after('<option selected value="ll">Logbook SFA industriel</option>');
-                                    option += '<option selected value="' + response.dataPro.id[i] + '">' + response.dataPro.value[i] + '</option>';
-                                } else {
-                                    option += '<option value="' + response.dataPro.id[i] + '">' + response.dataPro.value[i] + '</option>';
-                                }
-                            }
-                        }
-                        $("#apply select[name='programme']").find('.after').after(option);
-                    },
-                    error: function(response) {
-                        console.log('Erreur lors de la requête AJAX');
-                    }
-                });
+                // console.log(ll_context.domaine)
+                // $.ajax({
+                //     url: '/palangre',
+                //     type: 'GET',
+                //     dataType: "json",
+                //     success: function(response) {
+                //         var option = '';
+                //         for (var i = 0; i < response.dataPro.id.length; i++) {
+                //             if (!ll_context.programme) {
+                //                 option += '<option value="' + response.dataPro.id[i] + '">' + response.dataPro.value[i] + '</option>';
+                //             } else {
+                //                 if (ll_context.programme == response.dataPro.id[i]) {
+                //                     $("#apply select[name='ty_doc']").find('.after').after('<option selected value="ll">Logbook SFA industriel</option>');
+                //                     option += '<option selected value="' + response.dataPro.id[i] + '">' + response.dataPro.value[i] + '</option>';
+                //                 } else {
+                //                     option += '<option value="' + response.dataPro.id[i] + '">' + response.dataPro.value[i] + '</option>';
+                //                 }
+                //             }
+                //         }
+                //         $("#apply select[name='programme']").find('.after').after(option);
+                //     },
+                //     error: function(response) {
+                //         console.log('Erreur lors de la requête AJAX');
+                //     }
+                // });
+
+                updateTyDocSelect(
+                    [
+                        { id: "ll_17.6", label: "SFA logbook version 17.6" },
+                        { id: "ll_18",   label: "SFA logbook version 18" }
+                    ],
+                    ll_context.ty_doc
+                );
 
             } else if (ll_context.domaine == "senne") {
                 $.ajax({
@@ -128,6 +149,8 @@ $(document).ready(function(){
         $("#apply select[name='ty_doc']").find('.after').nextAll().remove();
         $("#apply select[name='programme']").find('.after').nextAll().remove();
 
+        updateTyDocSelect([]);
+
         if ($this.val() == "senne") {
 
             $("#apply select[name='ty_doc']").find('.after').after('<option class="orth" value="ps">Logbook ORTHONGEL v21</option>');
@@ -155,7 +178,13 @@ $(document).ready(function(){
 
         }else if ($this.val() == "palangre") {
 
-            $("#apply select[name='ty_doc']").find('.after').after('<option value="ll">Logbook  SFA industriel</option>');
+            // $("#apply select[name='ty_doc']").find('.after').after('<option value="ll">Logbook  SFA industriel</option>');
+            
+            updateTyDocSelect([
+                { id: "ll_17.6", label: "SFA logbook version 17.6" },
+                { id: "ll_18",   label: "SFA logbook version 18" }
+            ]);
+            
             $.ajax({
                 url: '/'+$this.val(),
                 type: 'GET',
@@ -186,7 +215,8 @@ $(document).ready(function(){
             // console.log($("#apply").serialize());
             data = $("#apply").serialize();
             // console.log($("#apply").data("url"));
-            if (($("#apply select[name='ty_doc']").val() == "ps") || ($("#apply select[name='ty_doc']").val() == "ps2") || ($("#apply select[name='ty_doc']").val() == "ll")){
+            //  POURQUOI ? On peut juste faire si ce n'est pas ERS
+            if (($("#apply select[name='ty_doc']").val() == "ps") || ($("#apply select[name='ty_doc']").val() == "ps2") || ($("#apply select[name='ty_doc']").val() == "ll_17.6") || ($("#apply select[name='ty_doc']").val() == "ll_18")){
 
                 $.ajax({
                     type: 'POST',
@@ -254,7 +284,33 @@ $(document).ready(function(){
                 }
 
                 // palangre
-                else if ($("#apply select[name='ty_doc']").val() == "ll"){
+                else if ($("#apply select[name='ty_doc']").val() == "ll_17.6"){
+                    $.ajax({
+                        type: 'POST',
+                        url: $("#apply").attr('action'),
+                        data: data,
+                        dataType: "json",
+                        success: function(response){
+
+                            if (response.message == 'success'){
+                                console.log("Configuration enregistrée vous pouvez faire la migration des données logbook");
+
+                            }else{
+                                console.log(response.message);
+                            }
+                        },
+                        error: function(response){
+                            console.log('La configuration n\'a pas été enregistrée');
+                        }
+                    });
+                    $("#div_upload").show(1500);
+                    $("#my-dropzone button[class='dz-button']").text('Drop files here to upload and extract data');
+
+                    var domaine = $("#domaine").val();
+                    dropZone(domaine);
+                }
+
+                else if ($("#apply select[name='ty_doc']").val() == "ll_18"){
                     $.ajax({
                         type: 'POST',
                         url: $("#apply").attr('action'),
