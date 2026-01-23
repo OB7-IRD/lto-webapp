@@ -264,7 +264,7 @@ def checking_logbook(request):
     if request.method == 'POST':
             
         apply_conf = request.session.get('dico_config')
-        # print("apply_conf : ", apply_conf)
+        print("apply_conf : ", apply_conf)
         continuetrip = request.POST.get('continuetrip')
         newtrip = request.POST.get('newtrip')
         context = request.session.get('context')
@@ -279,21 +279,26 @@ def checking_logbook(request):
         df_donnees_p1 = common_functions.read_excel(logbook_file_path, 1)
         df_donnees_p2 = common_functions.read_excel(logbook_file_path, 2)
         
-        df_vessel = excel_extractions.extract_vessel_info(df_donnees_p1)
-        df_cruise = excel_extractions.extract_cruise_info(df_donnees_p1)
-        df_report = excel_extractions.extract_report_info(df_donnees_p1)
-        df_gear = excel_extractions.extract_gear_info(df_donnees_p1)
-        df_line = excel_extractions.extract_line_material(df_donnees_p1)
-        df_target = excel_extractions.extract_target_species(df_donnees_p1)
-        df_date = excel_extractions.extract_logbook_date(df_donnees_p1)
-        df_bait = excel_extractions.extract_bait(df_donnees_p1)
-        df_fishing_effort = excel_extractions.extract_fishing_effort(df_donnees_p1)
-        
-        df_position = excel_extractions.extract_positions(df_donnees_p1)
-        df_time = excel_extractions.extract_time(df_donnees_p1, allData)
-        df_temperature = excel_extractions.extract_temperature(df_donnees_p1)
-        df_fishes = excel_extractions.extract_fish_p1(df_donnees_p1)
-        df_bycatch = excel_extractions.extract_bycatch_p2(df_donnees_p2)
+        if (apply_conf['ty_doc'] == 'll_17.6'):
+            df_vessel = excel_extractions.extract_vessel_info(df_donnees_p1)
+            df_cruise = excel_extractions.extract_cruise_info(df_donnees_p1)
+            df_report = excel_extractions.extract_report_info(df_donnees_p1)
+            df_gear = excel_extractions.extract_gear_info(df_donnees_p1)
+            df_line = excel_extractions.extract_line_material(df_donnees_p1)
+            df_target = excel_extractions.extract_target_species(df_donnees_p1)
+            df_date = excel_extractions.extract_logbook_date(df_donnees_p1)
+            df_bait = excel_extractions.extract_bait(df_donnees_p1)
+            df_fishing_effort = excel_extractions.extract_fishing_effort(df_donnees_p1)
+            
+            df_position = excel_extractions.extract_positions(df_donnees_p1)
+            df_time = excel_extractions.extract_time(df_donnees_p1, allData)
+            df_temperature = excel_extractions.extract_temperature(df_donnees_p1)
+            df_fishes = excel_extractions.extract_fish_p1(df_donnees_p1)
+            df_bycatch = excel_extractions.extract_bycatch_p2(df_donnees_p2)
+
+        else : 
+            print(apply_conf['ty_doc'], " pas encore géré")
+
 
         # on ajuste le dataframe pour que ca s'arrête à la fin du mois
         df_position = common_functions.remove_if_nul(df_position, 'Latitude')
