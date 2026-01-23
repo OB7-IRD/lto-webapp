@@ -19,19 +19,52 @@ $(document).ready(function(){
     */
 
     var maxFile = 1;
-    var group_file   = '.xlsx, .xlsm, .zip';
+    var group_file   = '.xlsx, .xlsm';
+    var myDropzone = null;
 
     function dropZone(domaine){
         maxFile = 1;
         group_file   = '.xlsx, .xlsm';
 
-        const myDropzone = new Dropzone("#my-dropzone", {
+        // const myDropzone = new Dropzone("#my-dropzone", {
+        //     url: "upload",
+        //     maxFiles: maxFile,
+        //     maxFilesize: 15,
+        //     acceptedFiles: group_file,
+        //     addRemoveLinks: true
+        // });
+
+        if (myDropzone) {
+            myDropzone.removeAllFiles(true);
+            myDropzone.options.maxFiles = 1;
+            myDropzone.options.acceptedFiles = '.xlsx, .xlsm';
+            return;
+        }
+
+        myDropzone = new Dropzone("#my-dropzone", {
             url: "upload",
-            maxFiles: maxFile,
+            maxFiles: 1,
             maxFilesize: 15,
-            acceptedFiles: group_file,
+            acceptedFiles: '.xlsx, .xlsm',
+            addRemoveLinks: true
         });
     };
+
+    //     function initDropzone() {
+    //     if (myDropzone) {
+    //         myDropzone.removeAllFiles(true);
+    //         return;
+    //     }
+
+    //     myDropzone = new Dropzone(SELECTORS.dropzone, {
+    //         url: "upload",
+    //         maxFiles: 1,
+    //         maxFilesize: 15,
+    //         acceptedFiles: ".xlsx, .xlsm",
+    //         addRemoveLinks: true
+    //     });
+    // }
+
 
 
     function updateTyDocSelect(docs, selected = null) {
@@ -218,6 +251,15 @@ $(document).ready(function(){
             //  POURQUOI ? On peut juste faire si ce n'est pas ERS
             if (($("#apply select[name='ty_doc']").val() == "ps") || ($("#apply select[name='ty_doc']").val() == "ps2") || ($("#apply select[name='ty_doc']").val() == "ll_17.6") || ($("#apply select[name='ty_doc']").val() == "ll_18")){
 
+                
+                if (myDropzone) {
+                    myDropzone.disable();   // stop tout
+                    myDropzone.destroy();   // 🔥 ferme TOUS les handles Windows
+                    myDropzone = null;
+                }
+
+                
+
                 $.ajax({
                     type: 'POST',
                     url: 'del_files',
@@ -231,7 +273,7 @@ $(document).ready(function(){
                     }
                 });
 
-                if ($("#apply select[name='ty_doc']").val() == "ps"){
+                // if ($("#apply select[name='ty_doc']").val() == "ps"){
                     $.ajax({
                         type: 'POST',
                         url: $("#apply").attr('action'),
@@ -255,86 +297,86 @@ $(document).ready(function(){
 
                     var domaine = $("#domaine").val();
                     dropZone(domaine);
-                }
+                // }
 
-                else if ($("#apply select[name='ty_doc']").val() == "ps2"){
-                    $.ajax({
-                        type: 'POST',
-                        url: $("#apply").attr('action'),
-                        data: data,
-                        dataType: "json",
-                        success: function(response){
+                // else if ($("#apply select[name='ty_doc']").val() == "ps2"){
+                //     $.ajax({
+                //         type: 'POST',
+                //         url: $("#apply").attr('action'),
+                //         data: data,
+                //         dataType: "json",
+                //         success: function(response){
 
-                            if (response.message == 'success'){
-                                console.log("Configuration enregistrée vous pouvez faire la migration des données logbook");
+                //             if (response.message == 'success'){
+                //                 console.log("Configuration enregistrée vous pouvez faire la migration des données logbook");
 
-                            }else{
-                                console.log("2message unsuccess"+response.message);
-                            }
-                        },
-                        error: function(response){
-                            console.log('La configuration n\'a pas été enregistrer');
-                        }
-                    });
-                    $("#div_upload").show(1500);
-                    $("#my-dropzone button[class='dz-button']").text('Drop files here to upload and extract data');
+                //             }else{
+                //                 console.log("2message unsuccess"+response.message);
+                //             }
+                //         },
+                //         error: function(response){
+                //             console.log('La configuration n\'a pas été enregistrer');
+                //         }
+                //     });
+                //     $("#div_upload").show(1500);
+                //     $("#my-dropzone button[class='dz-button']").text('Drop files here to upload and extract data');
 
-                    var domaine = $("#domaine").val();
-                    dropZone(domaine);
-                }
+                //     var domaine = $("#domaine").val();
+                //     dropZone(domaine);
+                // }
 
-                // palangre
-                else if ($("#apply select[name='ty_doc']").val() == "ll_17.6"){
-                    $.ajax({
-                        type: 'POST',
-                        url: $("#apply").attr('action'),
-                        data: data,
-                        dataType: "json",
-                        success: function(response){
+                // // palangre
+                // else if ($("#apply select[name='ty_doc']").val() == "ll_17.6"){
+                //     $.ajax({
+                //         type: 'POST',
+                //         url: $("#apply").attr('action'),
+                //         data: data,
+                //         dataType: "json",
+                //         success: function(response){
 
-                            if (response.message == 'success'){
-                                console.log("Configuration enregistrée vous pouvez faire la migration des données logbook");
+                //             if (response.message == 'success'){
+                //                 console.log("Configuration enregistrée vous pouvez faire la migration des données logbook");
 
-                            }else{
-                                console.log(response.message);
-                            }
-                        },
-                        error: function(response){
-                            console.log('La configuration n\'a pas été enregistrée');
-                        }
-                    });
-                    $("#div_upload").show(1500);
-                    $("#my-dropzone button[class='dz-button']").text('Drop files here to upload and extract data');
+                //             }else{
+                //                 console.log(response.message);
+                //             }
+                //         },
+                //         error: function(response){
+                //             console.log('La configuration n\'a pas été enregistrée');
+                //         }
+                //     });
+                //     $("#div_upload").show(1500);
+                //     $("#my-dropzone button[class='dz-button']").text('Drop files here to upload and extract data');
 
-                    var domaine = $("#domaine").val();
-                    dropZone(domaine);
-                }
+                //     var domaine = $("#domaine").val();
+                //     dropZone(domaine);
+                // }
 
-                else if ($("#apply select[name='ty_doc']").val() == "ll_18"){
-                    $.ajax({
-                        type: 'POST',
-                        url: $("#apply").attr('action'),
-                        data: data,
-                        dataType: "json",
-                        success: function(response){
+                // else if ($("#apply select[name='ty_doc']").val() == "ll_18"){
+                //     $.ajax({
+                //         type: 'POST',
+                //         url: $("#apply").attr('action'),
+                //         data: data,
+                //         dataType: "json",
+                //         success: function(response){
 
-                            if (response.message == 'success'){
-                                console.log("Configuration enregistrée vous pouvez faire la migration des données logbook");
+                //             if (response.message == 'success'){
+                //                 console.log("Configuration enregistrée vous pouvez faire la migration des données logbook");
 
-                            }else{
-                                console.log(response.message);
-                            }
-                        },
-                        error: function(response){
-                            console.log('La configuration n\'a pas été enregistrée');
-                        }
-                    });
-                    $("#div_upload").show(1500);
-                    $("#my-dropzone button[class='dz-button']").text('Drop files here to upload and extract data');
+                //             }else{
+                //                 console.log(response.message);
+                //             }
+                //         },
+                //         error: function(response){
+                //             console.log('La configuration n\'a pas été enregistrée');
+                //         }
+                //     });
+                //     $("#div_upload").show(1500);
+                //     $("#my-dropzone button[class='dz-button']").text('Drop files here to upload and extract data');
 
-                    var domaine = $("#domaine").val();
-                    dropZone(domaine);
-                }
+                //     var domaine = $("#domaine").val();
+                //     dropZone(domaine);
+                // }
             }
             else if ($("#apply select[name='ty_doc']").val() == "ers"){
                 $("#div_upload").hide(1500);
