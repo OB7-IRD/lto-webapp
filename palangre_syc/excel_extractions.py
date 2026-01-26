@@ -46,35 +46,26 @@ def extract_cruise_info(df_donnees):
         df
     """
     # On extrait les données propres au 'Cruise information'
-    df_cruise1 = df_donnees.iloc[9:10, 11:20]
-    df_cruise2 = df_donnees.iloc[9:10, 20:29]
+    df_cruise1 = df_donnees.iloc[[9], [11, 16]]
+    df_cruise2 = df_donnees.iloc[[9], [20, 25]]
 
-    # On supprimes les colonnes qui sont vides
-    df_cruise1 = common_functions.del_empty_col(df_cruise1)
-    df_cruise2 = common_functions.del_empty_col(df_cruise2)
+    # Forcer les mêmes noms de colonnes
+    df_cruise1.columns = ['Logbook_name', 'Value']
+    df_cruise2.columns = ['Logbook_name', 'Value']
 
-    np_cruise = np.append(np.array(df_cruise1), np.array(df_cruise2), axis=0)
+    # Concaténation verticale
+    df_cruise = pd.concat([df_cruise1, df_cruise2], axis=0, ignore_index=True)
 
-    # on nettoie la colonne en enlevant les espaces et les ':'
-    np_cruise[:, 0] = common_functions.np_removing_semicolon(np_cruise, 0)
-
-    # On applique la fonction strip sur les cellules de la colonnes Valeur,
-    # si l'élément correspond à une zone de texte
-    vect = np.vectorize(common_functions.strip_if_string)
-    np_cruise[:, 1] = vect(np_cruise[:, 1])
-
-    df_cruise = pd.DataFrame(np_cruise, columns=['Logbook_name', 'Value'])
-    
     # Nettoyer la colonne 'Logbook_name' en enlevant les espaces et les ':'
     df_cruise['Logbook_name'] = df_cruise.iloc[:, 0].str.replace(':', '').str.strip()
 
     # Appliquer la fonction strip sur les cellules de la colonne 'Value' si l'élément correspond à une zone de texte
     df_cruise['Value'] = df_cruise.iloc[:, 1].apply(lambda x: x.strip() if isinstance(x, str) else x)
-    
+
     # Appliquer un filtre pour les caractères spéciaux dans la colonne 'Logbook_name' et 'Value'
     df_cruise['Logbook_name'] = common_functions.remove_spec_char_from_list(df_cruise['Logbook_name'])
     df_cruise['Value'] =  common_functions.remove_spec_char_from_list(df_cruise['Value'])
-    
+
     # Supprimer les espaces supplémentaires dans la colonne 'Logbook_name'
     df_cruise['Logbook_name'] = df_cruise['Logbook_name'].str.strip()
     
@@ -156,9 +147,9 @@ def extract_gear_info(df_donnees):
 
     return df_gear
 
-def extract_line_material(df_donnees):
+def extract_line_material_v17(df_donnees):
     """
-    Extraction des cases 'Gear'
+    Extraction des cases 'Gear' selon la version du logbook v.17.6 de 2024
 
     Args:
         df_donnees (df): excel p1
@@ -195,6 +186,48 @@ def extract_line_material(df_donnees):
         message = _("Ici on n'attend qu'un seul matériau. Veuillez vérifier les données.")
         return df_line_used
 
+    if len(df_line_used) == 0:
+        message = _("La table entre les lignes 13 à 16 de la colonne 'AC' ne sont pas saisies. Veuillez vérifier les données.")
+        return df_line_used, message
+
+    return df_line_used
+
+def extract_line_material_v18(df_donnees):
+    """
+    Extraction des cases 'Gear' selon la version du logbook v.18 de 2026
+
+    Args:
+        df_donnees (df): excel p1
+
+    Returns:
+        df
+    """
+    # On extrait les données
+    # df_line = df_donnees.iloc[12:16, 21:29]
+    df_line = df_donnees.iloc[12:16, [21, 25]]
+
+    # On supprimes les colonnes qui sont vides
+    # df_line = common_functions.del_empty_col(df_line)
+
+    # Nettoyer la colonne 'Logbook_name' en enlevant les espaces et les ':'
+    df_line.iloc[:, 0] = df_line.iloc[:, 0].str.replace(':', '').str.strip()
+
+    # Nettoyer la colonne 'Value' en appliquant strip() si l'élément correspond à une chaîne de caractères
+    df_line.iloc[:, 1] = df_line.iloc[:, 1].apply(lambda x: x.strip() if isinstance(x, str) else x)
+    print(df_line)
+    # Renommer les colonnes
+    df_line.columns = ['Logbook_name', 'Value']
+
+    # Appliquer un filtre pour les caractères spéciaux dans la colonne 'Logbook_name'
+    df_line['Logbook_name'] = common_functions.remove_spec_char_from_list(df_line['Logbook_name'])
+
+    # Supprimer les espaces supplémentaires dans la colonne 'Logbook_name'
+    df_line['Logbook_name'] = df_line['Logbook_name'].str.strip()
+    df_line['Value'] = df_line['Value'].str.strip()
+    
+    # Filtrer les lignes qui sont cochées
+    df_line_used = df_line[(df_line["Value"] != "None") & (df_line["Value"].notna())]
+    
     if len(df_line_used) == 0:
         message = _("La table entre les lignes 13 à 16 de la colonne 'AC' ne sont pas saisies. Veuillez vérifier les données.")
         return df_line_used, message
@@ -265,9 +298,10 @@ def extract_logbook_date(df_donnees):
 
     return df_date
 
-def extract_bait(df_donnees):
+def extract_bait_v17(df_donnees):
     """
     Extraction des cases relatives au type d'appât utilisé
+    selon la version du logbook v.17.6 de 2024
 
     Args:
         df_donnees (df): excel p1
@@ -295,7 +329,33 @@ def extract_bait(df_donnees):
     
     return df_bait_used
 
-def extract_positions(df_donnees):
+def extract_bait_v18(df_donnees):
+    """
+    Extraction des cases relatives au type d'appât utilisé
+    selon la version du logbook v.18 de 2025
+
+    Args:
+        df_donnees (df): excel p1
+
+    Returns:
+        df
+    """
+    # Extraction de la colonne Bait (lignes utiles uniquement)
+    df_bait = df_donnees.iloc[24:55, [0]].copy()
+
+    # Renommage clair
+    df_bait.columns = ['Bait']
+
+    # Nettoyage
+    df_bait['Bait'] = df_bait['Bait'].apply(
+        lambda x: x.strip() if isinstance(x, str) else x)
+
+    # Suppression des lignes vides
+    df_bait = df_bait.dropna(subset=['Bait'])
+
+    return df_bait
+
+def extract_positions(df_donnees, version):
     """
     Extraction des cases relatives aux données de position
     
@@ -305,7 +365,12 @@ def extract_positions(df_donnees):
     Returns:
         df
     """
-    data = df_donnees.iloc[24:55, :7]
+    
+    if version == "ll_17.6":
+        data = df_donnees.iloc[24:55, :7]
+    elif version == "ll_18":
+        data = df_donnees.iloc[23:54, :7]
+    
     colnames = ['Day', 'Latitude_Degrees', 'Latitude_Minutes', 'Latitude_Direction',
                 'Longitude_Degrees', 'Longitude_Minutes', 'Longitude_Direction']
     data.columns = colnames
@@ -361,7 +426,7 @@ def get_vessel_activity_topiaid(startTimeStamp, allData):
 
     return None
 
-def extract_time(df_donnees, allData):
+def extract_time(df_donnees, allData, version):
     """
     Extraction des cases relatives aux horaires des coups de pêche
     
@@ -371,8 +436,13 @@ def extract_time(df_donnees, allData):
     Returns:
         df: type horaire, sauf si le bateau est en mouvement
     """
-    day = df_donnees.iloc[24:55, 0]
-    df_time = df_donnees.iloc[24:55, 7:8]
+    if version == "ll_17.6":
+        day = df_donnees.iloc[24:55, 0]
+        df_time = df_donnees.iloc[24:55, 7:8]
+    elif version == "ll_18":
+        day = df_donnees.iloc[23:54, 0]
+        df_time = df_donnees.iloc[23:54, 7:8]
+    
     colnames = ['Time']
     df_time.columns = colnames
     df_time['Time'] = df_time['Time'].apply(common_functions.convert_to_time_or_text)
@@ -389,7 +459,7 @@ def extract_time(df_donnees, allData):
 
     return df_time
 
-def extract_temperature(df_donnees):
+def extract_temperature(df_donnees, version):
     """
     Extraction des cases relatives aux températures
     
@@ -399,14 +469,17 @@ def extract_temperature(df_donnees):
     Returns:
         df
     """
-
-    df_temp = df_donnees.iloc[24:55, 8:9]
+    if version == "ll_17.6":
+        df_temp = df_donnees.iloc[24:55, 8:9]
+    elif version == "ll_18":
+        df_temp = df_donnees.iloc[23:54, 8:9]
+    
     colnames = ['Temperature']
     df_temp.columns = colnames
     df_temp.reset_index(drop=True, inplace=True)
     return df_temp
 
-def extract_fishing_effort(df_donnees):
+def extract_fishing_effort(df_donnees, version):
     """
     Extraction des cases relatives aux efforts de pêche
     
@@ -416,7 +489,11 @@ def extract_fishing_effort(df_donnees):
     Returns:
         df
     """
-    df_fishing_effort = df_donnees.iloc[24:55, [0, 9, 10, 11]].copy()
+    if version == "ll_17.6":
+        df_fishing_effort = df_donnees.iloc[24:55, [0, 9, 10, 11]].copy()
+    elif version == "ll_18":
+        df_fishing_effort = df_donnees.iloc[23:54, [0, 9, 10, 11]].copy()
+    
     df_fishing_effort.columns = ['Day', 'Hooks per basket', 'Total hooks', 'Total lightsticks']
     
     try:
@@ -427,7 +504,7 @@ def extract_fishing_effort(df_donnees):
     df_fishing_effort.reset_index(drop=True, inplace=True)
     return df_fishing_effort
 
-def extract_fish_p1(df_donnees):
+def extract_fish_p1(df_donnees, version):
     """
     Extraction des cases relatives à ce qui a été pêché
     
@@ -437,20 +514,23 @@ def extract_fish_p1(df_donnees):
     Returns:
         df
     """
-    df_fishes = df_donnees.iloc[24:55, 12:36]
+    if version == "ll_17.6":
+        df_fishes = df_donnees.iloc[24:55, 12:36]
+    elif version == "ll_18":
+        df_fishes = df_donnees.iloc[23:54, 12:36]
 
-    colnames = ['No RET SBF', 'Kg RET SBF',
-                'No RET ALB', 'Kg RET ALB',
-                'No RET BET', 'Kg RET BET',
-                'No RET YFT', 'Kg RET YFT', 
-                'No RET SWO', 'Kg RET SWO',
-                'No RET MLS', 'Kg RET MLS',
-                'No RET BUM', 'Kg RET BUM',
-                'No RET BLM', 'Kg RET BLM',
-                'No RET SFA', 'Kg RET SFA',
-                'No RET SSP', 'Kg RET SSP', 
-                'No RET OIL', 'Kg RET OIL',
-                'No RET MZZ', 'Kg RET MZZ']
+    colnames = ['No. RET SBF', 'Kg RET SBF',
+                'No. RET ALB', 'Kg RET ALB',
+                'No. RET BET', 'Kg RET BET',
+                'No. RET YFT', 'Kg RET YFT', 
+                'No. RET SWO', 'Kg RET SWO',
+                'No. RET MLS', 'Kg RET MLS',
+                'No. RET BUM', 'Kg RET BUM',
+                'No. RET BLM', 'Kg RET BLM',
+                'No. RET SFA', 'Kg RET SFA',
+                'No. RET SSP', 'Kg RET SSP', 
+                'No. RET OIL', 'Kg RET OIL',
+                'No. RET MZZ', 'Kg RET MZZ']
     
     df_fishes.columns = colnames
     df_fishes = df_fishes.map(common_functions.zero_if_empty)
@@ -458,7 +538,7 @@ def extract_fish_p1(df_donnees):
     
     return df_fishes
     
-def extract_bycatch_p2(df_donnees):
+def extract_bycatch_p2_v17(df_donnees):
     """
     Extraction des cases relatives à ce qui a été pêché mais accessoires    
     
@@ -470,27 +550,86 @@ def extract_bycatch_p2(df_donnees):
     """
     df_bycatch = df_donnees.iloc[15:46, 1:39]
 
-    colnames = ['No RET FAL', 'Kg RET FAL',
-                'No ESC FAL', 'No DIS FAL',
-                'No RET BSH', 'Kg RET BSH',
-                'No ESC BSH', 'No DIS BSH',
-                'No RET MAK', 'Kg RET MAK',
-                'No ESC MAK', 'No DIS MAK',
-                'No RET MSK', 'Kg RET MSK',
-                'No ESC MSK', 'No DIS MSK', 
-                'No RET SPN', 'Kg RET SPN',
-                'No ESC SPN', 'No DIS SPN', 
-                'No RET TIG', 'Kg RET TIG',
-                'No ESC TIG', 'No DIS TIG', 
-                'No RET PSK', 'Kg RET PSK',
-                'No ESC PSK', 'No DIS PSK',
-                'No ESC THR', 'No DIS THR',
-                'No ESC OCS', 'No DIS OCS', 
-                'No ESC MAM', 'No DIS MAM', 
-                'No ESC SBD', 'No DIS SBD',
-                'No ESC TTX', 'No DIS TTX']
+    colnames = ['No. RET FAL', 'Kg RET FAL',
+                'No. ESC FAL', 'No. DIS FAL',
+                'No. RET BSH', 'Kg RET BSH',
+                'No. ESC BSH', 'No. DIS BSH',
+                'No. RET MAK', 'Kg RET MAK',
+                'No. ESC MAK', 'No. DIS MAK',
+                'No. RET MSK', 'Kg RET MSK',
+                'No. ESC MSK', 'No. DIS MSK', 
+                'No. RET SPN', 'Kg RET SPN',
+                'No. ESC SPN', 'No. DIS SPN', 
+                'No. RET TIG', 'Kg RET TIG',
+                'No. ESC TIG', 'No. DIS TIG', 
+                'No. RET PSK', 'Kg RET PSK',
+                'No. ESC PSK', 'No. DIS PSK',
+                'No. ESC THR', 'No. DIS THR',
+                'No. ESC OCS', 'No. DIS OCS', 
+                'No. ESC MAM', 'No. DIS MAM', 
+                'No. ESC SBD', 'No. DIS SBD',
+                'No. ESC TTX', 'No. DIS TTX']
     df_bycatch.columns = colnames
     df_bycatch = df_bycatch.map(common_functions.zero_if_empty)
     df_bycatch.reset_index(drop=True, inplace=True)
     return df_bycatch
 
+def extract_bycatch_p2_v18(df_donnees):
+    """
+    Extraction des cases relatives à ce qui a été pêché mais accessoires    
+    
+    Args:
+        df_donnees (df): excel p2
+
+    Returns:
+        df
+    """
+    df_bycatch = df_donnees.iloc[15:46, 1:39]
+
+    colnames = ['No. RET BSH', 'Kg RET BSH',
+                'No. ESC BSH', 'No. DIS BSH',
+                'No. RET MAK', 'Kg RET MAK',
+                'No. ESC MAK', 'No. DIS MAK',
+                'No. RET POR', 'Kg RET POR',
+                'No. ESC POR', 'No. DIS POR', 
+                'No. RET SPN', 'Kg RET SPN',
+                'No. ESC SPN', 'No. DIS SPN', 
+                'No. RET TIG', 'Kg RET TIG',
+                'No. ESC TIG', 'No. DIS TIG', 
+                'No. RET PSK', 'Kg RET PSK',
+                'No. ESC PSK', 'No. DIS PSK',
+                'No. RET FAL', 'Kg RET FAL',
+                'No. ESC FAL', 'No. DIS FAL',
+                'No. RET SKH', 'Kg RET SKH',
+                'No. ESC SKH', 'No. DIS SKH',
+                'No. ESC WSH', 'No. DIS WSH',
+                'No. ESC THR', 'No. DIS THR',
+                'No. ESC OCS', 'No. DIS OCS']
+    df_bycatch.columns = colnames
+    df_bycatch = df_bycatch.map(common_functions.zero_if_empty)
+    df_bycatch.reset_index(drop=True, inplace=True)
+    return df_bycatch
+
+
+def extract_bycatch_p3_v18(df_donnees):
+    """
+    Extraction des cases relatives à ce qui a été pêché mais accessoires    
+    
+    Args:
+        df_donnees (df): excel p3
+
+    Returns:
+        df
+    """
+    df_bycatch = df_donnees.iloc[15:46, 1:18]
+
+    colnames = ['mammal species', 'No. Alive mammals', 'No. Dead mammals',
+                'sea birds species', 'No. Alive sea bird', 'No. Dead sea bird',
+                'turtles species', 'No. Alive turtles', 'No. Dead turtles',
+                'rays species', 'No. Alive rays', 'No. Dead rays',
+                'cetaceans species', 'No. Alive cetaceans', 'No. Dead cetaceans',
+                'No. Alive whale shark', 'No. Dead whale shark']
+    df_bycatch.columns = colnames
+    df_bycatch = df_bycatch.map(common_functions.zero_if_empty)
+    df_bycatch.reset_index(drop=True, inplace=True)
+    return df_bycatch
