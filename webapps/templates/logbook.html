@@ -103,14 +103,14 @@
     <div class="flex items-baseline space-x-2">
         <!-- Domaine selection -->
         <select id="domaine" name="domaine" class="w-full px-4 py-3 ring-1 ring-cyan-700 rounded-xl">
-            <option {% if not ll_context or not ll_context.domaine %}selected{% endif %}>{% translate "Domaine..." %}</option>
+            <option value="" {% if not ll_context or not ll_context.domaine %}selected{% endif %}>{% translate "Domaine..." %}</option>
             <option value="senne" {% if ll_context and ll_context.domaine == "senne" %}selected{% endif %}>{% translate "Senne" %}</option>
             <option value="palangre" {% if ll_context and ll_context.domaine == "palangre" %}selected{% endif %}>{% translate "Palangre" %}</option>
         </select>
 
         <!-- Programme selection -->
         <select id="programme" name="programme" class="w-full px-4 py-3 ring-1 ring-cyan-700 rounded-xl">
-            <option class="after">{% translate "Programmes du domaine..." %}</option>
+            <option value="" class="after">{% translate "Programmes du domaine..." %}</option>
         </select>
 
         <!-- Ocean selection -->
@@ -125,7 +125,7 @@
 
         <!-- Type de document selection -->
         <select id="ty_doc" name="ty_doc" class="w-full px-4 py-3 ring-1 ring-cyan-700 rounded-xl">
-            <option class="after">{% translate "Types de document..." %}</option>
+            <option value="" class="after">{% translate "Types de document..." %}</option>
         </select><br>
 
         <!-- Submit Button -->
@@ -153,6 +153,8 @@
             p span { color: red; font-size: 0.8em;}
         </style>
 
+        <!-- Drag and Drop content-->
+
         <div id="div_upload" hidden="true" class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
           <!-- Replace with your content -->
           <div class="px-4 py-6 sm:px-0">
@@ -179,7 +181,21 @@
           <!-- /End replace -->
         </div>
         {{files}}
-      <!-- /End replace -->
+      <!-- /End Drag and Drop -->
+
+      <!-- ERS Content -->
+        <div  id="div_ers" hidden="true" class="w-full max-h-[30rem] overflow-y-auto rounded-xl ring-1 ring-gray-300 bg-white">
+            <ul id="ers_list" role="list" class="divide-y divide-gray-200">
+                <!-- Les <li> ERS seront injectés ici par JavaScript -->
+            </ul>
+        </div>
+
+
+      <!-- Zone messages ERS -->
+        <div id="ers_message_zone" class="mt-4 hidden"></div>
+
+      <!-- /End ERS -->
+
 
         <div class="card">
             {% if messages %}

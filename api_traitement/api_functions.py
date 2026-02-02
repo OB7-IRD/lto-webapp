@@ -9,13 +9,16 @@
 import json
 import os
 import re
+import  numpy as np
+import pandas as pd
 from time import gmtime, strftime, strptime
 import requests
+import psycopg2
 
 from django.contrib.auth import authenticate
 from django.utils.html import format_html
 
-from api_traitement.common_functions import serialize, pretty_print
+from api_traitement.common_functions import *
 
 # from webapps.models import User
 from webapps.models import LTOUser as User
@@ -639,6 +642,379 @@ def error_filter(response):
         pass
     print("Len : ",len(all_message))
     return all_message
+
+
+###############################################
+################ ERS code #####################
+###############################################
+
+# Connexion postgreSQL
+def init_connexion_from_profile(ers_profile):
+    try:
+        conn = psycopg2.connect(
+            database=ers_profile.database,
+            user=ers_profile.user,
+            password=ers_profile.password,
+            host=ers_profile.host,
+            port=ers_profile.port
+        )
+        return conn, True
+    except Exception as e:
+        return None, False
+
+def executeScriptsFromFile_prepa(ers_profile, filename, *params):
+    """Exécute un script SQL contenu dans un fichier, avec la possibilité de passer plusieurs paramètres.
+
+    Cette fonction lit le contenu d’un fichier SQL, se connecte à la base de données,
+    puis exécute la requête en injectant dynamiquement les paramètres fournis.
+    Elle affiche le premier résultat renvoyé par la requête.
+
+    Args:
+        filename (str): chemin complet du fichier SQL à exécuter.
+        *params: un ou plusieurs paramètres à injecter dans la requête SQL (optionnels).
+
+    Returns:
+        None
+    """
+    # Lecture du fichier SQL
+    with open(filename, 'r') as fd:
+        sqlFile = fd.read()
+
+    # Connexion à la base de données
+    conn, _ = init_connexion_from_profile(ers_profile)
+    cursor = conn.cursor()
+
+    # Le fichier peut contenir une ou plusieurs requêtes
+    sqlCommands = [sqlFile]
+
+    # Exécution de chaque commande SQL
+    for command in sqlCommands:
+        try:
+            # Exécuter la requête avec les paramètres passés
+            cursor.execute(command, params)
+
+            # Récupération du premier résultat
+            data = cursor.fetchone()
+            print(data)
+        except Exception as e:
+            print(f"Erreur lors de l'exécution de la commande : {e}")
+
+    # Fermeture de la connexion
+    conn.close()
+
+
+def executeScriptsFromFile(ers_profile, filename):
+    """Exécute un script SQL contenu dans un fichier et renvoie les résultats obtenus.
+
+    Cette fonction lit le contenu d’un fichier SQL, établit une connexion à la base de données,
+    puis exécute la ou les requêtes SQL qu’il contient.
+    Elle retourne le résultat complet de la ou des requêtes (sous forme de liste de tuples).
+
+    Args:
+        filename (str): chemin complet du fichier SQL à exécuter.
+
+    Returns:
+        list: liste de tuples contenant les résultats de la requête SQL exécutée.
+              Retourne None en cas d’erreur.
+    """
+    # Lecture du contenu du fichier SQL
+    with open(filename, 'r') as fd:
+        sqlFile = fd.read()
+
+    # Connexion à la base de données
+    conn, _ = init_connexion_from_profile(ers_profile)
+    cursor = conn.cursor()
+
+    # Le contenu est traité comme une seule requête (ou un bloc SQL complet)
+    sqlCommands = [sqlFile]
+
+    # Exécution de chaque commande SQL
+    for command in sqlCommands:
+        try:
+            cursor.execute(command)
+            data = cursor.fetchall()  # Récupération de tous les résultats
+            return data
+        except Exception as e:
+            print(f"Erreur lors de l'exécution de la commande : {e}")
+            return None
+        finally:
+            # Fermeture de la connexion
+            conn.close()
+
+
+# New function
+def executeScriptsFromFile_id(ers_profile, filename, tp_id):
+    """Exécute un script SQL contenant un ou plusieurs paramètres %s.
+
+    Elle renvoie le résultat complet de la requête (liste de tuples).
+
+    Args:
+        filename (str): chemin complet du fichier SQL à exécuter.
+        tp_id (str | int): identifiant à insérer dans la requête SQL.
+
+    Returns:
+        list: liste de tuples contenant les résultats de la requête SQL exécutée.
+              Retourne None en cas d’erreur.
+    """
+    # Lecture du contenu du fichier SQL
+    with open(filename, 'r', encoding='utf-8') as fd:
+        sqlFile = fd.read()
+
+    # Connexion à la base de données
+    conn, _ = init_connexion_from_profile(ers_profile)
+    cursor = conn.cursor()
+
+    # Le contenu est traité comme une seule requête (ou un bloc SQL complet)
+    sqlCommands = [sqlFile]
+
+    # Exécution de la ou des requêtes SQL
+    for command in sqlCommands:
+        try:
+            # cursor.execute(command, (tp_id,)) # Lorsque j'ai un seul paramettre dans la requête sql avec %s
+            cursor.execute(command, tuple([tp_id] * sqlFile.count('%s'))) # marche pour 1 ou plusieurs paramètres (sqlFile.count('%s') => compte le nombre de paramètres dans le fichier SQL)
+            data = cursor.fetchall()  # Récupération des résultats
+            return data
+        except Exception as e:
+            print(f"Erreur lors de l'exécution de la commande : {e}")
+            return None
+        finally:
+            # Fermeture de la connexion à la base
+            conn.close()
+
+def Cardinal_Point():
+    path = "media/other_files/Cardinal_Point.csv"
+    # Si le fichier n'existe pas, on ne fait rien
+    if not os.path.exists(path):
+        return False
+
+    # WindDirection
+    Cardinal_Point = pd.read_csv(path)
+    Abbreviation = [x.lower() for x in list((Cardinal_Point.Abbreviation))]
+    Degrees = [float(x.replace("°","")) for x in list((Cardinal_Point["Azimuth Degrees"]))]
+
+    # Convert to Dict
+    dictCardinal = {Abbreviation[i]: Degrees[i] for i in range(len(Degrees))}
+    return dictCardinal
+
+
+def convert_np_types(obj):
+    if isinstance(obj, np.generic):
+        return obj.item()  # Convertit en type natif Python (comme int, float, etc.)
+    elif isinstance(obj, dict):
+        return {k: convert_np_types(v) for k, v in obj.items()}
+    elif isinstance(obj, list):
+        return [convert_np_types(v) for v in obj]
+    else:
+        return obj
+
+def ERSTripList(req1, ers_profile):
+    # Liste des TRIP
+    data = executeScriptsFromFile(ers_profile=ers_profile,filename=req1)
+    # Transformer le tableau "data" en dataFrame pour faciliter la manipulation des données
+    datas = pd.DataFrame(np.array(data))
+    # Titrer le tableau
+    datas = datas.rename(
+            columns={0: "trip_id",
+                     1: "trip_start_date",
+                     2: "trip_end_date",
+                     3: "trip_captain_name",
+                     4: "trip_partial_landing",
+                     5: "trip_ers_id",
+                     6: "trip_departure_harbour_id",
+                     7: "trip_departure_harbour_name",
+                     8: "trip_departure_harbour_locode",
+                     9: "trip_landing_harbour_id",
+                     10: "trip_landing_harbour_name",
+                     11: "trip_landing_harbour_locode",
+                     12: "trip_vessel_turbobat_id",
+                     13: "trip_vessel_cfr_id",
+                     14: "trip_vessel_name",
+                     15: "species_count_at_departure"})
+
+    # Suppression des lignes identiques c.a.d les doublons
+    df_data = datas.drop_duplicates(keep='first')
+
+    # Garder les lignes importantes
+    df_data = df_data[["trip_id",
+                       "trip_start_date",
+                       "trip_end_date",
+                       "trip_captain_name",
+                       "trip_partial_landing",
+                       "trip_departure_harbour_name",
+                       "trip_departure_harbour_locode",
+                       "trip_landing_harbour_name",
+                       "trip_vessel_name"]]
+
+    return df_data
+
+def ERSVessel_info(df_data, trip_id):
+    # df_data = ERSTripList(ers_profile, req1)
+
+    # Extraction des infos sur le navire pour le trip_id
+    data_trip_vessel = df_data[df_data.trip_id == trip_id]
+
+    # supprimer et reinitialiser l'index pas defaut
+    data_trip_vessel = data_trip_vessel.reset_index(drop=True)
+    # Création du dictionnaire des infos sur le navire
+    info_bat = {
+            "Navire": str(data_trip_vessel["trip_vessel_name"][0]),
+            "Depart_Port": str(data_trip_vessel["trip_departure_harbour_name"][0]),
+            "Depart_Date": str(data_trip_vessel["trip_start_date"][0]).split(" ")[0],
+            "Arrivee_Port": str(data_trip_vessel["trip_landing_harbour_name"][0]),
+            "Arrivee_Date": str(data_trip_vessel["trip_end_date"][0]).split(" ")[0],
+            "captain": str(data_trip_vessel["trip_captain_name"][0]),
+            "partial_landing": data_trip_vessel["trip_partial_landing"][0],
+        }
+
+    return info_bat
+
+
+def ERSloadOneTripDetails(req2, trip_id, ers_profile):
+    # List of activities on this trip_id
+    data_activities = executeScriptsFromFile_id(ers_profile=ers_profile, filename=req2, tp_id=trip_id)
+
+    # Transformer le tableau "data" en dataFrame pour faciliter la manipulation des données
+    datas_activities = pd.DataFrame(np.array(data_activities))
+
+    # Titrer le tableau
+    datas_activities = datas_activities.rename(
+            columns={0: "a_table", 1: "catch_id", 2: "trip_id", 3: "trip_vessel_name", 4: "trip_departure_port_name", 5: "trip_departure_port_locode",
+                     6: "trip_landing_port_name", 7: "trip_landing_port_locode", 8: "trip_start_date", 9: "trip_start_time", 10: "trip_end_date",
+                     11: "trip_end_time", 12: "a_date", 13: "a_time", 14: "fa_end_fishing_date", 15: "fa_end_fishing_time", 16: "a_ocean", 17: "a_latitude",
+                     18: "a_longitude", 19: "a_port_name", 20: "a_port_locode", 21: "a_current_direction", 22: "a_current_speed", 23: "a_wind_direction",
+                     24: "a_wind_speed", 25: "a_sea_state", 26: "a_sst", 27: "a_school_size", 28: "a_positive_set",
+                     29: "a_misc_problems", 30: "a_operation", 31: "a_eez", 32: "gear_type",
+                     33: "gear_dimensions", 34: "gear_fishing_depth", 35: "gear_mesh_size", 36: "gear_total_length", 37: "fad_type",
+                     38: "fad_has_buoy", 39: "fad_comment", 40: "buoy_type", 41: "buoy_identifier",
+                     42: "buoy_comment", 43: "fishing_contexts"})
+
+    # Suppression des lignes identiques c.a.d les doublons
+    df_datas_activities = datas_activities.drop_duplicates(keep='first')
+
+    df_datas_activities = df_datas_activities[["a_table",
+                                               "catch_id",
+                                               "a_date", "a_time",
+                                               "a_ocean","a_latitude","a_longitude",
+                                               "a_port_name", "a_current_direction", "a_current_speed",
+                                               "a_wind_direction", "a_wind_speed", "a_sst",
+                                               "a_school_size", "a_positive_set", "a_operation", "a_eez"]]
+
+
+    return df_datas_activities
+
+
+def ERSlanding_extraction(req5, trip_id, ers_profile):
+    # Extration des données landings
+    try:
+        data_land = executeScriptsFromFile_id(ers_profile=ers_profile, filename=req5, tp_id=trip_id)
+        columns={0: "landing_id",
+                1: "trip_id",
+                2: "trip_vessel_name",
+                3: "trip_start_date",
+                4: "trip_start_time",
+                5: "trip_end_date",
+                6: "trip_end_time",
+                7: "specie_fao_id",
+                8: "specie_weight_category_id",
+                9: "specie_weight_category_ers_id",
+                10: "specie_catchweight",
+                11: "specie_numberoffished",
+                12: "specie_numberoffishedtobelanded"}
+
+        df_land = pd.DataFrame(np.array(data_land))
+        df_land = df_land.rename(columns=columns)
+        df_land = df_land.drop_duplicates(keep='first') # ou .drop_duplicates()
+        df_lands = df_land[["specie_fao_id", "specie_weight_category_id", "specie_weight_category_ers_id", "specie_catchweight", "specie_numberoffished"]]
+
+    except Exception as e: # trip_id n'a pas de données landing
+        print("Le trip_id = ", trip_id, " n'a pas de données landing ", "Exception: ", e)
+        df_lands = []
+
+    return df_lands
+
+
+def f_catch(req3, catch_id, ers_profile):
+
+    try:
+        data_activities_cts = executeScriptsFromFile_id(ers_profile=ers_profile, filename=req3, tp_id=catch_id)
+        datas_activities_catch = pd.DataFrame(np.array(data_activities_cts))
+        # Titrer le tableau
+        datas_activities_catchs = datas_activities_catch.rename(
+                columns={0: "catch_id", 1: "specie_id", 2: "trip_vessel_name", 3: "trip_start_date", 4: "trip_start_time",
+                         5: "trip_end_date", 6: "trip_end_time", 7: "fa_id", 8: "fa_date",
+                         9: "fa_time", 10: "fa_operation", 11: "fa_eez", 12: "specie_fao_id", 13: "specie_weight_category_id",
+                         14: "specie_weight_category_ers_id",
+                         15: "specie_catchweight", 16: "specie_numberoffished", 17: "specie_numberoffishedtobelanded"})
+
+        datas_activities_catchs = datas_activities_catchs.drop_duplicates()
+        datas_activities_catchs = datas_activities_catchs[["fa_operation","specie_fao_id", "specie_weight_category_ers_id", "specie_weight_category_id","specie_catchweight","specie_numberoffished","specie_numberoffishedtobelanded"]]
+        return datas_activities_catchs, True
+    except:
+        return None, False
+
+
+def f_discard(req4, discard_id, ers_profile):
+    try:
+        data_discd = executeScriptsFromFile_id(ers_profile=ers_profile, filename=req4, tp_id=discard_id)
+        columns = {0:"discard_id",
+                    1:"trip_id",
+                    2:"trip_vessel_turbobat_id",
+                    3:"trip_vessel_name",
+                    4:"trip_start_date",
+                    5:"trip_start_time",
+                    6:"trip_end_date",
+                    7:"trip_end_time",
+                    8:"discard_latitude",
+                    9:"discard_longitude",
+                    10:"species_fao_id",
+                    11:"specie_fao_id",
+                    12:"specie_weight_category_id",
+                    13:"specie_weight_category_ers_id",
+                    14:"specie_catchweight",
+                    15:"specie_numberoffished",
+                    16:"specie_numberoffishedtobelanded"}
+
+        df_discd = pd.DataFrame(np.array(data_discd))
+        df_discd = df_discd.rename(columns=columns)
+        df_discd = df_discd.drop_duplicates(keep='first') # ou .drop_duplicates()
+        df_discds = df_discd[["specie_fao_id", "specie_weight_category_id", "specie_weight_category_ers_id", "specie_catchweight", "specie_numberoffished","specie_numberoffishedtobelanded"]]
+        return df_discds, True
+    except:
+        return None, False
+
+
+def data_landing(df_landings, allData, not_match_cate=False):
+    landing = []
+    try:
+        for idx, data_s in df_landings.iterrows():
+
+            if  data_s["specie_weight_category_id"] != None and not_match_cate:
+                species_id = getId(allData, "Species", argment="faoCode=" + data_s["specie_fao_id"].upper())
+
+                weightCategory_pref = "L-" + data_s["specie_fao_id"] + "-" + str(data_s["specie_weight_category_id"])
+                # print(weightCategory_pref)
+                try:
+                    weightCategory_id = [x['topiaId'] for x in allData["WeightCategory"] if weightCategory_pref in x['code']][0]
+                except:
+                    weightCategory_id = None
+
+                landing.append(js_landing(species_id, weightCategory_id, weight=data_s["specie_catchweight"]))
+
+            else:
+                species_id = getId(allData, "Species", argment="faoCode=" + data_s["specie_fao_id"].upper())
+                weightCategory_id = None
+
+                landing.append(js_landing(species_id, weightCategory_id, weight=data_s["specie_catchweight"]))
+
+        return landing
+    except:
+        return []
+
+
+
+
+
+
 
 
 
