@@ -336,6 +336,15 @@
   </main>
 </div>
 
+<!-- Verrou global UI pendant traitement ERS -->
+<div id="ui-lock-overlay"
+     class="fixed inset-0 bg-black/30 z-[9999] hidden flex items-center justify-center">
+    <div class="bg-white px-6 py-4 rounded shadow text-sm text-gray-700">
+        Traitement et Envoie de la marée ERS en cours…
+        <span class="ml-2 animate-spin inline-block">⏳</span>
+    </div>
+</div>
+
 <script type="text/javascript" src="{% static 'assets/js/code.js' %}?v={{ timestamp }}"></script>
 </body>
 </html>

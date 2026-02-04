@@ -476,7 +476,7 @@ $(document).ready(function(){
                     let d = response.data;
 
                     /**
-                     * HTML des sous-infos (VRAIES DONNÉES)
+                     * HTML des sous-infos de la marée ERS
                      */
                     let sousInfoHtml = `
                         <div class="sous_info_li_actuel">
@@ -536,12 +536,27 @@ $(document).ready(function(){
         });
     });
 
+    // Bloque toute l'interface utilisateur
+    function lockUI() {
+        $('#ui-lock-overlay').removeClass('hidden');
+        $('body').addClass('overflow-hidden'); // empêche l'utilisateur de scroller
+    }
+
+    // Débloque toute l'interface utilisateur
+    function unlockUI() {
+        $('#ui-lock-overlay').addClass('hidden');
+        $('body').removeClass('overflow-hidden');
+    }
+
     /**
      * Gestion clic sur "Insérer" ou "Mettre à jour" ERS
      */
     $(document).on('click', '.btn-insert, .btn-update', function (e) {
         e.preventDefault();
         e.stopPropagation(); // STOP propagation du clique vers le <li> pour eviter qu'il se ferme
+
+        // Verrouiller toute l'interface
+        lockUI();
 
         // Bouton cliqué
         let btn = $(this);
@@ -555,19 +570,8 @@ $(document).ready(function(){
         // Nettoyer anciens messages
         messageZone.hide().empty();
 
-        // Spinner (injecté dans le bouton)
-        let spinner = `
-            <svg class="inline w-4 h-4 ml-2 animate-spin text-white"
-                 viewBox="0 0 100 101" fill="none">
-                <path d="M100 50.5908C100 78.2051..." fill="currentColor"/>
-            </svg>
-        `;
-
         // Désactiver les boutons pendant le traitement
-        $('.btn-insert, .btn-update').addClass('pointer-events-none opacity-50');
-
-        // Ajouter spinner
-        btn.append(spinner);
+        $('.btn-insert, .btn-update').addClass('pointer-events-none opacity-50').prop('disabled', true);
 
         /**
          * Appel AJAX vers Django
@@ -628,11 +632,11 @@ $(document).ready(function(){
             },
 
             complete: function () {
-                // Réactiver boutons
-                $('.btn-insert, .btn-update').removeClass('pointer-events-none opacity-50');
+                // Déverrouiller l'interface (QUOI QU'IL ARRIVE)
+                unlockUI();
 
-                // Retirer spinner
-                btn.find('svg').remove();
+                // Réactiver boutons
+                $('.btn-insert, .btn-update').removeClass('pointer-events-none opacity-50').prop('disabled', false);
             }
         });
     });
@@ -640,13 +644,11 @@ $(document).ready(function(){
     // Fermer messages ERS lors du changement de trip
     $('#ers_message_zone').slideUp(200).empty();
 
-    /**
-     * Fermer les messages ERS si on clique ailleurs
-     */
+    // Fermer les messages ERS si on clique ailleurs
     $(document).on('click', function (e) {
 
         // Si le clic ne vient PAS d'un bouton ERS
-        if (!$(e.target).closest('.ers-item, .btn-insert, .btn-update').length) {
+        if (!$(e.target).closest('.btn-insert, .btn-update').length) {
             $('#ers_message_zone').slideUp(200);
         }
     });
