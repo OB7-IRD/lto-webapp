@@ -180,7 +180,7 @@ def presenting_previous_trip(request):
                                     domaine=None)
 
     context = dict(domaine=apply_conf['domaine'], program=programme, programtopiaid=apply_conf['programme'],
-                   ocean=ocean, oceantopiaid=apply_conf['ocean'])
+                    ocean=ocean, oceantopiaid=apply_conf['ocean'], version=apply_conf['ty_doc'])
 
     if selected_file is not None and apply_conf is not None:
 
@@ -277,33 +277,38 @@ def checking_logbook(request):
         logbook_file_path = request.session.get('logbook_file_path')
                 
         df_donnees_p1 = common_functions.read_excel(logbook_file_path, 1)
-        df_donnees_p2 = common_functions.read_excel(logbook_file_path, 2)
+        # df_donnees_p2 = common_functions.read_excel(logbook_file_path, 2)
         
         # Common to both logbooks
         df_vessel = excel_extractions.extract_vessel_info(df_donnees_p1)
-        df_cruise = excel_extractions.extract_cruise_info(df_donnees_p1)
-        df_report = excel_extractions.extract_report_info(df_donnees_p1)
-        df_gear = excel_extractions.extract_gear_info(df_donnees_p1)
-        df_target = excel_extractions.extract_target_species(df_donnees_p1)
-        df_date = excel_extractions.extract_logbook_date(df_donnees_p1)
+        df_cruise = excel_extractions.extract_cruise_info(df_donnees_p1, version = apply_conf['ty_doc'])
+        df_report = excel_extractions.extract_report_info(df_donnees_p1, version = apply_conf['ty_doc'])
+        df_gear = excel_extractions.extract_gear_info(df_donnees_p1, version = apply_conf['ty_doc'])
+        df_target = excel_extractions.extract_target_species(df_donnees_p1, version = apply_conf['ty_doc'])
+        df_date = excel_extractions.extract_logbook_date(df_donnees_p1, version = apply_conf['ty_doc'])
         df_fishing_effort = excel_extractions.extract_fishing_effort(df_donnees_p1, version = apply_conf['ty_doc'])
         df_position = excel_extractions.extract_positions(df_donnees_p1, version = apply_conf['ty_doc'])
         df_time = excel_extractions.extract_time(df_donnees_p1, allData, version = apply_conf['ty_doc'])
         df_temperature = excel_extractions.extract_temperature(df_donnees_p1, version = apply_conf['ty_doc'])
-        df_fishes = excel_extractions.extract_fish_p1(df_donnees_p1, version = apply_conf['ty_doc'])
         
         if (apply_conf['ty_doc'] == 'll_17.6'):
             df_line = excel_extractions.extract_line_material_v17(df_donnees_p1)
             df_bait = excel_extractions.extract_bait_v17(df_donnees_p1)
-            df_bycatch = excel_extractions.extract_bycatch_p2_v17(df_donnees_p2)
-        elif (apply_conf['ty_doc'] == 'll_18'):
-            print("Extraction logbook v18")
-            df_donnes_p3 = common_functions.read_excel(logbook_file_path, 3)
-            df_line = excel_extractions.extract_line_material_v18(df_donnees_p1)
-            df_bait = excel_extractions.extract_bait_v18(df_donnees_p1)
-            df_bycatch_sharks = excel_extractions.extract_bycatch_p2_v18(df_donnees_p2)
-            df_bycatch_oth = excel_extractions.extract_bycatch_p3_v18(df_donnes_p3)
-            df_bycatch = pd.concat([df_bycatch_sharks, df_bycatch_oth], axis=1)
+            # df_fishes = excel_extractions.extract_fish_p1_v17(df_donnees_p1)
+            # df_bycatch = excel_extractions.extract_bycatch_p2_v17(df_donnees_p2)
+        elif (apply_conf['ty_doc'] == 'll_26'):
+            print("Extraction logbook v26")
+            # df_donnees_p3 = common_functions.read_excel(logbook_file_path, 3)
+            # df_donnees_p4 = common_functions.read_excel(logbook_file_path, 4)
+            
+            df_line = excel_extractions.extract_line_material_v26(df_donnees_p1)
+            df_bait = excel_extractions.extract_bait_v26(df_donnees_p1)['Bait'].unique()
+            # df_fishes = excel_extractions.extract_fish_p1_v26(df_donnees_p1)
+            # df_bycatch_sharks = excel_extractions.extract_bycatch_p2_v26(df_donnees_p2)
+            # df_bycatch_oth = excel_extractions.extract_bycatch_p3_v26(df_donnees_p3)
+            # df_bycatch = pd.concat([df_bycatch_sharks, df_bycatch_oth], axis=1)
+            
+            # df_ref_material = excel_extractions.extract_material_ref(df_donnees_p4)
 
 
         # on ajuste le dataframe pour que ca s'arrête à la fin du mois
@@ -313,27 +318,31 @@ def checking_logbook(request):
             df_time_month = df_time[0:len(df_position)]
             df_temperature_month = df_temperature[0:len(df_position)]
             df_fishing_effort_month = df_fishing_effort[0:len(df_position)]
-            df_fishes_month = df_fishes[0:len(df_position)]
-            df_bycatch_month = df_bycatch[0:len(df_position)]
+            # df_fishes_month = df_fishes[0:len(df_position)]
+            # df_bycatch_month = df_bycatch[0:len(df_position)]
             
         else :
             df_time_month = df_time
             df_temperature_month = df_temperature
             df_fishing_effort_month = df_fishing_effort
-            df_fishes_month = df_fishes
-            print(df_fishes_month)
-            df_bycatch_month = df_bycatch
+            # df_fishes_month = df_fishes
+            
+            # df_bycatch_month = df_bycatch
         
-        df_activity = pd.concat([df_fishing_effort_month.loc[:,'Day'], df_position, df_time_month.loc[:, 'Time'], 
+        df_activity = pd.concat([df_fishing_effort_month.loc[:,'Day'], 
+                                    df_position, 
+                                    df_time_month.loc[:, ['VesselActivity', 'Time']], 
                                     df_temperature_month,
                                     df_fishing_effort_month.loc[:,['Hooks per basket', 'Total hooks', 'Total lightsticks']],
-                                    df_fishes_month,
-                                    df_bycatch_month],
+                                    # df_fishes_month,
+                                    # df_bycatch_month
+                                    ],
                                     axis=1)
 
         list_ports = common_functions.get_list_harbours(allData)
         
         data_to_homepage = {
+            'version': apply_conf['ty_doc'],
             'df_vessel': df_vessel,
             'df_cruise': df_cruise,
             'list_ports': list_ports,
@@ -483,8 +492,6 @@ def checking_logbook(request):
                 if context['df_previous'] is not None : 
                     data_to_homepage.update({'previous_trip': context['df_previous'],
                             'continuetrip': context['continuetrip'],})
-                    print("ce qui permet de garder les infos :"*5)
-                    # print(data_to_homepage)
                 
                 return render(request, 'LL_presenting_logbook.html', data_to_homepage)
             
@@ -524,7 +531,8 @@ def checking_logbook(request):
                     'program': programme,
                     'programtopiaid' : apply_conf['programme'],
                     'ocean': ocean, 
-                    'oceantopiaid': apply_conf['ocean']}
+                    'oceantopiaid': apply_conf['ocean'], 
+                    'version' : apply_conf['ty_doc']}
         
             
         # si on contiue un trip, on récupère ses infos pour les afficher
@@ -653,16 +661,20 @@ def send_logbook2observe(request):
             request.session['token'] = token
             
         base_url = request.session.get('base_url')
-
+        
         print("="*80)
         print("Read excel file")
         print(logbook_file_path)
-
+        
         df_donnees_p1 = common_functions.read_excel(logbook_file_path, 1)
         df_donnees_p2 = common_functions.read_excel(logbook_file_path, 2)
-
+        
+        if context['version'] == 'll_26':
+            df_donnees_p3 = common_functions.read_excel(logbook_file_path, 3)
+            df_donnees_p4 = common_functions.read_excel(logbook_file_path, 4)
+    
         # On transforme pour que les données soient comparables
-        logbook_month = str(excel_extractions.extract_logbook_date(df_donnees_p1).loc[excel_extractions.extract_logbook_date(df_donnees_p1)['Logbook_name'] == 'Month', 'Value'].values[0])
+        logbook_month = str(excel_extractions.extract_logbook_date(df_donnees_p1, version=context['version']).loc[excel_extractions.extract_logbook_date(df_donnees_p1, version=context['version'])['Logbook_name'] == 'Month', 'Value'].values[0])
 
         if len(logbook_month) == 1:
             logbook_month = '0' + logbook_month
@@ -677,7 +689,7 @@ def send_logbook2observe(request):
             if context['endDate'][5:7] == logbook_month:
                 end_extraction = int(context['endDate'][8:10])
             else:
-                end_extraction = len(excel_extractions.extract_positions(df_donnees_p1))
+                end_extraction = len(excel_extractions.extract_positions(df_donnees_p1, version=context['version']))
         else:
             start_extraction = 0
             end_extraction = int(context['endDate'][8:10])
@@ -688,10 +700,20 @@ def send_logbook2observe(request):
             print("="*80)
             print("Create Activity and Set")
 
-            MultipleActivity = json_construction.create_activity_and_set(
-                df_donnees_p1, df_donnees_p2,
-                allData,
-                start_extraction, end_extraction, context)
+            if context['version'] == 'll_17.6':
+                MultipleActivity = json_construction.create_activity_and_set(
+                    start_extraction, end_extraction, context, 
+                    allData,
+                    df_donnees_p1, df_donnees_p2,
+                    df_donnees_p3=None, df_donnees_p4=None)
+                
+            elif context['version'] == 'll_26':
+                MultipleActivity = json_construction.create_activity_and_set(
+                    start_extraction, end_extraction, context, 
+                    allData,
+                    df_donnees_p1, df_donnees_p2,
+                    df_donnees_p3=df_donnees_p3, 
+                    df_donnees_p4=df_donnees_p4)
 
             print("="*80)
             print("Create Trip")
@@ -714,11 +736,14 @@ def send_logbook2observe(request):
             
             with open ('media/temporary_files/previous_trip.json', 'r', encoding='utf-8') as f:
                 json_previoustrip = json.load(f)
-
-            MultipleActivity = json_construction.create_activity_and_set(
-                df_donnees_p1, df_donnees_p2, 
-                allData, 
-                start_extraction, end_extraction, context)
+            
+            if context['version'] == 'll_17.6':
+                MultipleActivity = json_construction.create_activity_and_set(
+                    start_extraction, end_extraction, context, 
+                    allData,
+                    df_donnees_p1, df_donnees_p2,
+                    df_donnees_p3=None, df_donnees_p4=None
+                    )
 
             print("="*80)
             print("Update Trip")

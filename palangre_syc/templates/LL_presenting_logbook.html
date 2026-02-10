@@ -435,16 +435,33 @@
 
                             {% elif df_line|length == 1 %} {% endcomment %}
                             <table class="items-center w-full bg-transparent border-collapse">
-                                <tbody>                
-                                    {% for index, row in df_line.iterrows %}
-                                        {% if row.Value != None %}
-                                            <tr>
-                                            <td class="border-t-0 px-2 align-middle text-center border-l-0 border-r-0 text-m whitespace-nowrap p-2">
-                                                {{ row.Logbook_name }}
-                                            </td>
-                                            </tr>
-                                        {% endif %}
-                                    {% endfor %}
+                                <tbody>    
+                                    {% if version == 'll_17.6' %}            
+                                        {% for index, row in df_line.iterrows %}
+                                            {% if row.Value != None %}
+                                                <tr>
+                                                <td class="border-t-0 px-2 align-middle text-center border-l-0 border-r-0 text-m whitespace-nowrap p-2">
+                                                    {{ row.Logbook_name }}
+                                                </td>
+                                                </tr>
+                                            {% endif %}
+                                        {% endfor %} 
+
+                                    {% elif version == 'll_26' %} 
+                                        {% for index, row in df_line.iterrows %}
+                                            {% if row.Value != None %}
+                                                <tr>
+                                                    <td class="border-t-0 px-2 align-middle text-center border-l-0 border-r-0 text-m whitespace-nowrap p-2">
+                                                        {{ row.Logbook_name }} :
+                                                    </td>
+                                                    <td class="border-t-0 px-2 align-middle text-center border-l-0 border-r-0 text-m whitespace-nowrap p-2">
+                                                        {{ row.Value }}
+                                                    </td>
+                                                </tr>
+                                            {% endif %}
+                                        {% endfor %}
+
+                                    {% endif %}
                                 </tbody>
                             </table>
                             {% comment %} {% endif %} {% endcomment %}
@@ -490,16 +507,35 @@
 
                         <div class="block w-full overflow-x-auto">
                             <table class="items-center w-full bg-transparent border-collapse">
-                                <tbody>                
-                                    {% for index, row in df_bait.iterrows %}
-                                        {% if row.Value != 'None' %}
-                                        <tr class="">
-                                            <td class="border-t-0 px-2 align-middle text-center border-l-0 border-r-0 text-m whitespace-nowrap p-2">
-                                                {{ row.Logbook_name }}
-                                            </td>
-                                        </tr>
-                                        {% endif %}
-                                    {% endfor %}
+                                <tbody>     
+                                    {% if df_bait.0 and df_bait.0|stringformat:"s" %}
+                                        {% for bait in df_bait %}
+                                            <tr>
+                                                <td class="border-t-0 px-2 align-middle text-center border-l-0 border-r-0 text-m whitespace-nowrap p-2">
+                                                    {{ bait }}
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+
+                                    {# ---- CAS 2 : df_bait est un DataFrame-like ---- #}
+                                    {% else %}           
+                                        {% for index, row in df_bait.iterrows %}
+                                            {% if row.Value != 'None' %}
+                                            <tr class="">
+                                                <td class="border-t-0 px-2 align-middle text-center border-l-0 border-r-0 text-m whitespace-nowrap p-2">
+                                                    {{ row.Logbook_name }}
+                                                </td>
+                                            </tr>
+                                            {% endif %}
+                                            {% if row.Bait != 'None' %}
+                                            <tr class="">
+                                                <td class="border-t-0 px-2 align-middle text-center border-l-0 border-r-0 text-m whitespace-nowrap p-2">
+                                                    {{ row.Bait }}
+                                                </td>
+                                            </tr>
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% endif %}
                                 </tbody>
                             </table>
                         </div>

@@ -129,7 +129,7 @@ $(document).ready(function(){
                 updateTyDocSelect(
                     [
                         { id: "ll_17.6", label: "SFA logbook version 17.6" },
-                        { id: "ll_18",   label: "SFA logbook version 18" }
+                        { id: "ll_26",   label: "SFA logbook version 26" }
                     ],
                     ll_context.ty_doc
                 );
@@ -215,7 +215,7 @@ $(document).ready(function(){
             
             updateTyDocSelect([
                 { id: "ll_17.6", label: "SFA logbook version 17.6" },
-                { id: "ll_18",   label: "SFA logbook version 18" }
+                { id: "ll_26",   label: "SFA logbook version 26" }
             ]);
             
             $.ajax({
@@ -249,7 +249,7 @@ $(document).ready(function(){
             data = $("#apply").serialize();
             // console.log($("#apply").data("url"));
             //  POURQUOI ? On peut juste faire si ce n'est pas ERS
-            if (($("#apply select[name='ty_doc']").val() == "ps") || ($("#apply select[name='ty_doc']").val() == "ps2") || ($("#apply select[name='ty_doc']").val() == "ll_17.6") || ($("#apply select[name='ty_doc']").val() == "ll_18")){
+            if (($("#apply select[name='ty_doc']").val() == "ps") || ($("#apply select[name='ty_doc']").val() == "ps2") || ($("#apply select[name='ty_doc']").val() == "ll_17.6") || ($("#apply select[name='ty_doc']").val() == "ll_26")){
 
                 
                 if (myDropzone) {
@@ -352,7 +352,7 @@ $(document).ready(function(){
                 //     dropZone(domaine);
                 // }
 
-                // else if ($("#apply select[name='ty_doc']").val() == "ll_18"){
+                // else if ($("#apply select[name='ty_doc']").val() == "ll_26"){
                 //     $.ajax({
                 //         type: 'POST',
                 //         url: $("#apply").attr('action'),
