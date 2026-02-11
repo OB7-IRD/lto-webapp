@@ -735,14 +735,14 @@ def create_activity_and_set(start_extraction, end_extraction,
     # if context['version'] == "ll_17.6":
     #     fishdatatable = create_catch_table_fishes(df_donnees_p1, df_donnees_p2, df_donnees_p3 =None, df_donnees_p4 =None, row_number=i, version=context['version'])
         
-    # if context['version'] == "ll_26":
-    fishdatatable = palangre_syc.excel_extractions.extract_catches_v26(df_donnees_p1, version=context['version'])
-    bycatchdatatable = palangre_syc.excel_extractions.extract_bycatch_page2_v26(df_donnees_p2)
-    bycatchdatatable_bis = palangre_syc.excel_extractions.extract_bycatch_page3_v26(df_donnees_p3, df_ref = df_donnees_p4)
+    if context['version'] == "ll_26":
+        fishdatatable = palangre_syc.excel_extractions.extract_catches_v26(df_donnees_p1, version=context['version'])
+        bycatchdatatable = palangre_syc.excel_extractions.extract_bycatch_page2_v26(df_donnees_p2)
+        bycatchdatatable_bis = palangre_syc.excel_extractions.extract_bycatch_page3_v26(df_donnees_p3, df_ref = df_donnees_p4)
 
-    combined_catches = []
-    for f, b, b2 in zip(fishdatatable, bycatchdatatable, bycatchdatatable_bis):
-        combined_catches.append(f + b + b2)
+        combined_catches = []
+        for f, b, b2 in zip(fishdatatable, bycatchdatatable, bycatchdatatable_bis):
+            combined_catches.append(f + b + b2)
     
     MultipleActivity = []
     for i in range(start_extraction, end_extraction):
