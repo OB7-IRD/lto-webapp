@@ -54,7 +54,7 @@ def get_operator_topiaid(df_donnees_p1, allData, context):
         reported_logbook = palangre_syc.excel_extractions.extract_report_info(df_donnees_p1, context['version']).loc[palangre_syc.excel_extractions.extract_report_info(
             df_donnees_p1, context['version'])['Logbook_name'] == 'Person reported', 'Value'].values[0]
         reported_json = person['firstName'] + ' ' + person['lastName']
-        if reported_logbook == reported_json:
+        if not pd.isna(reported_logbook) and reported_logbook == reported_json:
             return person['topiaId']
         else:
             reported_logbook = '[inconnu] [inconnu]'
@@ -513,11 +513,10 @@ def create_lineType_v26(lineType_code, allData):
     for lineType in LineTypes:
         if 'code' in lineType:
             if lineType.get("code") == lineType_code:
-                print(lineType_code, lineType.get("code"))
                 return lineType["topiaId"]
-            else:
-                lineType["topiaId"] = "fr.ird.referential.ll.common.LineType#1239832686157#0.9"
-                return lineType["topiaId"]
+            # else:
+            #     lineType["topiaId"] = "fr.ird.referential.ll.common.LineType#1239832686157#0.9"
+            #     return lineType["topiaId"]
         else :
             return None
     
@@ -723,11 +722,11 @@ def create_activity_and_set(start_extraction, end_extraction,
         df_ref_linematerial = palangre_syc.excel_extractions.extract_material_ref(df_donnees_p4)
         df_ref_linematerial['Name'] = api_traitement.common_functions.remove_spec_char_from_list(df_ref_linematerial['Name 名稱'].tolist())
         df_ref_linematerial['Name'] = df_ref_linematerial['Name'].str.strip()
-        df_ref_linematerial = df_ref_linematerial.rename(columns={'CODE 代碼': 'CODE'})
-
+        
+        
         # On associe le code de ref 
         linematerial_datatable = df_line.merge(
-            df_ref_linematerial[['CODE', 'Name']],
+            df_ref_linematerial[['CODE', 'Code_v26', 'Name']],
             left_on='Value',
             right_on='Name',
             how='left')
@@ -740,7 +739,7 @@ def create_activity_and_set(start_extraction, end_extraction,
     fishdatatable = palangre_syc.excel_extractions.extract_catches_v26(df_donnees_p1, version=context['version'])
     bycatchdatatable = palangre_syc.excel_extractions.extract_bycatch_page2_v26(df_donnees_p2)
     bycatchdatatable_bis = palangre_syc.excel_extractions.extract_bycatch_page3_v26(df_donnees_p3, df_ref = df_donnees_p4)
-    print("bycatchdatatable_bis:", bycatchdatatable_bis)
+
     combined_catches = []
     for f, b, b2 in zip(fishdatatable, bycatchdatatable, bycatchdatatable_bis):
         combined_catches.append(f + b + b2)
@@ -822,7 +821,7 @@ def create_activity_and_set(start_extraction, end_extraction,
                 "homeId": None,
                 "length": df_gear.loc[df_gear['Logbook_name'] == 'Floatline length m', 'Value'].values[0],
                 "proportion": 100,
-                "lineType": create_lineType_v26(linematerial_datatable.loc[linematerial_datatable["Logbook_name"] == "Floatline material", "CODE"].values[0], allData)
+                "lineType": create_lineType_v26(linematerial_datatable.loc[linematerial_datatable["Logbook_name"] == "Floatline material", "Code_v26"].values[0], allData)
                 }]
             
             
@@ -831,8 +830,8 @@ def create_activity_and_set(start_extraction, end_extraction,
                 'length': df_gear.loc[df_gear['Logbook_name'] == 'Branchline length m', 'Value'].values[0],
                 'proportion': 100,
                 'tracelineLength': None,
-                'topType':  create_lineType_v26(linematerial_datatable.loc[linematerial_datatable["Logbook_name"] == "Branchline topline", "CODE"].values[0], allData),
-                'tracelineType':  create_lineType_v26(linematerial_datatable.loc[linematerial_datatable["Logbook_name"] == "Branchline traceline", "CODE"].values[0], allData),
+                'topType':  create_lineType_v26(linematerial_datatable.loc[linematerial_datatable["Logbook_name"] == "Branchline topline", "Code_v26"].values[0], allData),
+                'tracelineType':  create_lineType_v26(linematerial_datatable.loc[linematerial_datatable["Logbook_name"] == "Branchline traceline", "Code_v26"].values[0], allData),
             }]
             
             set.update({'baitsComposition': create_bait_composition(bait_datatable.iloc[i][['Bait', 'CODE']], allData, context['version']),
@@ -853,7 +852,7 @@ def create_activity_and_set(start_extraction, end_extraction,
         if context['version'] == "ll_17.6" and (len(df_line) == 1) : 
             set.update({'lineType': create_lineType_v17(df_line.loc[df_line["Value"] != "", "Logbook_name"].values[0]), })
         elif context['version'] == "ll_26":
-            set.update({'lineType': create_lineType_v26(linematerial_datatable.loc[linematerial_datatable["Logbook_name"] == "Main line material", "CODE"].values[0], allData), })
+            set.update({'lineType': create_lineType_v26(linematerial_datatable.loc[linematerial_datatable["Logbook_name"] == "Main line material", "Code_v26"].values[0], allData), })
         else:
             set.update({'lineType': None, })
         

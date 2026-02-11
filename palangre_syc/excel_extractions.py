@@ -92,21 +92,30 @@ def extract_report_info(df_donnees, version):
 
     # On supprime les colonnes qui sont vides
     df_report = df_report.dropna(axis=1, how='all')
-
+    
     # Nettoyer la colonne 'Logbook_name' en enlevant les espaces et les ':'
     df_report.iloc[:, 0] = df_report.iloc[:, 0].str.replace(':', '').str.strip()
 
-    # Nettoyer la colonne 'Value' en appliquant strip() si l'élément correspond à une chaîne de caractères
-    df_report.iloc[:, 1] = df_report.iloc[:, 1].apply(lambda x: x.strip() if isinstance(x, str) else x)
+    if df_report.shape[1] < 2:
+        # Renommer les colonnes
+        df_report.columns = ['Logbook_name']
+        # Appliquer un filtre pour les caractères spéciaux dans la colonne 'Logbook_name'
+        df_report['Logbook_name'] = common_functions.remove_spec_char_from_list(df_report['Logbook_name'])
+        # Supprimer les espaces supplémentaires dans la colonne 'Logbook_name'
+        df_report['Logbook_name'] = df_report['Logbook_name'].str.strip()
+        df_report['Value'] = pd.NA
+    else:
+        # Nettoyer la colonne 'Value' en appliquant strip() si l'élément correspond à une chaîne de caractères
+        df_report.iloc[:, 1] = df_report.iloc[:, 1].apply(lambda x: x.strip() if isinstance(x, str) else x)
 
-    # Renommer les colonnes
-    df_report.columns = ['Logbook_name', 'Value']
+        # Renommer les colonnes
+        df_report.columns = ['Logbook_name', 'Value']
 
-    # Appliquer un filtre pour les caractères spéciaux dans la colonne 'Logbook_name'
-    df_report['Logbook_name'] = common_functions.remove_spec_char_from_list(df_report['Logbook_name'])
+        # Appliquer un filtre pour les caractères spéciaux dans la colonne 'Logbook_name'
+        df_report['Logbook_name'] = common_functions.remove_spec_char_from_list(df_report['Logbook_name'])
 
-    # Supprimer les espaces supplémentaires dans la colonne 'Logbook_name'
-    df_report['Logbook_name'] = df_report['Logbook_name'].str.strip()
+        # Supprimer les espaces supplémentaires dans la colonne 'Logbook_name'
+        df_report['Logbook_name'] = df_report['Logbook_name'].str.strip()
 
     return df_report
 
@@ -1337,5 +1346,16 @@ def extract_material_ref(df_donnees):
 
     # Supprimer la première ligne 
     df_ref_materials = df_ref_materials[1:].reset_index(drop=True)
+    df_ref_materials = df_ref_materials.rename(columns={'CODE 代碼': 'CODE'})
+    df_ref_materials['CODE'] = df_ref_materials['CODE'].str.strip()
+    
+    mappingLine_v26 = {
+        "N": "MUN",
+        "NB": "BRL",
+        "NM": "MON",
+        "OTH": "UNK"}
 
+    df_ref_materials["Code_v26"] = df_ref_materials["CODE"].map(mappingLine_v26)
+    
+    print(df_ref_materials)
     return df_ref_materials
