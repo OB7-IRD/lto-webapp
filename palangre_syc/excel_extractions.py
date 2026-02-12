@@ -600,38 +600,6 @@ def extract_fish_p1_v17(df_donnees):
     
     return df_fishes
     
-def extract_fish_p1_v26(df_donnees):
-    """
-    Extraction des cases relatives à ce qui a été pêché
-    
-    Args:
-        df_donnees (df): excel p1
-
-    Returns:
-        df
-    """
-    
-    df_fishes = df_donnees.iloc[23:54, 12:38]
-
-    colnames = ['No. RET SBF', 'Kg RET SBF',
-                'No. RET ALB', 'Kg RET ALB',
-                'No. RET BET', 'Kg RET BET',
-                'No. RET YFT', 'Kg RET YFT', 
-                'No. RET SWO', 'Kg RET SWO',
-                'No. RET MLS', 'Kg RET MLS',
-                'No. RET BUM', 'Kg RET BUM',
-                'No. RET BLM', 'Kg RET BLM',
-                'No. RET SFA', 'Kg RET SFA',
-                'No. RET SSP', 'Kg RET SSP', 
-                'No. RET OIL', 'Kg RET OIL',
-                'No. RET LEC', 'Kg RET LEC',
-                'No. RET MZZ', 'Kg RET MZZ']
-    
-    df_fishes.columns = colnames
-    df_fishes = df_fishes.map(common_functions.zero_if_empty)
-    df_fishes.reset_index(drop=True, inplace=True)
-    
-    return df_fishes
     
 def extract_bycatch_p2_v17(df_donnees):
     """
@@ -801,149 +769,6 @@ def extract_bycatch_page2_v26(df_donnees):
         
     return bycatches
 
-def extract_bycatch_page3_v26_grrr(df_donnees, df_ref):
-    
-    df_bycatches = df_donnees.iloc[11:46, 1:27]
-    df_bycatches_columns = df_bycatches.iloc[0:2]
-
-    df_bycatches = df_bycatches.iloc[4:].reset_index(drop=True)
-    
-    # import des données de référecne page 4
-    df_ref_bycatch = ref_table_bycatch(df_ref)
-    df_ref_bycatch = df_ref_bycatch.rename(columns={'CODE 代碼': 'CODE'})
-    df_ref_bycatch = df_ref_bycatch.rename(columns={'NAME_EN 英文名': 'NAME_EN'})
-    df_ref_bycatch['NAME_EN'] = df_ref_bycatch['NAME_EN'].str.strip()
-
-
-    bycatches = []
-    n_cols = df_bycatches.shape[1]
-    
-    # Fonciton de nettoyage
-    def clean(v):
-        return None if pd.isna(v) or v in ('', 0) else v
-                
-    for _, row in df_bycatches.iterrows():
-
-        bycatches_row = []
-
-        # ==========================================================
-        # 4 premières colonnes format RET (count, weight) + DIS A + DIS D
-        # ==========================================================
-        col_species = df_bycatches_columns.iloc[0, 0]
-        col_process = df_bycatches_columns.iloc[1, 0]
-
-        species_match = re.search(r'\(([^)]+)\)', str(col_species))
-        species_code = species_match.group(1) if species_match else col_species
-
-        process_match = re.search(r'\b([A-Z]{2})\b\s*$', str(col_process))
-        specie_process = process_match.group(1) if process_match else None
-
-        count_ret = clean(row.iloc[0])
-        kg_ret    = clean(row.iloc[1])
-        count_DIS_A  = clean(row.iloc[2])
-        count_DIS_D  = clean(row.iloc[3])
-
-        if count_ret is not None or kg_ret is not None:
-            bycatches_row.append({
-                "species": species_code,
-                "onBoardProcessing": specie_process,
-                "catchFate": "RET",
-                "discardHealthStatus": None,
-                "count": count_ret,
-                "kg": kg_ret
-            })
-
-        if count_DIS_A is not None:
-            bycatches_row.append({
-                "species": species_code,
-                "onBoardProcessing": specie_process,
-                "catchFate": "DIS",
-                "discardHealthStatus": "A",
-                "count": count_DIS_A,
-                "kg": None
-            })
-
-        if count_DIS_D is not None:
-            bycatches_row.append({
-                "species": species_code,
-                "onBoardProcessing": specie_process,
-                "catchFate": "DIS",
-                "discardHealthStatus": "D",
-                "count": count_DIS_D,
-                "kg": None
-            })
-
-        # ==========================================================
-        # à partir de la colonne 4 on a soit 2 colonnes par espcèes, soit 3
-        # ==========================================================
-        i = 4
-        while i < n_cols:
-
-            col_species = df_bycatches_columns.iloc[0, i]
-            col_process = df_bycatches_columns.iloc[1, i]
-
-            # --- espèce ---
-            if isinstance(col_species, str):
-                species_match = re.search(r'\(([^)]+)\)', col_species)
-                species_code = species_match.group(1) if species_match else col_species
-            else:
-                species_code = None
-
-            # --- processing ---
-            if isinstance(col_process, str):
-                process_match = re.search(r'\b([A-Z]{2})\b\s*$', str(col_process))
-                specie_process = process_match.group(1) if process_match else None
-            else:
-                specie_process = None
-
-            v0 = clean(row.iloc[i])
-            v1 = clean(row.iloc[i+1]) if i+1 < n_cols else None
-            v2 = clean(row.iloc[i+2]) if i+2 < n_cols else None
-
-            # ---------- CAS 2 COLONNES : DIS A | DIS D ----------
-            if not isinstance(row.iloc[i], str):
-                count_RA = v0
-                count_RD = v1
-                step = 2
-
-            # ---------- CAS 3 COLONNES : species | DIS A | DIS D ----------
-            else:
-                specie_name = v0
-                species_code = df_ref_bycatch.loc[df_ref_bycatch['NAME_EN'] == specie_name, 'CODE'].values[0]
-                count_RA = v1
-                count_RD = v2
-                step = 3
-                print(specie_name)
-                print(species_code)
-            
-            if count_RA is not None:
-                bycatches_row.append({
-                    "species": species_code,
-                    "onBoardProcessing": specie_process,
-                    "catchFate": "DIS",
-                    "discardHealthStatus": "A",
-                    "count": count_RA,
-                    "kg": None
-                })
-
-            if count_RD is not None:
-                bycatches_row.append({
-                    "species": species_code,
-                    "onBoardProcessing": specie_process,
-                    "catchFate": "DIS",
-                    "discardHealthStatus": "D",
-                    "count": count_RD,
-                    "kg": None
-                })
-
-            i += step
-
-        bycatches.append(bycatches_row)
-        
-    return bycatches
-
-
-
 def extract_bycatch_page3_v26(df_donnees, df_ref):
     """
     Extraction des captures accessoires page 3 du logbook version 2026.
@@ -1075,7 +900,10 @@ def extract_bycatch_page3_v26(df_donnees, df_ref):
             count_RD = clean(row.iloc[i + 2]) if i + 2 < n_cols else None
 
             if pd.notna(specie_name) and isinstance(specie_name, str):
-                species_code = df_ref_bycatch.loc[df_ref_bycatch['NAME_EN'] == specie_name, 'CODE'].values[0]
+                if len(specie_name) >= 4:
+                    species_code = df_ref_bycatch.loc[df_ref_bycatch['NAME_EN'] == specie_name, 'CODE'].values[0]
+                else:
+                    species_code=specie_name
                 
                 if count_RA is not None:
                     bycatches_row.append({
@@ -1134,83 +962,6 @@ def extract_bycatch_page3_v26(df_donnees, df_ref):
         bycatches.append(bycatches_row)
 
     return bycatches
-
-
-def extract_bycatch_p2_v26(df_donnees):
-    """
-    Extraction des cases relatives à ce qui a été pêché mais accessoires    
-    
-    Args:
-        df_donnees (df): excel p2
-
-    Returns:
-        df
-    """
-    df_bycatch = df_donnees.iloc[15:46, 1:41]
-
-    colnames = ['No. RET BSH', 'Kg RET BSH',
-                'No. ESC BSH', 'No. DIS BSH',
-                'No. RET SMA', 'Kg RET SMA',
-                'No. ESC SMA', 'No. DIS SMA',
-                'No. RET LMA', 'Kg RET LMA',
-                'No. ESC LMA', 'No. DIS LMA',
-                'No. RET POR', 'Kg RET POR',
-                'No. ESC POR', 'No. DIS POR', 
-                'No. RET SPK', 'Kg RET SPK',
-                'No. ESC SPK', 'No. DIS SPK',                 
-                'No. RET SPL', 'Kg RET SPL',
-                'No. ESC SPL', 'No. DIS SPL',
-                'No. RET SPZ', 'Kg RET SPZ',
-                'No. ESC SPZ', 'No. DIS SPZ',
-                'No. RET TIG', 'Kg RET TIG',
-                'No. ESC TIG', 'No. DIS TIG',
-                'No. RET PSK', 'Kg RET PSK',
-                'No. ESC PSK', 'No. DIS PSK',
-                'No. RET FAL', 'Kg RET FAL',
-                'No. ESC FAL', 'No. DIS FAL']
-    df_bycatch.columns = colnames
-    df_bycatch = df_bycatch.map(common_functions.zero_if_empty)
-    df_bycatch.reset_index(drop=True, inplace=True)
-    return df_bycatch
-
-
-def extract_bycatch_p3_v26(df_donnees):
-    """
-    Extraction des cases relatives à ce qui a été pêché mais accessoires    
-    
-    Args:
-        df_donnees (df): excel p3
-
-    Returns:
-        df
-    """
-    df_bycatch = df_donnees.iloc[15:46, 1:27]
-
-    colnames = ['No. RET SKH', 'Kg RET SKH',
-                'No. ESC SKH', 'No. DIS SKH',
-                'No. ESC WSH', 'No. DIS WSH',
-                'No. ESC BTH', 'No. DIS BTH',
-                'No. ESC PTH', 'No. DIS PTH', 
-                'No. ESC OCS', 'No. DIS OCS', 
-                "Sea bird species", 'No. Alive sea bird', 'No. Dead sea bird',
-                "Turtle species", 'No. Alive turtle', 'No. Dead turtle',
-                "Ray species", 'No. Alive ray', 'No. Dead ray',
-                "Cetacean species", 'No. Alive cetacean', 'No. Dead cetacean',
-                'No. ESC RHN', 'No. DIS RHN']
-    df_bycatch.columns = colnames
-    species_cols = ["Sea bird species", "Turtle species", "Ray species", "Cetacean species"]
-    
-    for col in species_cols:
-        df_bycatch[col] = df_bycatch[col].apply(
-            lambda x: str(x).strip() if pd.notna(x) and str(x).strip() != "" else pd.NA
-        )
-
-    # Les autres colonnes → appliquer zero_if_empty
-    numeric_cols = [c for c in df_bycatch.columns if c not in species_cols]
-    df_bycatch[numeric_cols] = df_bycatch[numeric_cols].map(common_functions.zero_if_empty)
-
-    df_bycatch.reset_index(drop=True, inplace=True)
-    return df_bycatch
 
 
 def extract_seabirds_ref(df_donnees):
@@ -1308,7 +1059,8 @@ def extract_baits_ref(df_donnees):
 
     # Supprimer la première ligne 
     df_ref_baits = df_ref_baits[1:].reset_index(drop=True)
-
+    df_ref_baits = df_ref_baits.rename(columns={'CODE 代碼': 'CODE'})
+    
     return df_ref_baits
 
 def ref_table_bycatch(df_donnees):
@@ -1356,6 +1108,5 @@ def extract_material_ref(df_donnees):
         "OTH": "UNK"}
 
     df_ref_materials["Code_v26"] = df_ref_materials["CODE"].map(mappingLine_v26)
-    
-    print(df_ref_materials)
+
     return df_ref_materials

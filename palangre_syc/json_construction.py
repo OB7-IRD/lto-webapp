@@ -100,14 +100,19 @@ def get_baittype_topiaid(row, allData, version):
         colnames = "Logbook_name"
         join_on_colnames = "label1"
     elif version == "ll_26":
-        colnames = 'CODE'
+        colnames = 'Bait'
         join_on_colnames = 'code'
-    
+
     bait_logbook = row[colnames]
-    for baittype in baittypes:
-        if baittype.get(join_on_colnames)[:len(bait_logbook)] == bait_logbook:
-            return baittype["topiaId"]
-        
+    print(bait_logbook)
+    if bait_logbook == None : 
+        print("dans la boucle")
+        return None
+    else :
+        for baittype in baittypes:
+            if baittype.get(join_on_colnames)[:len(bait_logbook)] == bait_logbook:
+                return baittype["topiaId"]
+            
 
 
 def get_species_topiaid(fao_code_logbook, allData):
@@ -728,7 +733,7 @@ def create_activity_and_set(start_extraction, end_extraction,
         linematerial_datatable = df_line.merge(
             df_ref_linematerial[['CODE', 'Code_v26', 'Name']],
             left_on='Value',
-            right_on='Name',
+            right_on='CODE',
             how='left')
     #############################
 
@@ -806,15 +811,15 @@ def create_activity_and_set(start_extraction, end_extraction,
             # bait_datatable = info extraites du logbook
             bait_logbook = palangre_syc.excel_extractions.extract_bait_v26(df_donnees_p1)
             # df_ref_baits = info de référence fournies par le logbook avec le code de ref d'observe
-            df_ref_baits = palangre_syc.excel_extractions.extract_baits_ref(df_donnees_p4)
-            df_ref_baits['Name'] = api_traitement.common_functions.remove_spec_char_from_list(df_ref_baits['Name 名稱'].tolist())
-            df_ref_baits = df_ref_baits.rename(columns={'CODE 代碼': 'CODE'})
-            # On associe le code de ref 
-            bait_datatable = bait_logbook.merge(
-                df_ref_baits[['CODE', 'Name']],
-                left_on='Bait',
-                right_on='Name',
-                how='left')  
+            # df_ref_baits = palangre_syc.excel_extractions.extract_baits_ref(df_donnees_p4)
+            # df_ref_baits['Name'] = api_traitement.common_functions.remove_spec_char_from_list(df_ref_baits['Name 名稱'].tolist())
+            
+            # # On associe le code de ref 
+            # bait_datatable = bait_logbook.merge(
+            #     df_ref_baits[['CODE', 'Name']],
+            #     left_on='Bait',
+            #     right_on='Name',
+            #     how='left')  
             
             
             floatlines_composition = [{
@@ -833,8 +838,9 @@ def create_activity_and_set(start_extraction, end_extraction,
                 'topType':  create_lineType_v26(linematerial_datatable.loc[linematerial_datatable["Logbook_name"] == "Branchline topline", "Code_v26"].values[0], allData),
                 'tracelineType':  create_lineType_v26(linematerial_datatable.loc[linematerial_datatable["Logbook_name"] == "Branchline traceline", "Code_v26"].values[0], allData),
             }]
-            
-            set.update({'baitsComposition': create_bait_composition(bait_datatable.iloc[i][['Bait', 'CODE']], allData, context['version']),
+            # print(bait_logbook[i])
+            set.update({'baitsComposition': create_bait_composition(bait_logbook.iloc[i][['Bait']], allData, context['version']),
+                        # 'baitsComposition': create_bait_composition(bait_datatable.iloc[i][['Bait', 'CODE']], allData, context['version']),
                         'floatlinesComposition': floatlines_composition,
                         'branchlinesComposition': branchlines_composition,})
         
@@ -847,6 +853,17 @@ def create_activity_and_set(start_extraction, end_extraction,
         
         elif context['version'] == "ll_26":
             set.update({'catches': create_catches_dict(combined_catches[i], allData),})
+            ##### GET DPECIES NOT IN OBSERVE
+            # Observe_species = pd.DataFrame(allData["Species"])
+            # Ref_species = palangre_syc.excel_extractions.ref_table_bycatch(df_donnees_p4)
+            # Ref_species = Ref_species.rename(columns={'CODE 代碼': 'faoCode', 'NAME_EN 英文名': 'NAME_EN'})
+            # merged_left = pd.merge(Ref_species, Observe_species, on='faoCode', how='left')
+            # filtered_merged_left = merged_left[
+            #     # (merged_left['topiaId'].isna()) |
+            #     (merged_left['status'] == "disabled")]
+            # file_name = 'liste_not_in_observe.xlsx'
+            # filtered_merged_left.to_excel(file_name, index=False) 
+            
             # set.update({'catches': None,})
         
         if context['version'] == "ll_17.6" and (len(df_line) == 1) : 
