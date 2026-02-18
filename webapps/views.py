@@ -748,6 +748,9 @@ def sendERSDATA(request, trip_id):
             # Extration des information de la <li> sur laquelle on a cliqué sur "insérer" ou "mettre à jour"
             messages, js_ERScontent = build_trip_ERS(allData, trip_id, info_bat, df_datas_activities, oce, prg, df_lands, req3, req4, ers_profile)
 
+            # with open('media/content_ERS.json', 'w') as fichier:
+            #     json.dump(js_ERScontent, fichier, indent=4)
+
             if js_ERScontent != {} :
                 # Envoyer js_ERScontent dans la base de données
                 base_url = request.session.get('base_url')
