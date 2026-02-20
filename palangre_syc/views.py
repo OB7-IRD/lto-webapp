@@ -402,6 +402,13 @@ def checking_logbook(request):
                 probleme = True
             #############################
             
+            #############################
+            # messages d'erreurs
+            # if isinstance(df_gear, tuple):
+            #     messages.error(request, _("Au moins une."))
+            #     probleme = True
+            #############################
+            
             
             # if context['df_previous'] == None or len(context['df_previous']) != 1:
             #     # NOUVELLE MAREE
