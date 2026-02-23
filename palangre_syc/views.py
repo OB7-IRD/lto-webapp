@@ -404,9 +404,17 @@ def checking_logbook(request):
             
             #############################
             # messages d'erreurs
-            # if isinstance(df_gear, tuple):
-            #     messages.error(request, _("Au moins une."))
-            #     probleme = True
+            if ('VesselActivity' in df_time.columns and
+                df_time['VesselActivity_topiaId']
+                    .astype(str)
+                    .eq("fr.ird.referential.ll.common.VesselActivity#666#07")
+                    .any()
+            ):
+                messages.error(
+                    request,
+                    _("La valeur 'Unknown' est détectée dans Vessel activity - Vérifier que les 'Fishing activity' sont bien saisies.")
+                )
+                probleme = True
             #############################
             
             
