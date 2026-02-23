@@ -524,6 +524,7 @@ def postProg_info(request):
             'programme': request.POST["programme"],
             'ty_doc': request.POST["ty_doc"]
         }
+        print(request.session['dico_config'])
         return JsonResponse({"message": "success", 
                             "domaine": request.session.get('dico_config')['domaine']})
     return JsonResponse({"message": _("Veuillez ressayer svp.")})
@@ -600,58 +601,6 @@ def sendData(request):
         return JsonResponse({"message": "Success", "code": code, "msg": message})
     return JsonResponse({"message": _("Veuillez ressayer svp.")})
 
-def extract_data(my_file):
-    with ZipFile(my_file, 'r') as zip:
-        # afficher tout le contenu du fichier zip
-        zip.printdir()
-        print('extraction...')
-        # extraire tous les fichiers
-        # zip.extractall()
-        # extraire tous les fichiers vers un autre répertoire
-        zip.extractall("zipfiles")
-        print('Terminé!')
-
-    # Extraire un seul fichier zip
-    # zip = ZipFile(my_file)
-    # zip.extract('*.xlsx', "../media/zipfiles")
-    # zip.extract('*.xlsm', "../media/zipfiles")
-    # zip.close()
-    #request.SESSION['files'] = files
-
-
-files = []
-def file_upload_view2(request):
-    m_file = []
-    if files is not []:
-         files.clear()
-    #print(request.FILES)
-
-    if request.method == "POST":
-        my_file = request.FILES.get('file')
-
-        # files.append(my_file)
-        #print(my_file)
-        m_file = my_file
-        a = str(my_file)
-
-        read_data(my_file)
-
-    # print(my_file, " => ", a.split(".")[1])
-
-        if a.split(".")[1] == "zip":
-            extract_data(my_file)
-            dat = os.listdir("media/zipfiles")
-            res = "zipfiles"+ "/" + str(dat[0])
-            dat = os.listdir(res)
-            m_file = dat
-            # supprimer le contenu
-            # shutil.rmtree("../media/zipfiles/")
-            print(m_file)
-        else:
-            print("A"*20)
-    return render(request, "logbook.html",{"files": m_file})
-
-
 def file_upload_view(request):
     if request.method == "POST":
         file = request.FILES['file']
@@ -667,30 +616,194 @@ def file_upload_view(request):
     return render(request, "logbook.html")
 
 
-def get_data_extract(request):
+##########################################
+############    ERS   ####################
+##########################################
 
-    #_, data, _, messages = read_data(request.FILES.get('file'))
-    # request.session.get('table_files').append(data.to_dict())
-    # request.session['table_files'] = request.session.get('table_files')
-    # dat = os.listdir("../media/zipfiles")
+@login_required
+def ERSloadData(request):
 
-    if request.POST.get('submit'):
-        messages = ''
-        logbooks = os.listdir("media/logbooks")
-        print(logbooks)
-        # _, data, _, messages = read_data(request.FILES.get('file'))
-        # m_file = request.session.get('table_files')
-        # print("Submit: ", len(m_file))
-        # request.session['table_files'] = []
+    ers_profile = request.user.ers_profile
+    # print("ers_profile : ", ers_profile)
 
-        return render(request, "logbook.html",{"files": messages })
-#"""
-#    if request.method == "POST":
-#
-#        print("Appliquer: ", request.POST)
-#        return render(request, "logbook.html",{"files": "appliquer"})
-#
-#"""
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest' and ers_profile:
+
+        _, connectBool = init_connexion_from_profile(ers_profile)
+
+        req1 = "media/requetesSQL/01-trips-list.sql"
+
+
+        if connectBool:
+            dataTripERS = ERSTripList(req1, ers_profile)
+
+            # Conversion DataFrame → liste de dictionnaires pour utiliser au niveau du JS
+            dataTripERS_json = dataTripERS.to_dict(orient="records")
+
+            return JsonResponse({
+                "message": "Success",
+                "connectBool": True,
+                "dataTripERS": dataTripERS_json
+            })
+
+        return JsonResponse({
+            "connectBool": False,
+            "message": "Impossible de se connecter à la base ERS (Vérifiez la connexion au VPN)."
+        })
+
+    return JsonResponse({
+        "connectBool": False,
+        "message": "Aucun profil ERS attribué à cet utilisateur."
+    })
+
+@login_required
+def ERSloadTripDetails(request, trip_id):
+
+    ers_profile = request.user.ers_profile
+
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest' and ers_profile:
+
+        _, connectBool = init_connexion_from_profile(ers_profile)
+
+        req2 = 'media/requetesSQL/02-activities-of-a-given-trip-union-q02-q03-q06-q08-q10.sql'
+        req5 = "media/requetesSQL/05-landings-of-given-trip.sql"
+
+        if connectBool is True:
+            listActivity = ERSloadOneTripDetails(req2, trip_id, ers_profile)
+            listLanding = ERSlanding_extraction(req5, trip_id, ers_profile)
+
+            num_activity = len(listActivity)
+            num_landing = len(listLanding)
+            num_fishing_activity = (listActivity["a_table"] == "fishing_activity").sum()
+            num_discards = (listActivity["a_table"] == "discard").sum()
+
+            # print("type :  ", type(num_fishing_activity), num_fishing_activity)
+
+            data = {
+                    "num_activity": num_activity,
+                    "num_fishing_activity": num_fishing_activity,
+                    "num_landing": num_landing,
+                    "num_discards": num_discards
+                }
+
+            # Convertir toutes les données numpy en types Python natifs
+            data = convert_np_types(data)
+
+            return JsonResponse({
+                "message": "Success",
+                "connectBool": True,
+                "data": data
+            })
+
+        return JsonResponse({
+            "connectBool": False,
+            "message": "Impossible de se connecter à la base ERS"
+        })
+
+    return JsonResponse({
+        "connectBool": False,
+        "message": "Aucun profil ERS attribué à cet utilisateur."
+    })
+
+@login_required
+def sendERSDATA(request, trip_id):
+
+    allData = {}
+
+    try:
+        file_name = "media/data/" + os.listdir('media/data')[0]
+        # Opening JSON file
+        f = open(file_name, encoding="utf8")
+        # returns JSON object as  a dictionary
+        allData = json.load(f)
+    except:
+        pass
+
+    ers_profile = request.user.ers_profile
+
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest' and ers_profile:
+
+        _, connectBool = init_connexion_from_profile(ers_profile)
+
+        req1 = 'media/requetesSQL/01-trips-list.sql'
+        req2 = 'media/requetesSQL/02-activities-of-a-given-trip-union-q02-q03-q06-q08-q10.sql'
+        req3 = "media/requetesSQL/03-catches-of-given-fishing-activity.sql"
+        req4 = "media/requetesSQL/04-discards-of-given-discard-activity.sql"
+        req5 = "media/requetesSQL/05-landings-of-given-trip.sql"
+
+        if connectBool is True:
+            df_data = ERSTripList(req1, ers_profile)
+            info_bat = ERSVessel_info(df_data, trip_id)
+            df_datas_activities = ERSloadOneTripDetails(req2, trip_id, ers_profile)
+            df_lands = ERSlanding_extraction(req5, trip_id, ers_profile)
+
+            try:
+                ocean = np.unique(df_datas_activities['a_ocean'].dropna())[0].lower()
+                find_oce = [(x["topiaId"], x["label2"]) for x in allData['Ocean'] if ocean in x["label2"].lower()]
+                oce = find_oce[0][0]
+            except:
+                oce = request.session.get('dico_config')['ocean']
+
+            prg = request.session.get('dico_config')['programme']
+
+            # Extration des information de la <li> sur laquelle on a cliqué sur "insérer" ou "mettre à jour"
+            messages, js_ERScontent = build_trip_ERS(allData, trip_id, info_bat, df_datas_activities, oce, prg, df_lands, req3, req4, ers_profile)
+
+            # with open('media/content_ERS.json', 'w') as fichier:
+            #     json.dump(js_ERScontent, fichier, indent=4)
+
+            if js_ERScontent != {} :
+                # Envoyer js_ERScontent dans la base de données
+                base_url = request.session.get('base_url')
+                username = request.session.get('username')
+                password = request.session.get('password')
+                database = request.session.get('database')
+                client_app_version = request.session.get('client_app_version')  # Peut être None
+                model_version = request.session.get('model_version')  # Peut être None
+                referential_locale = request.session.get('referential_locale')
+
+                # Appel à reload_token avec tous les paramètres requis
+                token = api_functions.reload_token(
+                    username=username,
+                    password=password,
+                    base_url=base_url,
+                    database=database,
+                    client_app_version=client_app_version,
+                    model_version=model_version,
+                    referential_locale=referential_locale
+                )
+
+                route = '/data/ps/common/Trip'
+                message_log, code = api_functions.send_trip(token, js_ERScontent, base_url, route)
+
+                if code == 1:
+                    # messages.success(request, message_log)
+                    print(1, message_log)
+                    return JsonResponse({"message": "Success", "code": code, "msg": message_log})
+                elif code == 2:
+                    # messages.error(request, message_log)
+                    print(code, message_log)
+                    return JsonResponse({"message": "Success", "code": code, "msg": message_log})
+                else:
+                    # messages.warning(request, message_log)
+                    print(3, message_log)
+                    return JsonResponse({"message": "Success", "code": code, "msg": message_log})
+
+                # return JsonResponse({"message": "Success", "code": code, "msg": message_log})
+
+            else:
+                return JsonResponse({
+                    "message": messages
+                })
+
+        return JsonResponse({
+            "connectBool": False,
+            "message": "Impossible de se connecter à la base ERS"
+        })
+
+    return JsonResponse({
+        "connectBool": False,
+        "message": "Aucun profil ERS attribué à cet utilisateur."
+    })
 
 
 def error_404_view(request, exception):

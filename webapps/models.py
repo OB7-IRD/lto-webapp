@@ -2,6 +2,19 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.conf import settings
 
+# ERS Profils
+class ERSConnectionProfile(models.Model):
+    name_ers = models.CharField(max_length=128, unique=True)
+
+    database = models.CharField(max_length=64)
+    user = models.CharField(max_length=64)
+    password = models.CharField(max_length=64)
+    host = models.CharField(max_length=128)
+    port = models.CharField(max_length=16)
+
+    def __str__(self):
+        return f"{self.name_ers} ({self.host}:{self.port}/{self.database})"
+
 
 # Modèle pour les utilisateurs du site
 class LTOUser(AbstractUser):
@@ -15,6 +28,14 @@ class LTOUser(AbstractUser):
         max_length=20,
         choices=[('user', 'Users'), ('admin', 'Administrators')],
         default='user'
+    )
+
+    ers_profile = models.ForeignKey(
+        ERSConnectionProfile,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="users"
     )
 
     def __str__(self):
@@ -46,3 +67,5 @@ class ConnectionProfile(models.Model):
 
     def __str__(self):
         return f"{self.name} - {self.database_alias} - {self.model_version}"  # Affiche un nom plus lisible
+
+

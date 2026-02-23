@@ -93,15 +93,19 @@ $(document).ready(function(){
                             } else {
                                 if (ll_context.programme == response.dataPro.id[i]) {
                                     // console.log(ll_context);
-                                    if (ll_context.ty_doc == "ps"){
+                                    if (ll_context.ty_doc == "ps" ){
                                         $("#apply select[name='ty_doc']").find('.after').after('<option selected class="orth" value="ps">Logbook ORTHONGEL v21</option>');
                                         $("#apply select[name='ty_doc']").find('.orth').after('<option class="orth23" value="ps2">Logbook ORTHONGEL v23</option>');
-                                    }else{
+                                        $("#apply select[name='ty_doc']").find('.orth23').after('<option class="ers" value="ers">Données ERS</option>');
+                                    }else if (ll_context.ty_doc == "ps2" ){
                                         $("#apply select[name='ty_doc']").find('.after').after('<option class="orth" value="ps">Logbook ORTHONGEL v21</option>');
                                         $("#apply select[name='ty_doc']").find('.orth').after('<option selected class="orth23" value="ps2">Logbook ORTHONGEL v23</option>');
+                                        $("#apply select[name='ty_doc']").find('.orth23').after('<option class="ers" value="ers">Données ERS</option>');
+                                    }else {
+                                        $("#apply select[name='ty_doc']").find('.after').after('<option class="orth" value="ps">Logbook ORTHONGEL v21</option>');
+                                        $("#apply select[name='ty_doc']").find('.orth').after('<option  class="orth23" value="ps2">Logbook ORTHONGEL v23</option>');
+                                        $("#apply select[name='ty_doc']").find('.orth23').after('<option selected class="ers" value="ers">Données ERS</option>');
                                     };
-                                    $("#apply select[name='ty_doc']").find('.orth23').after('<option class="ers" value="ers">Données ERS</option>');
-
                                     option += '<option selected value="' + response.dataPro.id[i] + '">' + response.dataPro.value[i] + '</option>';
                                 } else {
                                     option += '<option value="' + response.dataPro.id[i] + '">' + response.dataPro.value[i] + '</option>';
@@ -182,11 +186,13 @@ $(document).ready(function(){
     $("#btn_apply").click(function(e){
         e.preventDefault();
 
-        if (($("#domaine").val() != "Domaine..." ) && ($("#programme").val() != "Programmes du domaine..." ) && ($("#ocean").val() != "Ocean..." ) && ($("#ty_doc").val() != "Types de document..." )) {
+        if (($("#domaine").val() != "" ) && ($("#programme").val() != "" ) && ($("#ocean").val() != "" ) && ($("#ty_doc").val() != "" )) {
             // console.log($("#apply").serialize());
             data = $("#apply").serialize();
             // console.log($("#apply").data("url"));
             if (($("#apply select[name='ty_doc']").val() == "ps") || ($("#apply select[name='ty_doc']").val() == "ps2") || ($("#apply select[name='ty_doc']").val() == "ll")){
+
+                $("#div_ers").hide(1500);
 
                 $.ajax({
                     type: 'POST',
@@ -202,6 +208,8 @@ $(document).ready(function(){
                 });
 
                 if ($("#apply select[name='ty_doc']").val() == "ps"){
+                    // Code ajax faisant reference la fonction "postProg_info" de la vue qui permet de sauvegarder au niveau des variables de session
+                    // les infos (domaine, ocean, programme et ty_doc)
                     $.ajax({
                         type: 'POST',
                         url: $("#apply").attr('action'),
@@ -228,6 +236,8 @@ $(document).ready(function(){
                 }
 
                 else if ($("#apply select[name='ty_doc']").val() == "ps2"){
+                    // Code ajax faisant reference la fonction "postProg_info" de la vue qui permet de sauvegarder au niveau des variables de session
+                    // les infos (domaine, ocean, programme et ty_doc)
                     $.ajax({
                         type: 'POST',
                         url: $("#apply").attr('action'),
@@ -255,6 +265,8 @@ $(document).ready(function(){
 
                 // palangre
                 else if ($("#apply select[name='ty_doc']").val() == "ll"){
+                    // Code ajax faisant reference la fonction "postProg_info" de la vue qui permet de sauvegarder au niveau des variables de session
+                    // les infos (domaine, ocean, programme et ty_doc)
                     $.ajax({
                         type: 'POST',
                         url: $("#apply").attr('action'),
@@ -281,9 +293,116 @@ $(document).ready(function(){
                 }
             }
             else if ($("#apply select[name='ty_doc']").val() == "ers"){
-                $("#div_upload").hide(1500);
-                console.log('Rien pour l\'instant ');
 
+                /**
+                 * Formate une date ISO (ex: 2025-06-30T06:48:00)
+                 * en format lisible : YYYY-MM-DD HH:mm
+                 */
+                function formatDateISO(dateStr) {
+                    if (!dateStr) return "";
+
+                    const date = new Date(dateStr);
+
+                    const year = date.getFullYear();
+                    const month = String(date.getMonth() + 1).padStart(2, '0');
+                    const day = String(date.getDate()).padStart(2, '0');
+
+                    const hours = String(date.getHours()).padStart(2, '0');
+                    const minutes = String(date.getMinutes()).padStart(2, '0');
+
+                    return `${year}-${month}-${day} à ${hours}:${minutes}`;
+                }
+
+                $("#div_upload").hide(1500);
+
+                // Code ajax faisant reference la fonction "postProg_info" de la vue qui permet de sauvegarder au niveau des variables de session
+                // les infos (domaine, ocean, programme et ty_doc)
+                $.ajax({
+                        type: 'POST',
+                        url: $("#apply").attr('action'), // reference la fonction "postProg_info"
+                        data: data,
+                        dataType: "json",
+                        success: function(response){
+                            if (response.message == 'success'){
+                                // Code ajax pour afficher les données ERS si nous sommes connectés au VPN et à la base Postgres des données ERS
+                                $.ajax({
+                                        type: 'POST',
+                                        url: 'ERSloadData', // reference la fonction "ERSloadData"
+                                        data: data,
+                                        dataType: "json",
+                                        success: function(result){
+                                            // console.log(result.connectBool)
+                                            if (result.connectBool === true) {
+                                                // Vider la liste avant de remplir
+                                                $("#ers_list").empty();
+
+                                                // Parcourir les données ERS reçues
+                                                $.each(result.dataTripERS, function(index, trip){
+
+                                                    let li_html = `
+                                                        <li class="ers-item flex items-center justify-between px-6 py-5 hover:bg-gray-50 cursor-pointer"
+                                                            data-trip-id="${trip.trip_id}">
+
+                                                            <div class="min-w-0 w-full">
+
+                                                                <!-- TITRE -->
+                                                                <div class="flex items-center gap-3">
+                                                                    <p class="font-semibold text-gray-900 truncate">
+                                                                        ${trip.trip_vessel_name}
+                                                                    </p>
+                                                                    <span class="inline-flex mt-3items-center gap-2 text-sm text-gray-500">
+                                                                        (${trip.trip_captain_name})
+                                                                    </span>
+                                                                    <span class="inline-flex items-center rounded-md bg-green-100 px-2 py-0.5 text-xs font-medium text-green-700">
+                                                                        Complete
+                                                                    </span>
+                                                                </div>
+
+                                                                <!-- META -->
+                                                                <div class="mt-3 flex items-center gap-2 text-sm text-gray-500">
+                                                                    <span>${formatDateISO(trip.trip_start_date)}</span>
+                                                                    <span class="font-semibold">(${trip.trip_departure_harbour_name})</span>
+                                                                    <span>•</span>
+                                                                    <span class="truncate">${formatDateISO(trip.trip_end_date)}</span>
+                                                                    <span class="font-semibold">(${trip.trip_landing_harbour_name})</span>
+                                                                </div>
+
+                                                                <!-- SOUS INFOS (cachées) -->
+                                                                <div class="sous_info_li hidden mt-5 w-full"></div>
+
+                                                            </div>
+                                                        </li>
+                                                    `;
+
+                                                    $("#ers_list").append(li_html);
+                                                });
+
+                                                $("#div_ers").show(1500);
+                                            }
+                                            else{
+                                                $("#div_ers").hide(1500);
+                                                Swal.fire({
+                                                      icon: "error",
+                                                      title: "Oops...",
+                                                      text: result.message,
+                                                      // footer: '<a href="#">Why do I have this issue?</a>'
+                                                    });
+                                                console.log(result.message);
+                                            }
+                                        },
+                                        error: function(result){
+                                            cconsole.log("Erreur au niveau de la requête ERSloadData");
+                                        }
+                                });
+
+                            }else{
+                                console.log(response.message);
+                            }
+                        },
+                        error: function(response){
+                            console.log('La configuration n\'a pas été enregistrée');
+                        }
+                });
             }
             console.log('Affiche le domaine'+$("#apply select[name='ty_doc']").val());
 
@@ -302,6 +421,237 @@ $(document).ready(function(){
         console.log($("#my-dropzone").serialize());
     });
 
+    /**
+     * Gestion du clic sur un élément ERS (<li>)
+     */
+    $(document).on('click', '.ers-item', function (e) {
+
+        // Si le clic vient d'un bouton → on ignore
+        if ($(e.target).closest('.btn-insert, .btn-update').length) {
+            return;
+        }
+
+        // <li> cliqué
+        let currentLi = $(this);
+
+        // trip_id (clé unique)
+        let tripId = currentLi.data('trip-id');
+
+        // div sous-infos du <li> cliqué
+        let currentSubInfo = currentLi.find('.sous_info_li');
+
+        /**
+         * Fermer tous les autres blocs ouverts
+         */
+        $('.sous_info_li').not(currentSubInfo).slideUp(500).empty();
+
+        /**
+         * Si déjà ouvert → on ferme et on sort
+         */
+        if (currentSubInfo.is(':visible')) {
+            currentSubInfo.slideUp(500);
+            return;
+        }
+
+        /**
+         * Loader simple pendant l'appel AJAX
+         */
+        currentSubInfo.html(`
+            <div class="text-sm text-red-400">
+                Chargement des détails...
+            </div>
+        `).slideDown(500);
+
+        /**
+         * Appel AJAX vers Django
+         */
+        $.ajax({
+            type: 'GET',
+            url: `/logbook/ERSloadTripDetails/${tripId}/`,
+            dataType: 'json',
+            success: function (response) {
+
+                if (response.connectBool === true) {
+
+                    let d = response.data;
+
+                    /**
+                     * HTML des sous-infos de la marée ERS
+                     */
+                    let sousInfoHtml = `
+                        <div class="sous_info_li_actuel">
+
+                            <div class="info_maree flex gap-4 font-semibold text-sm text-black">
+                                <div>
+                                    <span class="text-blue-500">Nombre d'Activités :</span>
+                                    <span>${d.num_activity}</span>
+                                </div>
+                                |
+                                <div>
+                                    <span class="text-blue-500">Activités de Pêche :</span>
+                                    <span>${d.num_fishing_activity}</span>
+                                </div>
+                                |
+                                <div>
+                                    <span class="text-blue-500">Débarquements :</span>
+                                    <span>${d.num_landing}</span>
+                                </div>
+                                |
+                                <div>
+                                    <span class="text-blue-500">Rejets :</span>
+                                    <span>${d.num_discards}</span>
+                                </div>
+
+                                <div class="gap-4 ml-20">
+                                    <a href="#"
+                                       class="btn-insert mr-3 rounded-md bg-blue-300 px-3 py-2 text-xs font-semibold ring-1 ring-gray-300 hover:bg-blue-500"
+                                       data-trip-id="${tripId}">
+                                        Insérer les données
+                                    </a>
+
+                                    <a href="#"
+                                       class="btn-update rounded-md bg-gray-200 px-3 py-2 text-xs font-semibold ring-1 ring-gray-300 hover:bg-gray-500"
+                                       data-trip-id="${tripId}">
+                                        Mettre à jour les données
+                                    </a>
+                                </div>
+                            </div>
+
+                        </div>
+                    `;
+
+                    currentSubInfo.html(sousInfoHtml);
+
+                } else {
+                    currentSubInfo.html(
+                        `<div class="text-red-500 text-sm">${response.message}</div>`
+                    );
+                }
+            },
+            error: function () {
+                currentSubInfo.html(
+                    `<div class="text-red-500 text-sm">Erreur lors du chargement</div>`
+                );
+            }
+        });
+    });
+
+    // Bloque toute l'interface utilisateur
+    function lockUI() {
+        $('#ui-lock-overlay').removeClass('hidden');
+        $('body').addClass('overflow-hidden'); // empêche l'utilisateur de scroller
+    }
+
+    // Débloque toute l'interface utilisateur
+    function unlockUI() {
+        $('#ui-lock-overlay').addClass('hidden');
+        $('body').removeClass('overflow-hidden');
+    }
+
+    /**
+     * Gestion clic sur "Insérer" ou "Mettre à jour" ERS
+     */
+    $(document).on('click', '.btn-insert, .btn-update', function (e) {
+        e.preventDefault();
+        e.stopPropagation(); // STOP propagation du clique vers le <li> pour eviter qu'il se ferme
+
+        // Verrouiller toute l'interface
+        lockUI();
+
+        // Bouton cliqué
+        let btn = $(this);
+
+        // trip_id concerné
+        let tripId = btn.data('trip-id');
+
+        // Zone message ERS globale
+        let messageZone = $('#ers_message_zone');
+
+        // Nettoyer anciens messages
+        messageZone.hide().empty();
+
+        // Désactiver les boutons pendant le traitement
+        $('.btn-insert, .btn-update').addClass('pointer-events-none opacity-50').prop('disabled', true);
+
+        /**
+         * Appel AJAX vers Django
+         */
+        $.ajax({
+            type: 'POST',
+            url: `/logbook/sendERSDATA/${tripId}/`,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+            success: function (response) {
+
+                let alertHtml = '';
+
+                if (response.message === 'Success') {
+
+                    if (response.code === 1) {
+                        // Succès
+                        alertHtml = `
+                            <div class="bg-teal-100 border-t-4 border-teal-500 text-teal-900 px-4 py-3 rounded">
+                                <strong>Succès :</strong> ${response.msg}
+                            </div>
+                        `;
+                    } else if (response.code === 2) {
+                        // Erreur bloquante
+                        alertHtml = `
+                            <div class="bg-red-100 border-t-4 border-red-500 text-red-900 px-4 py-3 rounded">
+                                <strong>Erreur :</strong> ${response.msg}
+                            </div>
+                        `;
+                    } else {
+                        // Warning
+                        alertHtml = `
+                            <div class="bg-yellow-100 border-t-4 border-yellow-500 text-yellow-900 px-4 py-3 rounded">
+                                <strong>Attention :</strong> ${response.msg}
+                            </div>
+                        `;
+                    }
+
+                } else {
+                    alertHtml = `
+                        <div class="bg-red-100 border-t-4 border-red-500 text-red-900 px-4 py-3 rounded">
+                            Une erreur est survenue.
+                        </div>
+                    `;
+                }
+
+                // Affichage message ERS
+                messageZone.html(alertHtml).slideDown(300);
+            },
+
+            error: function () {
+                messageZone.html(`
+                    <div class="bg-red-100 border-t-4 border-red-500 text-red-900 px-4 py-3 rounded">
+                        Erreur de communication avec le serveur.
+                    </div>
+                `).slideDown(300);
+            },
+
+            complete: function () {
+                // Déverrouiller l'interface (QUOI QU'IL ARRIVE)
+                unlockUI();
+
+                // Réactiver boutons
+                $('.btn-insert, .btn-update').removeClass('pointer-events-none opacity-50').prop('disabled', false);
+            }
+        });
+    });
+
+    // Fermer messages ERS lors du changement de trip
+    $('#ers_message_zone').slideUp(200).empty();
+
+    // Fermer les messages ERS si on clique ailleurs
+    $(document).on('click', function (e) {
+
+        // Si le clic ne vient PAS d'un bouton ERS
+        if (!$(e.target).closest('.btn-insert, .btn-update').length) {
+            $('#ers_message_zone').slideUp(200);
+        }
+    });
 
     $('#cancel_btn').click(function(e){
         // e.preventDefault();
@@ -345,15 +695,8 @@ $(document).ready(function(){
                 }else{
                     console.log("Probleme");
                 }
-                // $("#div_upload").hide(1500);
-                // date heure ==> Information non conforme sur le ou les FOB de l'activité:  - visite
-                // Nombre total d'erreurs tout types confondus: nb_error
-                // Mise a jour faite à heure
-                // ******** Les données concernant les espèces rejetées sont mauvaises. ==> le 2021-05-27 00:00:00 à 07:20:00 ==> // Date heure ==> Les données concernant les espèces rejetées sont mal formatées (raison exacte indeterminée)
-                // Date heure ==> les especes rejetees doivent etre indiquees avec leur code FAO (ASFIS) 3 lettres. Le code trouvé est: code_logbook
           },
           error: function(response){
-
           }
         });
     });
@@ -416,3 +759,4 @@ $(document).ready(function(){
     console.log("terminé");
 
 });
+

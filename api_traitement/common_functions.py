@@ -10,7 +10,10 @@ import re
 import openpyxl
 import pandas as pd
 import numpy as np
+
+from api_traitement import api_functions
 from api_traitement.ps_build_json_fonctions import *
+from api_traitement.api_functions import *
 
 def load_json_file(file_path):
     """ Fonction qui charge un fichier json enregistré dans un dossier donné en argument et le renvoie
@@ -1919,6 +1922,11 @@ def build_trip(allData, info_bat, data_log, oce, prg, ob):
     if message:
         allMessages.append(message)
 
+    js_contents["departureWellContentStatus"] = "fr.ird.referential.ps.logbook.WellContentStatus#1464000000000#03"
+    js_contents["landingWellContentStatus"] = "fr.ird.referential.ps.logbook.WellContentStatus#1464000000000#03"
+    js_contents["landingAcquisitionStatus"] = "fr.ird.referential.ps.common.AcquisitionStatus#1464000000000#999"
+
+
     js_contents["loch"] = info_bat['Arrivee_Loch']
     js_contents["homeId"] = str(ob["mar_homeId"])
     js_contents["observationsProgram"] = None # Old
@@ -2528,6 +2536,10 @@ def build_trip_v23(allData, info_bat, data_log, oce, prg):
     if message:
         allMessages.append(message)
 
+    js_contents["departureWellContentStatus"] = "fr.ird.referential.ps.logbook.WellContentStatus#1464000000000#03"
+    js_contents["landingWellContentStatus"] = "fr.ird.referential.ps.logbook.WellContentStatus#1464000000000#03"
+    js_contents["landingAcquisitionStatus"] = "fr.ird.referential.ps.common.AcquisitionStatus#1464000000000#999"
+
     js_contents["loch"] = info_bat['Arrivee_Loch']
     js_contents["homeId"] = str(info_bat["mar_homeId"])
     # js_contents["observationsProgram"] = None # Old
@@ -2537,3 +2549,355 @@ def build_trip_v23(allData, info_bat, data_log, oce, prg):
     return allMessages, js_contents
 
 
+
+##########################################################
+#################  ERS   #################################
+##########################################################
+
+def build_trip_ERS(allData, trip_id, info_bat, df_datas_activities, oce, prg, df_lands, req3, req4, ers_profile):
+    """Fonction qui permet de contruire le gros fragment json de la marée et retourner des messages par rapport à la construction
+
+    Args:
+        allData (json): données de references
+        trip_id (int/str) id du trip ERS
+        info_bat (json): info sur le bateau date de depart/arrivée du port de depart/arrivé et info sur le capitaine et du bateau
+        df_datas_activities (dataFrame):  les données du logbook ERS
+        oce (list): la liste des océans
+        prg (list): pour la liste des programmes
+        df_lands (dataFrame) données de débarquements
+        req3, req4 (path) chemin de requêtes 3 et 4
+        ers_profile: Profil ERS de l'utilisateur
+
+    Returns:
+        allMessages, js_contents
+    """
+    allMessages = []
+    js_contents = {}
+
+    try:
+
+        group = df_datas_activities.groupby(['a_date'])
+
+        dictCardinal = api_functions.Cardinal_Point()
+
+
+        activite = []
+        routes = []
+        ################## NEw
+        js_catches = js_activitys = js_routeLogbooks = {}
+        #####################
+
+        nb = nb_r = Som_thon = 0
+        fpa_prece = None
+
+
+        # yft_id = getId(allData, "Species", argment="faoCode=YFT")
+        # skj_id = getId(allData, "Species", argment="faoCode=SKJ")
+        # bet_id = getId(allData, "Species", argment="faoCode=BET")
+
+        WeightMeasureMet = getId(allData, "WeightMeasureMethod", argment="label2=Estimation visuelle")
+        code_conser = getId(allData, "SpeciesFate", argment="code=6")
+        code_rej = getId(allData, "SpeciesFate", argment="code=11") # speciesFate '11 - Discarded'
+
+        vers_code_0 = getId(allData, "VesselActivity", argment="code=0", domaine="seine")
+        vers_code_2 = getId(allData, "VesselActivity", argment="code=2", domaine="seine")
+        vers_code_6 = getId(allData, "VesselActivity", argment="code=6", domaine="seine")
+        vers_code_31 = getId(allData, "VesselActivity", argment="code=31", domaine="seine") # code VesselActivity '31 - Rejet de poisson'
+        vers_code_99 = getId(allData, "VesselActivity", argment="code=99", domaine="seine") #
+
+        id_infoSource = getId(allData, "InformationSource", argment="code=E")
+        id_dataQua = getId(allData, "DataQuality", argment="code=A")
+
+
+        dico_code_sch_type = getAll(allData, "SchoolType")
+        dico_code_setSucc = getAll(allData, "SetSuccessStatus")
+
+        tab_fpa = getAll(allData, "FpaZone", type_data="tableau")
+        #############################
+
+
+        date = ""
+        for val in group:
+            for index, data in val[1].iterrows():
+                date = data["a_date"]
+                nb += 1
+
+                if data['a_table'] != "discard":
+                    activities_catchs, status = api_functions.f_catch(req3, str(data["catch_id"]), ers_profile) # Catch Operation
+                else:
+                    activities_catchs, status = api_functions.f_discard(req4, str(data["catch_id"]), ers_profile) # Discard Operation but here "discard_id == catch_id" in data
+
+                tab4_catches = []
+
+                if (status) :
+
+                    def func_tab4_catches(js_catches, topId_sp, weight, weightCategory_id, WeightMeasureMet, code_conser_rej, count = None):
+                        js_catches["species"] = topId_sp
+                        js_catches["weight"] = weight
+                        js_catches["weightCategory"] = weightCategory_id
+                        js_catches["weightMeasureMethod"] = WeightMeasureMet
+                        js_catches["speciesFate"] = code_conser_rej
+
+                        # count
+                        js_catches["count"] = count
+
+                        return js_catches
+
+                    # print(data['a_table'], data['a_date'])
+
+                    for idx, data_s in activities_catchs.iterrows():
+
+                        js_catches = js_catche() # intialisatiion
+                        if  data_s["specie_weight_category_id"] != None:
+                            species_id = getId(allData, "Species", argment="faoCode=" + data_s["specie_fao_id"].upper())
+
+                            weightCategory_pref = "C-" + data_s["specie_fao_id"] + "-" + str(data_s["specie_weight_category_id"])
+
+                            try:
+                                weightCategory_id = [x['topiaId'] for x in allData["WeightCategory"] if weightCategory_pref in x['code']][0]
+                            except:
+                                print(weightCategory_pref)
+                                weightCategory_id = None
+
+                            Som_thon += float(data_s['specie_catchweight']) if data_s['specie_catchweight'] != None else 0
+
+                            code_conser_rej = code_conser if data['a_table'] != "discard" else code_rej
+
+                            count = int(data_s["specie_numberoffished"]) if data_s["specie_numberoffished"] != None else None
+
+                            js_catches = func_tab4_catches(js_catches, species_id, data_s['specie_catchweight'], weightCategory_id, WeightMeasureMet, code_conser_rej, count)
+
+                            if (count != None or Som_thon != 0):
+                                tab4_catches.append(js_catches)
+
+                        else:
+                            species_id = getId(allData, "Species", argment="faoCode=" + data_s["specie_fao_id"].upper())
+                            weightCategory_id = None
+
+                            Som_thon += float(data_s['specie_catchweight']) if data_s['specie_catchweight'] != None else 0
+
+                            code_conser_rej = code_conser if data['a_table'] != "discard" else code_rej
+
+                            count = int(data_s["specie_numberoffished"]) if data_s["specie_numberoffished"] != None else None
+
+                            js_catches = func_tab4_catches(js_catches, species_id, data_s['specie_catchweight'], weightCategory_id, WeightMeasureMet, code_conser_rej, count)
+
+                            if (count != None or Som_thon != 0):
+                                tab4_catches.append(js_catches)
+
+                    js_activitys = js_activity(tab4_catches)
+                else:
+                    js_activitys = js_activity(tab4_catches)
+
+
+                js_activitys["time"] = str(date) + str("T") + str(data["a_time"]) + ".000Z"
+                js_activitys["number"] = int(nb)
+
+                if (data['a_sst'] != None):
+                    if (15.0 <= float(data["a_sst"]) <= 35.0):
+                        js_activitys["seaSurfaceTemperature"] = float(data["a_sst"])
+                    else:
+                        js_activitys["seaSurfaceTemperature"] = None
+                        js_activitys["comment"] = " # La température doit être comprise entre 15.0°C et 35.0°C mais vaut "+str(data["a_sst"])+"°C."
+                else:
+                   js_activitys["seaSurfaceTemperature"] = None
+                   js_activitys["comment"] = " # La température doit être comprise entre 15.0°C et 35.0°C mais vaut 0.0°C."
+
+                # Wind Direction
+                try:
+                    js_activitys["windDirection"] = dictCardinal[data["a_wind_direction"].lower()]
+                except:
+                    js_activitys["windDirection"] = None
+
+
+                if Som_thon != 0:
+                    js_activitys["totalWeight"] =  Som_thon
+
+                last = len(df_datas_activities) - 1
+                if index == 0:
+                    # print(data["a_table"])
+                    if data["a_latitude"] != None and data["a_longitude"] != None :
+                        js_activitys["latitude"], js_activitys["longitude"] = data["a_latitude"], data["a_longitude"]
+                    else:
+                        js_activitys["latitude"], js_activitys["longitude"] = get_lat_long(allData, info_bat['Depart_Port'])
+
+                elif index == last:
+                    # print(data["a_table"])
+                    if data["a_latitude"] != None and data["a_longitude"] != None :
+                        js_activitys["latitude"], js_activitys["longitude"] = data["a_latitude"], data["a_longitude"]
+                    else:
+                        js_activitys["latitude"], js_activitys["longitude"] = get_lat_long(allData, info_bat['Arrivee_Port'])
+
+                else:
+                    js_activitys["latitude"], js_activitys["longitude"] = data["a_latitude"], data["a_longitude"]
+
+
+
+                # def schoolType(chaine, dico_code_sch_type):
+                #     return dico_code_sch_type["0"]
+
+
+                def setCo_setSuc_vess(setCount, setSuccessStatus, vesselActivity):
+                     return setCount, setSuccessStatus, vesselActivity
+
+                # print(data['a_table'], data['a_date'], data['a_time'], len(tab4_catches))
+
+                if data['a_operation'] != None :
+                    if ("positif" in data['a_operation'].lower()) :
+                        # Code 6
+                        js_activitys["setCount"], js_activitys["setSuccessStatus"], js_activitys["vesselActivity"] = setCo_setSuc_vess(1, dico_code_setSucc["1"], vers_code_6)
+                        # js_activitys["schoolType"] = schoolType(data["a_operation"], dico_code_sch_type)
+                        js_activitys["schoolType"] = dico_code_sch_type["0"]
+
+                    elif ("negatif" in data['a_operation'].lower()) :
+                        # Code 6
+                        js_activitys["setCount"], js_activitys["setSuccessStatus"], js_activitys["vesselActivity"] = setCo_setSuc_vess(1, dico_code_setSucc["0"], vers_code_6)
+                        # js_activitys["schoolType"] = schoolType(data["a_operation"], dico_code_sch_type)
+                        js_activitys["schoolType"] = dico_code_sch_type["0"]
+
+                    elif "recherche" in data['a_operation'].lower():
+                        # Code 2
+                        js_activitys["setCount"], js_activitys["setSuccessStatus"], js_activitys["vesselActivity"] = setCo_setSuc_vess(None, None, vers_code_2)
+                        js_activitys["schoolType"] = None
+                    else:
+                        # Code 99
+                        js_activitys["setCount"], js_activitys["setSuccessStatus"], js_activitys["vesselActivity"] = setCo_setSuc_vess(None, None, vers_code_99)
+                        js_activitys["schoolType"] = None
+                        if (status):
+                            # Convertir captures en chaine de caracteres
+                            activities_catchs_list = list(activities_catchs["specie_fao_id"])
+                            activities_catchs_weights_list = list(activities_catchs["specie_catchweight"])
+
+                            activities_catchs_str = ""
+                            for catch, weight in zip(activities_catchs_list, activities_catchs_weights_list):
+                                if weight != None:
+                                    activities_catchs_str += catch + " (" + str(weight) + " t), "
+                                else:
+                                    activities_catchs_str += catch + " ( null ), "
+
+                            if "comment" not in js_activitys.keys():
+                                js_activitys["comment"] = " # Operantion: \""+ data['a_operation'] +"\" non traitée par le service web."
+                                js_activitys["comment"] += " # Captures associées : \""+ activities_catchs_str +"\" "
+                                js_activitys["catches"] = []
+                            else:
+                                js_activitys["comment"] += " # Operantion: \""+ data['a_operation'] +"\" non traitée par le service web."
+                                js_activitys["comment"] += " # Captures associées : \""+ activities_catchs_str +"\" "
+                                js_activitys["catches"] = []
+
+                        else:
+                             if "comment" not in js_activitys.keys():
+                                js_activitys["comment"] = " # Operantion: \""+ data['a_operation'] +"\" non traitée par le service web."
+                                js_activitys["catches"] = []
+                             else:
+                                js_activitys["comment"] += " # Operantion: \""+ data['a_operation'] +"\" non traitée par le service web."
+                                js_activitys["catches"] = []
+
+                elif data['a_table'].lower() == "discard":
+
+                    # Code 31
+                    js_activitys["setCount"], js_activitys["setSuccessStatus"], js_activitys["vesselActivity"] = setCo_setSuc_vess(0, dico_code_setSucc["2"], vers_code_31)
+                    js_activitys["schoolType"] = dico_code_sch_type["0"]
+                else:
+                    # Code 0
+                    js_activitys["setCount"], js_activitys["setSuccessStatus"], js_activitys["vesselActivity"] = setCo_setSuc_vess(None, None, vers_code_0)
+                    js_activitys["schoolType"] = None
+
+                # print(js_activitys["vesselActivity"])
+
+                js_activitys["informationSource"] = id_infoSource
+                js_activitys["dataQuality"] = id_dataQua
+                js_activitys["observedSystem"] = ["fr.ird.referential.ps.common.ObservedSystem#1239832686426#0.6606964000652922"]
+
+                ################ FPA ######################
+
+                # print("date : ", data["a_date"], " - heure : ", data["a_time"], "  FPA zone : ", data["a_eez"])
+
+                # FPA  pas touché 3 le ou None
+                # if (fpa_prece != None) and (data["a_eez"] != None) and (fpa_prece != data["a_eez"]):
+                #     # faire le changement de zone
+                #     js_activitys["previousFpaZone"], comment_temp = fpaZone_id(fpa_prece, tab_fpa, allData)
+                #     js_activitys["nextFpaZone"], comment_temp = fpaZone_id(data["a_eez"], tab_fpa, allData)
+                #     js_activitys["currentFpaZone"] = None
+
+                comment_temp = ""
+                if data["a_eez"] != None:
+                    js_activitys["previousFpaZone"] = None
+                    js_activitys["nextFpaZone"] = None
+                    js_activitys["currentFpaZone"], comment_temp = fpaZone_id(data["a_eez"], tab_fpa, allData)
+
+                else:
+                    # js_activitys["previousFpaZone"] = None
+                    # js_activitys["nextFpaZone"] = None
+                    js_activitys["currentFpaZone"] = None
+
+                    if "comment" in js_activitys.keys():
+                        js_activitys["comment"] += "# Pas de FPA zone"
+                    else:
+                        js_activitys["comment"] = "# Pas de FPA zone"
+
+                if comment_temp != None and comment_temp != "":
+                    if "comment" in js_activitys.keys():
+                        js_activitys["comment"] += str(comment_temp)
+                    else:
+                        js_activitys["comment"] = str(comment_temp)
+
+
+                ################ FIN FPA ######################
+
+                # print(js_activitys)
+
+                activite.append(js_activitys)
+                Som_thon = 0
+                fpa_prece = data["a_eez"]
+
+
+            js_routeLogbooks = js_routeLogbook(activite)
+            js_routeLogbooks["date"] = str(date) + "T00:00:00.000Z"
+
+            routes.append(js_routeLogbooks)
+
+            activite = []
+
+            nb = 0
+            nb_r += 1
+
+
+        # landing
+        landing = api_functions.data_landing(df_lands, allData)
+
+        js_contents = js_content(routes, oce, prg, landing = landing)
+
+        js_contents["vessel"] = getId(allData, "Vessel", argment="label2=" + info_bat['Navire']+ "&filters.status=enabled", nbArg=3)
+
+        js_contents["departureHarbour"] = getId(allData, "Harbour", argment="label2=" + (info_bat['Depart_Port']).upper())
+
+        js_contents["landingHarbour"] = getId(allData, "Harbour", argment="label2=" + (info_bat['Arrivee_Port']).upper())
+
+        js_contents["startDate"] = info_bat['Depart_Date'] + "T00:00:00.000Z" # "2021-03-02T00:00:00.000Z" #
+
+        js_contents["endDate"] = info_bat['Arrivee_Date'] + "T00:00:00.000Z"
+
+        js_contents["ersId"] = str(trip_id)
+
+        js_contents["captain"], js_contents["logbookDataEntryOperator"], _ = cap_obs_sea(allData, info_bat)
+
+        js_contents["observationsAcquisitionStatus"] = "fr.ird.referential.ps.common.AcquisitionStatus#1464000000000#099" # old
+        # js_contents["observationAcquisitionStatus"] = "fr.ird.referential.ps.common.AcquisitionStatus#1464000000000#099"
+
+
+        js_contents["landingAcquisitionStatus"] = "fr.ird.referential.ps.common.AcquisitionStatus#1464000000000#001"
+
+        js_contents["departureWellContentStatus"] = getId(allData, "WellContentStatus", argment="code=3")
+
+        js_contents["activitiesAcquisitionMode"] = "BY_TIME"
+
+        if info_bat['partial_landing'] == True:
+            js_contents["landingWellContentStatus"] = getId(allData, "WellContentStatus", argment="code=2")
+        else:
+            js_contents["landingWellContentStatus"] = getId(allData, "WellContentStatus", argment="code=1") # Points
+
+    except Exception as e:
+        print(e)
+        allMessages.append("Erreur lors du chargement des donnée. Veuillez vérifier l'état du VPN ou les logs de l'application.")
+
+    return allMessages, js_contents
