@@ -679,7 +679,7 @@ def search_date_into_json(json_previoustrip, date_to_look_for):
     """
 
     for content in json_previoustrip:
-        for activity in content['activityLogbook'] :
+        for activity in content['logbookActivity'] :
             start_time = activity.get('startTimeStamp')
             if start_time and start_time.startswith(date_to_look_for) :
                 return True
@@ -914,10 +914,10 @@ def create_activity_and_set(start_extraction, end_extraction,
                         })
 
         if activity.get('vesselActivity') == 'fr.ird.referential.ll.common.VesselActivity#1239832686138#0.1':
-            activity.update({'set': set, })
+            activity.update({'fishingSet': set, })
         else:
             activity.update({
-                'set': None,
+                'fishingSet': None,
                 'sample': None
             })
 
@@ -954,14 +954,14 @@ def create_trip(df_donnees_p1, MultipleActivity, allData, context):
         'ersId': None,
         'gearUseFeatures': None,
         'activityObs': None,
-        'activityLogbook': MultipleActivity,
+        'logbookActivity': MultipleActivity,
         'landing': None,
         'sample': None,
         'tripType': 'fr.ird.referential.ll.common.TripType#1464000000000#02',
         'observationMethod': None,
         'observer': 'fr.ird.referential.common.Person#1254317601353#0.6617065204572095',
         'vessel': get_vessel_topiaid(df_donnees_p1, allData),
-        'observationsProgram': None,
+        'observationProgram': None,
         'logbookProgram': context['programtopiaid'],
         'captain': get_captain_topiaid(df_donnees_p1, allData, context),
         'observationsDataEntryOperator': None,
@@ -971,10 +971,10 @@ def create_trip(df_donnees_p1, MultipleActivity, allData, context):
         'ocean': context['oceantopiaid'],
         'departureHarbour': context['depPort'],
         'landingHarbour': context['endPort'],
-        'observationsDataQuality': None,
+        'observationDataQuality': None,
         'logbookDataQuality': None,
         'generalComment': None,
-        'observationsComment': None,
+        'observationComment': None,
         'logbookComment': None,
         'species': get_target_species_topiaid(df_donnees_p1, allData, context),
         'observationsAvailability': False,

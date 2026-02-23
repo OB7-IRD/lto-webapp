@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.core.exceptions import ValidationError
 from django.forms import ModelForm
-from .models import LTOUser, ConnectionProfile
+from .models import LTOUser, ConnectionProfile, ERSConnectionProfile
 
 # Configuration de l'administration pour LTOUser
 class LTOUserAdmin(UserAdmin):
@@ -16,7 +16,7 @@ class LTOUserAdmin(UserAdmin):
         (None, {'fields': ('username', 'password')}),
         ('Personal info', {'fields': ('firstname', 'lastname', 'email')}),
         ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser', 'groups')}),
-        ('Access', {'fields': ('access_level', 'account_valid')}),
+        ('Access', {'fields': ('access_level', 'account_valid', 'ers_profile')}),
     )
     add_fieldsets = (
         (None, {
@@ -41,10 +41,32 @@ class ConnectionProfileForm(ModelForm):
 # Configuration de l'administration pour ConnectionProfile
 class ConnectionProfileAdmin(admin.ModelAdmin):
     form = ConnectionProfileForm
-    list_display = ('name', 'database_alias', 'url', 'login')
+    list_display = ('name', 'database_alias', 'url', 'login', "model_version", "referential_locale")
     search_fields = ('name', 'database_alias', 'login')
     filter_horizontal = ('users',)  # Affiche une interface pour ajouter des utilisateurs au profil
+
+
+# ERS
+class ERSConnectionProfileForm(ModelForm):
+    class Meta:
+        model = ERSConnectionProfile
+        fields = '__all__'
+
+    def clean_name_ers(self):
+        name_ers = self.cleaned_data.get('name_ers')
+        if ERSConnectionProfile.objects.filter(name_ers=name_ers).exclude(id=self.instance.id).exists():
+            raise ValidationError("Un profil ERS avec ce nom existe déjà.")
+        return name_ers
+
+
+class ERSConnectionProfileAdmin(admin.ModelAdmin):
+    list_display = ('name_ers', 'host', 'database')
+    search_fields = ('name_ers', 'host', 'database')
+
 
 # Enregistrement des modèles dans l'administration
 admin.site.register(LTOUser, LTOUserAdmin)
 admin.site.register(ConnectionProfile, ConnectionProfileAdmin)
+admin.site.register(ERSConnectionProfile, ERSConnectionProfileAdmin)
+
+

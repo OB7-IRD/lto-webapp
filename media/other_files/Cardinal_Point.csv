@@ -1,0 +1,33 @@
+Cardinal Point,Abbreviation,Azimuth Degrees
+North,N,0.00°
+North by East,NbE,11.25°
+North-Northeast,NNE,22.50°
+Northeast by North,NEbN,33.75°
+Northeast,NE,45.00°
+Northeast by East,NEbE,56.25°
+East-Northeast,ENE,67.50°
+East by North,EbN,78.75°
+East,E,90.00°
+East by South,EbS,101.25°
+East-Southeast,ESE,112.50°
+Southeast by East,SEbE,123.75°
+Southeast,SE,135.00°
+Southeast by South,SEbS,146.25°
+South-Southeast,SSE,157.50°
+South by East,SbE,168.75°
+South,S,180.00°
+South by West,SbW,191.25°
+South-Southwest,SSW,202.50°
+Southwest by South,SWbS,213.75°
+Southwest,SW,225.00°
+Southwest by West,SWbW,236.25°
+West-Southwest,WSW,247.50°
+West by South,WbS,258.75°
+West,W,270.00°
+West by North,WbN,281.25°
+West-Northwest,WNW,292.50°
+Northwest by West,NWbW,303.75°
+Northwest,NW,315.00°
+Northwest by North,NWbN,326.25°
+North-Northwest,NNW,337.50°
+North by West,NbW,348.75°

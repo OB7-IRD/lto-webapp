@@ -201,25 +201,36 @@ def presenting_previous_trip(request):
             username = request.session.get('username')
             password = request.session.get('password')
             database = request.session.get('database')
-            token = api_functions.reload_token(username, password, base_url, database)
+            client_app_version = request.session.get('client_app_version')  # Peut être None
+            model_version = request.session.get('model_version')            # Peut être None
+            referential_locale = request.session.get('referential_locale')
+
+            # Appel à reload_token avec tous les paramètres requis
+            token = api_functions.reload_token(
+                username=username,
+                password=password,
+                base_url=base_url,
+                database=database,
+                client_app_version=client_app_version,
+                model_version=model_version,
+                referential_locale=referential_locale
+            )
             request.session['token'] = token
 
-        try :
+        try:
             start_time = time.time()
             df_previous_trip = get_previous_trip_infos(request, token, df_donnees_p1, allData)
             end_time = time.time()
-                
+
             print("Temps d'exécution:", end_time - start_time, "secondes")
             print("°"*20, "presenting_previous_trip - context updated", "°"*20)
-            
+
             if df_previous_trip is not None:
                 # Conversion car ne veut pas passer un dataframe en context
                 df_previous_trip = df_previous_trip.to_dict("index")
-                context.update({'df_previous': df_previous_trip,})
-                
-                
-                        
-        except :
+                context.update({'df_previous': df_previous_trip})
+
+        except:
             context.update({'df_previous': None})
             
     request.session['context'] = context
@@ -255,7 +266,20 @@ def checking_logbook(request):
         username = request.session.get('username')
         password = request.session.get('password')
         database = request.session.get('database')
-        token  = api_functions.reload_token(username, password, base_url, database)
+        client_app_version = request.session.get('client_app_version')  # Peut être None
+        model_version = request.session.get('model_version')  # Peut être None
+        referential_locale = request.session.get('referential_locale')
+
+        # Appel à reload_token avec tous les paramètres requis
+        token = api_functions.reload_token(
+            username=username,
+            password=password,
+            base_url=base_url,
+            database=database,
+            client_app_version=client_app_version,
+            model_version=model_version,
+            referential_locale=referential_locale
+        )
         request.session['token'] = token
 
     base_url = request.session.get('base_url')
@@ -657,7 +681,20 @@ def send_logbook2observe(request):
             username = request.session.get('username')
             password = request.session.get('password')
             database = request.session.get('database')
-            token  = api_functions.reload_token(username, password, base_url, database)
+            client_app_version = request.session.get('client_app_version')  # Peut être None
+            model_version = request.session.get('model_version')            # Peut être None
+            referential_locale = request.session.get('referential_locale')
+
+            # Appel à reload_token avec tous les paramètres requis
+            token = api_functions.reload_token(
+                username=username,
+                password=password,
+                base_url=base_url,
+                database=database,
+                client_app_version=client_app_version,
+                model_version=model_version,
+                referential_locale=referential_locale
+            )
             request.session['token'] = token
             
         base_url = request.session.get('base_url')

@@ -7,7 +7,7 @@
 #######################################################
 """
 
-def js_content(tab6_routeLogbook, oce = None, program = None):
+def js_content(tab6_routeLogbook, oce = None, program = None, landing = []):
     return {
       "homeId": None, # Premiere page marée sous le nom du patron si donnée mettre  sinon None ou None #OK
       "startDate": None,
@@ -18,11 +18,13 @@ def js_content(tab6_routeLogbook, oce = None, program = None):
       "observationsComment": None,
 
       "routeLogbook": tab6_routeLogbook,
+      "landing" : landing,
 
       "vessel": None,
 
       "logbookProgram": program, # liste generer demander seine dns gearType & logbook = Ture
-      "observationsProgram" : None,
+      "observationsProgram" : None, # Old
+      # "observationProgram" : None, # 9.5
 
       "observer": None,
 
@@ -31,16 +33,19 @@ def js_content(tab6_routeLogbook, oce = None, program = None):
 
       "observationsDataEntryOperator": None,
 
-      "departureHarbour": "fr.ird.referential.common.Harbour#11#0.1",
-      "landingHarbour": "fr.ird.referential.common.Harbour#11#0.1",
+      "departureHarbour": None,
+      "landingHarbour": None,
 
       "logbookDataQuality": "fr.ird.referential.common.DataQuality#0#5",
-      "departureWellContentStatus": "fr.ird.referential.ps.logbook.WellContentStatus#1464000000000#03",
-      "landingWellContentStatus": "fr.ird.referential.ps.logbook.WellContentStatus#1464000000000#03",
+      "departureWellContentStatus": None,
+      "landingWellContentStatus": None,
+        # observationAcquisitionStatus => Obs 9.5
+      # "observationAcquisitionStatus": "fr.ird.referential.ps.common.AcquisitionStatus#1464000000000#099",
+       # observationsAcquisitionStatus => Obs old version
       "observationsAcquisitionStatus": "fr.ird.referential.ps.common.AcquisitionStatus#1464000000000#099",
       "logbookAcquisitionStatus": "fr.ird.referential.ps.common.AcquisitionStatus#1464000000000#001",
       "targetWellsSamplingAcquisitionStatus": "fr.ird.referential.ps.common.AcquisitionStatus#1464000000000#999",
-      "landingAcquisitionStatus": "fr.ird.referential.ps.common.AcquisitionStatus#1464000000000#999",
+      "landingAcquisitionStatus": None,
       "localMarketAcquisitionStatus": "fr.ird.referential.ps.common.AcquisitionStatus#1464000000000#999",
       "localMarketWellsSamplingAcquisitionStatus": "fr.ird.referential.ps.common.AcquisitionStatus#1464000000000#999",
       "localMarketSurveySamplingAcquisitionStatus": "fr.ird.referential.ps.common.AcquisitionStatus#1464000000000#999",
@@ -133,10 +138,10 @@ def js_activity2(tab4_catches, tab3_floatingObject = [], sommeThon = None):
     "positionCorrected": False,
     "number": None , #incrementé
     "setCount": None , #si activité de pêche 1 sinon 0 en fonction de vesselActivity
-    "setSuccessStatus":"fr.ird.referential.ps.logbook.SetSuccessStatus#1464000000000#02", #######
+    "setSuccessStatus":None, #######
     "seaSurfaceTemperature": None,
     "windDirection": None,
-    "vesselActivity": "fr.ird.referential.ps.common.VesselActivity#1239832675368#0.976590514005213", #cherché log partie calé catch + objet = peche code 6 ,objet uniq = code 13 et code 0 pour la premiere et derniere ligne et code 99 par defaut si on a rien
+    "vesselActivity": None, #cherché log partie calé catch + objet = peche code 6 ,objet uniq = code 13 et code 0 pour la premiere et derniere ligne et code 99 par defaut si on a rien
     "totalWeight": sommeThon, #somme des thonage des captures
     "catches": tab4_catches,
     "floatingObject": tab3_floatingObject,
@@ -151,3 +156,16 @@ def js_routeLogbook(tab5_activity):
     "date": None, #jour de peche
     "activity": tab5_activity
   }
+
+
+def js_landing(species_id = None, weightCategory_id = None, weight = None):
+    return {
+        "homeId": None,
+        "date": None,
+        "species": species_id,
+        "weightCategory": weightCategory_id,
+        "destination": "fr.ird.referential.ps.landing.Destination#1464000000000#02", #
+        "fate": "fr.ird.referential.ps.landing.Fate#1464000000000#02", #
+        "fateVessel": None,
+        "weight": weight
+      }

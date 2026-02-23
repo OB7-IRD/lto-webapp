@@ -2,6 +2,19 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.conf import settings
 
+# ERS Profils
+class ERSConnectionProfile(models.Model):
+    name_ers = models.CharField(max_length=128, unique=True)
+
+    database = models.CharField(max_length=64)
+    user = models.CharField(max_length=64)
+    password = models.CharField(max_length=64)
+    host = models.CharField(max_length=128)
+    port = models.CharField(max_length=16)
+
+    def __str__(self):
+        return f"{self.name_ers} ({self.host}:{self.port}/{self.database})"
+
 
 # Modèle pour les utilisateurs du site
 class LTOUser(AbstractUser):
@@ -17,18 +30,42 @@ class LTOUser(AbstractUser):
         default='user'
     )
 
+    ers_profile = models.ForeignKey(
+        ERSConnectionProfile,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="users"
+    )
+
     def __str__(self):
         return f"{self.firstname} {self.lastname} - {self.access_level}"
 
 
 # Modèle pour les profils de connexion créés par l'administrateur
 class ConnectionProfile(models.Model):
-    name = models.CharField(max_length=128, unique=True)  # Champ unique
+    REFERENTIAL_LOCALES = [
+        ("fr_FR", "Français"),
+        ("en_GB", "Anglais"),
+        ("es_ES", "Espagnol"),
+    ]
+
+    name = models.CharField(max_length=128, unique=True)
     url = models.CharField(max_length=512)
     login = models.CharField(max_length=64)
-    password = models.CharField(max_length=64)  # Stocké en clair pour une utilisation dans la page d'administration
+    password = models.CharField(max_length=64)
     database_alias = models.CharField(max_length=64)
-    users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name="connection_profiles", blank=True)  # vide au départ
+    client_app_version = models.CharField(max_length=16, blank=True, null=True)  # Nouveau champ
+    model_version = models.CharField(max_length=16, blank=True, null=True)       # Nouveau champ
+    referential_locale = models.CharField(
+        max_length=5,
+        choices=REFERENTIAL_LOCALES,
+        default="fr_FR"
+    )  # Ancien champ, amélioré
+
+    users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name="connection_profiles", blank=True)
 
     def __str__(self):
-        return f"{self.name} - {self.database_alias}"  # Affiche un nom plus lisible
+        return f"{self.name} - {self.database_alias} - {self.model_version}"  # Affiche un nom plus lisible
+
+
