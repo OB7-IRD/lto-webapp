@@ -141,8 +141,11 @@ def extract_gear_info(df_donnees, version):
     df_gear.iloc[:, 0] = df_gear.iloc[:, 0].str.replace(':', '').str.strip()
 
     # Nettoyer la colonne 'Value' en appliquant strip() si l'élément correspond à une chaîne de caractères
-    df_gear.iloc[:, 1] = df_gear.iloc[:, 1].apply(lambda x: x.strip() if isinstance(x, str) else x)
-
+    if df_gear.shape[1] != 1:
+        df_gear.iloc[:, 1] = df_gear.iloc[:, 1].apply(lambda x: x.strip() if isinstance(x, str) else x)
+    else:
+        df_gear['Value'] = None
+        
     # Renommer les colonnes
     df_gear.columns = ['Logbook_name', 'Value']
 
