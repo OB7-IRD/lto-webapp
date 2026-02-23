@@ -538,7 +538,13 @@ def logbook_del_files(request):
 
         if len(logbooks_files) > 0:
             for file in logbooks_files:
-                os.remove("media/logbooks/"+ file)
+                # os.remove("media/logbooks/"+ file)
+                file_path = os.path.join("media/logbooks", file)
+                try:
+                    os.remove(file_path)
+                    print(f"Supprimé : {file}")
+                except PermissionError:
+                    print(f"Impossible de supprimer {file} : fichier utilisé par un autre processus")
 
             print("Suppression des logbook trouvés")
         else:

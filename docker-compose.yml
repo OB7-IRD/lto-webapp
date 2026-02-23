@@ -9,6 +9,7 @@ services:
       - /var/www/lto-webapp/static:/var/www/lto-webapp/static
     depends_on:
       - web
+    restart: always
   web:
     image: ghcr.io/ob7-ird/lto-webapp:main
     command: bash -c "python manage.py compilemessages && python manage.py collectstatic --no-input && python manage.py makemigrations && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
@@ -19,4 +20,5 @@ services:
     #   - "8000:8000"
     expose:
       - "8000"
+    restart: always
       
