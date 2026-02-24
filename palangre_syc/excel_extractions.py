@@ -230,7 +230,11 @@ def extract_line_material_v26(df_donnees):
     df_line.iloc[:, 0] = df_line.iloc[:, 0].str.replace(':', '').str.strip()
 
     # Nettoyer la colonne 'Value' en appliquant strip() si l'élément correspond à une chaîne de caractères
-    df_line.iloc[:, 1] = df_line.iloc[:, 1].apply(lambda x: x.strip() if isinstance(x, str) else x)
+    if df_line.shape[1] != 1:
+        df_line.iloc[:, 1] = df_line.iloc[:, 1].apply(lambda x: x.strip() if isinstance(x, str) else x)
+    else:
+        df_line['Value'] = None
+        
     # Renommer les colonnes
     df_line.columns = ['Logbook_name', 'Value']
 
