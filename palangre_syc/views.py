@@ -334,9 +334,14 @@ def checking_logbook(request):
             
             # df_ref_material = excel_extractions.extract_material_ref(df_donnees_p4)
 
-
+        if len(df_time['VesselActivity_topiaId'].unique()) == 1 and df_time['VesselActivity_topiaId'].unique()[0] == "fr.ird.referential.ll.common.VesselActivity#666#04":
+            print("outside all month")
+            df_position = df_position.iloc[:len(df_position)]
         # on ajuste le dataframe pour que ca s'arrête à la fin du mois
-        df_position = common_functions.remove_if_nul(df_position, 'Latitude')
+        elif "fr.ird.referential.ll.common.VesselActivity#666#04" in df_time['VesselActivity_topiaId'].unique():
+            df_position = df_position.iloc[:len(df_position)]
+        else : 
+            df_position = common_functions.remove_if_nul(df_position, 'Latitude')
 
         if len(df_position) != len(df_time):
             df_time_month = df_time[0:len(df_position)]
@@ -421,8 +426,18 @@ def checking_logbook(request):
             
             #############################
             # messages d'erreurs
-            if isinstance(df_gear, tuple):
-                messages.error(request, _("Les informations concernant la longueur du matériel de pêche doivent être des entiers."))
+            if ('VesselActivity' in df_time.columns and
+                df_time['VesselActivity_topiaId'].astype(str).ne("fr.ird.referential.ll.common.VesselActivity#666#04").any()):
+                if isinstance(df_gear, tuple):
+                    messages.error(request, _("Les informations concernant la longueur du matériel de pêche doivent être des entiers."))
+                    probleme = True
+            #############################
+            
+            #############################
+            # messages d'erreurs
+            if ('VesselActivity' in df_time.columns and
+                df_time['VesselActivity_topiaId'].astype(str).eq("fr.ird.referential.ll.common.VesselActivity#666#07").any()):
+                messages.error(request, _("La valeur 'Unknown' est détectée dans Vessel activity - Vérifier que les 'Fishing activity' sont bien saisies."))
                 probleme = True
             #############################
             

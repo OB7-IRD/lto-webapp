@@ -21,8 +21,26 @@ $(document).ready(function(){
     var maxFile = 1;
     var group_file   = '.xlsx, .xlsm';
     var myDropzone = null;
+    var group_file   = '.xlsx, .xlsm';
+    var myDropzone = null;
 
     function dropZone(domaine){
+        maxFile = 1;
+        group_file   = '.xlsx, .xlsm';
+
+        // const myDropzone = new Dropzone("#my-dropzone", {
+        //     url: "upload",
+        //     maxFiles: maxFile,
+        //     maxFilesize: 15,
+        //     acceptedFiles: group_file,
+        //     addRemoveLinks: true
+        // });
+
+        if (myDropzone) {
+            myDropzone.removeAllFiles(true);
+            myDropzone.options.maxFiles = 1;
+            myDropzone.options.acceptedFiles = '.xlsx, .xlsm';
+            return;
         maxFile = 1;
         group_file   = '.xlsx, .xlsm';
 
@@ -42,13 +60,51 @@ $(document).ready(function(){
         }
 
         myDropzone = new Dropzone("#my-dropzone", {
+        myDropzone = new Dropzone("#my-dropzone", {
             url: "upload",
+            maxFiles: 1,
             maxFiles: 1,
             maxFilesize: 15,
             acceptedFiles: '.xlsx, .xlsm',
             addRemoveLinks: true
+            acceptedFiles: '.xlsx, .xlsm',
+            addRemoveLinks: true
         });
     };
+
+    //     function initDropzone() {
+    //     if (myDropzone) {
+    //         myDropzone.removeAllFiles(true);
+    //         return;
+    //     }
+
+    //     myDropzone = new Dropzone(SELECTORS.dropzone, {
+    //         url: "upload",
+    //         maxFiles: 1,
+    //         maxFilesize: 15,
+    //         acceptedFiles: ".xlsx, .xlsm",
+    //         addRemoveLinks: true
+    //     });
+    // }
+
+
+
+    function updateTyDocSelect(docs, selected = null) {
+        const $select = $("#apply select[name='ty_doc']");
+
+        // On enlève UNIQUEMENT ce que le JS a ajouté
+        $select.find('option.dyn-tydoc').remove();
+
+        let html = '';
+        docs.forEach(doc => {
+            html += `<option class="dyn-tydoc" value="${doc.id}" ${
+                selected && selected === doc.id ? 'selected' : ''
+            }>${doc.label}</option>`;
+        });
+
+        $select.append(html);
+    }
+
 
     //     function initDropzone() {
     //     if (myDropzone) {
@@ -100,6 +156,39 @@ $(document).ready(function(){
                 $("#domaine").val(ll_context.domaine);
             }
             if (ll_context.domaine == "palangre") {
+                // console.log(ll_context.domaine)
+                // $.ajax({
+                //     url: '/palangre',
+                //     type: 'GET',
+                //     dataType: "json",
+                //     success: function(response) {
+                //         var option = '';
+                //         for (var i = 0; i < response.dataPro.id.length; i++) {
+                //             if (!ll_context.programme) {
+                //                 option += '<option value="' + response.dataPro.id[i] + '">' + response.dataPro.value[i] + '</option>';
+                //             } else {
+                //                 if (ll_context.programme == response.dataPro.id[i]) {
+                //                     $("#apply select[name='ty_doc']").find('.after').after('<option selected value="ll">Logbook SFA industriel</option>');
+                //                     option += '<option selected value="' + response.dataPro.id[i] + '">' + response.dataPro.value[i] + '</option>';
+                //                 } else {
+                //                     option += '<option value="' + response.dataPro.id[i] + '">' + response.dataPro.value[i] + '</option>';
+                //                 }
+                //             }
+                //         }
+                //         $("#apply select[name='programme']").find('.after').after(option);
+                //     },
+                //     error: function(response) {
+                //         console.log('Erreur lors de la requête AJAX');
+                //     }
+                // });
+
+                updateTyDocSelect(
+                    [
+                        { id: "ll_17.6", label: "SFA logbook version 17.6" },
+                        { id: "ll_26",   label: "SFA logbook version 26" }
+                    ],
+                    ll_context.ty_doc
+                );
                 // console.log(ll_context.domaine)
                 // $.ajax({
                 //     url: '/palangre',
@@ -188,6 +277,8 @@ $(document).ready(function(){
 
         updateTyDocSelect([]);
 
+        updateTyDocSelect([]);
+
         if ($this.val() == "senne") {
 
             $("#apply select[name='ty_doc']").find('.after').after('<option class="orth" value="ps">Logbook ORTHONGEL v21</option>');
@@ -215,6 +306,13 @@ $(document).ready(function(){
 
         }else if ($this.val() == "palangre") {
 
+            // $("#apply select[name='ty_doc']").find('.after').after('<option value="ll">Logbook  SFA industriel</option>');
+            
+            updateTyDocSelect([
+                { id: "ll_17.6", label: "SFA logbook version 17.6" },
+                { id: "ll_26",   label: "SFA logbook version 26" }
+            ]);
+            
             // $("#apply select[name='ty_doc']").find('.after').after('<option value="ll">Logbook  SFA industriel</option>');
             
             updateTyDocSelect([
@@ -280,6 +378,7 @@ $(document).ready(function(){
                 });
 
                 // if ($("#apply select[name='ty_doc']").val() == "ps"){
+                // if ($("#apply select[name='ty_doc']").val() == "ps"){
                     $.ajax({
                         type: 'POST',
                         url: $("#apply").attr('action'),
@@ -303,6 +402,7 @@ $(document).ready(function(){
 
                     var domaine = $("#domaine").val();
                     dropZone(domaine);
+                // }
                 // }
 
                 // else if ($("#apply select[name='ty_doc']").val() == "ps2"){

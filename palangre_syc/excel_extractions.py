@@ -141,8 +141,11 @@ def extract_gear_info(df_donnees, version):
     df_gear.iloc[:, 0] = df_gear.iloc[:, 0].str.replace(':', '').str.strip()
 
     # Nettoyer la colonne 'Value' en appliquant strip() si l'élément correspond à une chaîne de caractères
-    df_gear.iloc[:, 1] = df_gear.iloc[:, 1].apply(lambda x: x.strip() if isinstance(x, str) else x)
-
+    if df_gear.shape[1] != 1:
+        df_gear.iloc[:, 1] = df_gear.iloc[:, 1].apply(lambda x: x.strip() if isinstance(x, str) else x)
+    else:
+        df_gear['Value'] = None
+        
     # Renommer les colonnes
     df_gear.columns = ['Logbook_name', 'Value']
 
@@ -227,7 +230,11 @@ def extract_line_material_v26(df_donnees):
     df_line.iloc[:, 0] = df_line.iloc[:, 0].str.replace(':', '').str.strip()
 
     # Nettoyer la colonne 'Value' en appliquant strip() si l'élément correspond à une chaîne de caractères
-    df_line.iloc[:, 1] = df_line.iloc[:, 1].apply(lambda x: x.strip() if isinstance(x, str) else x)
+    if df_line.shape[1] != 1:
+        df_line.iloc[:, 1] = df_line.iloc[:, 1].apply(lambda x: x.strip() if isinstance(x, str) else x)
+    else:
+        df_line['Value'] = None
+        
     # Renommer les colonnes
     df_line.columns = ['Logbook_name', 'Value']
 
@@ -448,27 +455,30 @@ def get_vessel_activity_topiaid_v26(df_donnees, allData):
     Returns:
         topiaID de l'activité détectée
     """
+    if pd.isna(df_donnees):
+        # If the vessel activity is not filled
+        vessel_activity =  "fr.ird.referential.ll.common.VesselActivity#666#07"
+    else :
+        data_clean = df_donnees.strip().lower()
     
-    data_clean = df_donnees.strip().lower()
-    
-    if re.findall("cru", data_clean):
-        vessel_activity = "fr.ird.referential.ll.common.VesselActivity#666#01"
+        if re.findall("cru", data_clean):
+            vessel_activity = "fr.ird.referential.ll.common.VesselActivity#666#01"
+            
+        elif re.findall("fis", data_clean): 
+            vessel_activity = "fr.ird.referential.ll.common.VesselActivity#1239832686138#0.1"
+
+        elif re.findall("out", data_clean) or re.findall("ose", data_clean): 
+            vessel_activity = "fr.ird.referential.ll.common.VesselActivity#666#04"
+
+        elif re.findall("por", data_clean):
+            vessel_activity = "fr.ird.referential.ll.common.VesselActivity#666#03"
+
+        elif re.findall("tra", data_clean):
+            vessel_activity = "fr.ird.referential.ll.common.VesselActivity#666#06"
         
-    elif re.findall("fis", data_clean): 
-        vessel_activity = "fr.ird.referential.ll.common.VesselActivity#1239832686138#0.1"
-
-    elif re.findall("out", data_clean) or re.findall("ose", data_clean): 
-        vessel_activity = "fr.ird.referential.ll.common.VesselActivity#666#04"
-
-    elif re.findall("por", data_clean):
-        vessel_activity = "fr.ird.referential.ll.common.VesselActivity#666#03"
-
-    elif re.findall("tra", data_clean):
-        vessel_activity = "fr.ird.referential.ll.common.VesselActivity#666#06"
-    
-    else:
-        # OTHER
-        vessel_activity = "fr.ird.referential.ll.common.VesselActivity#1239832686138#0.2"
+        else:
+            # OTHER
+            vessel_activity = "fr.ird.referential.ll.common.VesselActivity#1239832686138#0.2"
 
     vessel_activities = allData["VesselActivity"]["longline"]
 
