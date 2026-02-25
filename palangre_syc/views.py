@@ -342,6 +342,12 @@ def checking_logbook(request):
             df_position = df_position.iloc[:len(df_position)]
         else : 
             df_position = common_functions.remove_if_nul(df_position, 'Latitude')
+        
+        # Si on n'a plus d'activité a la fin de df (mais elles sont id comme "Unknonw")
+        if "fr.ird.referential.ll.common.VesselActivity#666#07" in df_time['VesselActivity_topiaId'].unique():
+            # Tant que la dernière ligne est Unknown
+            while (not df_time.empty and str(df_time.iloc[-1]['VesselActivity_topiaId']) == "fr.ird.referential.ll.common.VesselActivity#666#07"):
+                df_time = df_time.iloc[:-1]
 
         if len(df_position) != len(df_time):
             df_time_month = df_time[0:len(df_position)]
@@ -487,10 +493,9 @@ def checking_logbook(request):
                 # On récupère la date du jour 1 au bon format
                 if df_time.loc[0, 'VesselActivity'] == "fr.ird.referential.ll.common.VesselActivity#1239832686138#0.1":
                     # Si c'est une fishing operation
-                    date = json_construction.create_starttimestamp(df_donnees_p1, allData, 0, True)
+                    date = json_construction.create_starttimestamp(df_donnees_p1, allData, version = apply_conf['ty_doc'], index_day = 0, need_hour = True)
                 else:
-                    date = json_construction.create_starttimestamp(df_donnees_p1, allData, 0, False)
-
+                    date = json_construction.create_starttimestamp(df_donnees_p1, allData, version = apply_conf['ty_doc'], index_day = 0, need_hour = False)
 
                 #############################
                 # messages d'erreurs
@@ -794,8 +799,15 @@ def send_logbook2observe(request):
                     start_extraction, end_extraction, context, 
                     allData,
                     df_donnees_p1, df_donnees_p2,
-                    df_donnees_p3=None, df_donnees_p4=None
-                    )
+                    df_donnees_p3=None, df_donnees_p4=None)
+                
+            elif context['version'] == 'll_26':
+                MultipleActivity = json_construction.create_activity_and_set(
+                    start_extraction, end_extraction, context, 
+                    allData,
+                    df_donnees_p1, df_donnees_p2,
+                    df_donnees_p3=df_donnees_p3, 
+                    df_donnees_p4=df_donnees_p4)
 
             print("="*80)
             print("Update Trip")

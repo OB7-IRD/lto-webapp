@@ -72,7 +72,7 @@ def extract_cruise_info(df_donnees, version):
 
     # Supprimer les espaces supplémentaires dans la colonne 'Logbook_name'
     df_cruise['Logbook_name'] = df_cruise['Logbook_name'].str.strip()
-    
+
     return df_cruise
 
 def extract_report_info(df_donnees, version):
@@ -647,6 +647,18 @@ def extract_bycatch_p2_v17(df_donnees):
     df_bycatch.reset_index(drop=True, inplace=True)
     return df_bycatch
 
+
+
+def clean_value(x):
+    if x is None:
+        return None
+    if isinstance(x, pd.Series):
+        return None if x.isna().all() or (x == 0).all() else x
+    return None if pd.isna(x) or x == '' or x == 0 else x
+
+
+
+
 def extract_catches_v26(df_donnees, version):
     
     if version == "ll_17.6":
@@ -667,7 +679,7 @@ def extract_catches_v26(df_donnees, version):
         for i in range(0, len(cols), 2):
             col_no = cols[i]
             col_kg = cols[i + 1]
-
+            print("°"*10, col_no, "//", col_kg, "°"*10)
             # récupérer le code espèce (SBF, ALB, BET…)
             species_match = re.search(r'\(([^)]+)\)', col_no)
             species_code = species_match.group(1) if species_match else None
@@ -676,14 +688,29 @@ def extract_catches_v26(df_donnees, version):
             # utf_8 = col_kg.encode('utf-8')
             # specie_process = re.search(r'[^a-zA-Z]', utf_8)
             process_match = re.search(r'\b([A-Z]{2})\b\s*$', col_kg)
-            specie_process = process_match.group(1) if process_match else None
-
+            specie_process = process_match.group(1).strip() if process_match else None
+            print(">>"+ specie_process+ "<<")
+            print("row ::: ", type(row), "::: fin row")
             count = row[col_no]
-            kg = row[col_kg]
-
+            kg = row[i + 1]
+            print("count :: ", count) 
+            print("kg ::: ", kg)
+            
+            # if pd.isna(count):
+            #     print("coucou na")
+            #     count = None
             # normalisation des vides
-            count = None if pd.isna(count) or count == '' or count == 0 else count
-            kg = None if pd.isna(kg) or kg == '' or kg == 0 else kg
+            # count = None if pd.isna(count) or count == '' or count == 0 else count
+            
+            # if count is None or pd.isna(count) or (count == 0).all() or count == '':
+            #     count = None
+            # if pd.isna(kg).all():
+            #     print("coucou na kg")
+            #     kg = None
+            kg = clean_value(kg)
+            count = clean_value(count)
+            # kg = None if pd.isna(kg).all() or kg.all() == '' or kg.all() == 0 else kg
+            # kg = None if pd.isna(kg) or kg == '' or kg == 0 else kg
 
             # garder uniquement si au moins un est renseigné
             if count is None and kg is None:
@@ -799,7 +826,10 @@ def extract_bycatch_page3_v26(df_donnees, df_ref):
     df_bycatches = df_bycatches.iloc[4:].reset_index(drop=True)
 
     df_ref_bycatch = ref_table_bycatch(df_ref)
-    df_ref_bycatch = df_ref_bycatch.rename(columns={'CODE 代碼': 'CODE', 'NAME_EN 英文名': 'NAME_EN'})
+    if 'CODE 代碼' in df_ref_bycatch.columns and 'NAME_EN 英文名' in df_ref_bycatch.columns:
+        df_ref_bycatch = df_ref_bycatch.rename(columns={'CODE 代碼': 'CODE', 'NAME_EN 英文名': 'NAME_EN'})
+    else:
+        df_ref_bycatch.columns = df_ref_bycatch.columns.str.strip()
     df_ref_bycatch['NAME_EN'] = df_ref_bycatch['NAME_EN'].str.strip()
 
     bycatches = []
@@ -1009,7 +1039,7 @@ def extract_marineturtles_ref(df_donnees):
     df_marineturtles = df_donnees.iloc[43:51, 1:4].copy()
     # La première ligne de df_seabirds devient le nom des colonnes
     df_marineturtles.columns = df_marineturtles.iloc[0]
-
+    df_marineturtles.columns = df_marineturtles.columns.str.strip()
     # Supprimer la première ligne 
     df_marineturtles = df_marineturtles[1:].reset_index(drop=True)
 
@@ -1028,7 +1058,7 @@ def extract_rays_ref(df_donnees):
     df_rays = df_donnees.iloc[53:70, 1:4].copy()
     # La première ligne de df_rays devient le nom des colonnes
     df_rays.columns = df_rays.iloc[0]
-
+    df_rays.columns = df_rays.columns.str.strip()
     # Supprimer la première ligne 
     df_rays = df_rays[1:].reset_index(drop=True)
 
@@ -1047,7 +1077,7 @@ def extract_cetaceans_ref(df_donnees):
     df_cetaceans = df_donnees.iloc[36:82, 5:8].copy()
     # La première ligne de df_cetaceans devient le nom des colonnes
     df_cetaceans.columns = df_cetaceans.iloc[0]
-
+    df_cetaceans.columns = df_cetaceans.columns.str.strip()
     # Supprimer la première ligne 
     df_cetaceans = df_cetaceans[1:].reset_index(drop=True)
 
@@ -1069,7 +1099,10 @@ def extract_baits_ref(df_donnees):
 
     # Supprimer la première ligne 
     df_ref_baits = df_ref_baits[1:].reset_index(drop=True)
-    df_ref_baits = df_ref_baits.rename(columns={'CODE 代碼': 'CODE'})
+    if 'CODE 代碼' in df_ref_baits.columns:
+        df_ref_baits = df_ref_baits.rename(columns={'CODE 代碼': 'CODE'})
+    else:
+        df_ref_baits.columns = df_ref_baits.columns.str.strip()
     
     return df_ref_baits
 
@@ -1108,7 +1141,10 @@ def extract_material_ref(df_donnees):
 
     # Supprimer la première ligne 
     df_ref_materials = df_ref_materials[1:].reset_index(drop=True)
-    df_ref_materials = df_ref_materials.rename(columns={'CODE 代碼': 'CODE'})
+    if 'CODE 代碼' in df_ref_materials.columns:
+        df_ref_materials = df_ref_materials.rename(columns={'CODE 代碼': 'CODE'})
+    else:
+        df_ref_materials.columns = df_ref_materials.columns.str.strip()
     df_ref_materials['CODE'] = df_ref_materials['CODE'].str.strip()
     
     mappingLine_v26 = {

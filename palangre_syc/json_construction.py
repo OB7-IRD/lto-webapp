@@ -106,7 +106,6 @@ def get_baittype_topiaid(row, allData, version):
 
     bait_logbook = row[colnames]
     if bait_logbook == None : 
-        print("dans la boucle")
         return None
     else :
         for baittype in baittypes:
@@ -584,11 +583,6 @@ def create_catches_dict(dict, allData):
     """
     MultipleCatches = []
 
-    # print(len(dict))
-    # for i in range(len(dict)):
-
-    #     fishes_row = dict[i]  # ta sortie dict par ligne
-
     for fish in dict:
 
         species_code = fish["species"]
@@ -646,7 +640,7 @@ def create_starttimestamp(df_donnees_p1, allData, version, index_day, need_hour=
         time_ = '00:00:00'
 
     date_formated = '{}-{:02}-{:02}T{}.000Z'.format(
-        palangre_syc.excel_extractions.extract_logbook_date(df_donnees_p1, version=version).loc[palangre_syc.excel_extractions.extract_logbook_date(
+        palangre_syc.excel_extractions.extract_logbook_date(df_donnees = df_donnees_p1, version=version).loc[palangre_syc.excel_extractions.extract_logbook_date(
             df_donnees_p1, version=version)['Logbook_name'] == 'Year', 'Value'].values[0],
         palangre_syc.excel_extractions.extract_logbook_date(df_donnees_p1, version=version).loc[palangre_syc.excel_extractions.extract_logbook_date(
             df_donnees_p1, version=version)['Logbook_name'] == 'Month', 'Value'].values[0],
@@ -679,7 +673,7 @@ def search_date_into_json(json_previoustrip, date_to_look_for):
     """
 
     for content in json_previoustrip:
-        for activity in content['logbookActivity'] :
+        for activity in content['activityLogbook'] :
             start_time = activity.get('startTimeStamp')
             if start_time and start_time.startswith(date_to_look_for) :
                 return True
@@ -725,10 +719,12 @@ def create_activity_and_set(start_extraction, end_extraction,
             
         # df_ref_linematerial = info de référence fournies par le logbook avec le code de ref d'observe
         df_ref_linematerial = palangre_syc.excel_extractions.extract_material_ref(df_donnees_p4)
-        df_ref_linematerial['Name'] = api_traitement.common_functions.remove_spec_char_from_list(df_ref_linematerial['Name 名稱'].tolist())
+        if 'Name 名稱' in df_ref_linematerial.columns:
+            df_ref_linematerial['Name'] = api_traitement.common_functions.remove_spec_char_from_list(df_ref_linematerial['Name 名稱'].tolist())
+        else:
+            df_ref_linematerial.columns = df_ref_linematerial.columns.str.strip()
         df_ref_linematerial['Name'] = df_ref_linematerial['Name'].str.strip()
-        
-        
+
         # On associe le code de ref 
         linematerial_datatable = df_line.merge(
             df_ref_linematerial[['CODE', 'Code_v26', 'Name']],
@@ -847,7 +843,7 @@ def create_activity_and_set(start_extraction, end_extraction,
                 'topType':  create_lineType_v26(linematerial_datatable.loc[linematerial_datatable["Logbook_name"] == "Branchline topline", "Code_v26"].values[0], allData),
                 'tracelineType':  create_lineType_v26(linematerial_datatable.loc[linematerial_datatable["Logbook_name"] == "Branchline traceline", "Code_v26"].values[0], allData),
             }]
-            # print(bait_logbook[i])
+
             set.update({'baitsComposition': create_bait_composition(bait_logbook.iloc[i][['Bait']], allData, context['version']),
                         # 'baitsComposition': create_bait_composition(bait_datatable.iloc[i][['Bait', 'CODE']], allData, context['version']),
                         'floatlinesComposition': floatlines_composition,
@@ -940,10 +936,10 @@ def create_activity_and_set(start_extraction, end_extraction,
                         })
 
         if activity.get('vesselActivity') == 'fr.ird.referential.ll.common.VesselActivity#1239832686138#0.1':
-            activity.update({'fishingSet': set, })
+            activity.update({'set': set, })
         else:
             activity.update({
-                'fishingSet': None,
+                'set': None,
                 'sample': None
             })
 
@@ -980,7 +976,7 @@ def create_trip(df_donnees_p1, MultipleActivity, allData, context):
         'ersId': None,
         'gearUseFeatures': None,
         'activityObs': None,
-        'logbookActivity': MultipleActivity,
+        'activityLogbook': MultipleActivity,
         'landing': None,
         'sample': None,
         'tripType': 'fr.ird.referential.ll.common.TripType#1464000000000#02',
