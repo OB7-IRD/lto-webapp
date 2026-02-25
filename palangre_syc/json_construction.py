@@ -76,7 +76,8 @@ def get_vessel_topiaid(df_donnees_p1, allData):
     vessel_logbook = palangre_syc.excel_extractions.extract_vessel_info(df_donnees_p1).loc[palangre_syc.excel_extractions.extract_vessel_info(df_donnees_p1)['Logbook_name'] == 'Official Number', 'Value'].values[0]
     enabled_topiaids = [
         vessel["topiaId"] for vessel in allData["Vessel"]
-        if 'nationalId' in vessel and vessel["nationalId"] == vessel_logbook and vessel["status"] == "enabled" and vessel["flagCountry"] == "fr.ird.referential.common.Country#1239832675593#0.3601938043845213"
+        if 'nationalId' in vessel and vessel["nationalId"] == vessel_logbook and vessel["status"] == "enabled" 
+        # and vessel["flagCountry"] == "fr.ird.referential.common.Country#1239832675593#0.3601938043845213"
         ]
     if len(enabled_topiaids) > 0: 
         return enabled_topiaids[0]
@@ -104,7 +105,6 @@ def get_baittype_topiaid(row, allData, version):
         join_on_colnames = 'code'
 
     bait_logbook = row[colnames]
-    print(bait_logbook)
     if bait_logbook == None : 
         print("dans la boucle")
         return None
@@ -793,8 +793,17 @@ def create_activity_and_set(start_extraction, end_extraction,
             totalLineLength_colnames = "Set Line length m"
         elif context['version'] == "ll_26":
             totalLineLength_colnames = 'Main Line length m'
-            
-        set.update({
+        
+        
+        if palangre_syc.excel_extractions.extract_time(df_donnees_p1, allData, version=context['version']).loc[i, 'VesselActivity_topiaId'] == 'fr.ird.referential.ll.common.VesselActivity#666#04':
+            set.update({
+                    # En fait "totalLineLength" serait de plusierus km, ce qui ne correspond pas avec le champ "Set Line length m"
+                    'totalLineLength' : None,
+                    'basketLineLength': None,
+                    'lengthBetweenBranchlines':None
+                    })   
+        else :    
+            set.update({
                     # En fait "totalLineLength" serait de plusierus km, ce qui ne correspond pas avec le champ "Set Line length m"
                     'totalLineLength' : palangre_syc.excel_extractions.extract_gear_info(df_donnees_p1, version=context['version']).loc[palangre_syc.excel_extractions.extract_gear_info(df_donnees_p1, version=context['version'])['Logbook_name'] == totalLineLength_colnames, 'Value'].values[0],
                     'basketLineLength': None,
@@ -882,22 +891,39 @@ def create_activity_and_set(start_extraction, end_extraction,
 
         activity = {
             'homeId': None,
-            'comment': None, }
-        if palangre_syc.excel_extractions.extract_time(df_donnees_p1, allData, version=context['version']).loc[i, 'VesselActivity'] == 'fr.ird.referential.ll.common.VesselActivity#1239832686138#0.1':
-            activity.update({'startTimeStamp': create_starttimestamp(
-                df_donnees_p1, allData, version=context['version'], index_day=i, need_hour=True)})
+            'comment': None, 
+            'endTimeStamp': None,
+            'wind': None,
+            'windDirection': None,
+            'currentSpeed': None,
+            'currentDirection': None,}
+        
+        # If Outside EEZ
+        if palangre_syc.excel_extractions.extract_time(df_donnees_p1, allData, version=context['version']).loc[i, 'VesselActivity_topiaId'] == 'fr.ird.referential.ll.common.VesselActivity#666#04':
+            activity.update({'startTimeStamp': create_starttimestamp(df_donnees_p1, allData, version=context['version'], index_day=i, need_hour=False),
+                            'latitude': None,
+                            'longitude': None,
+                            'seaSurfaceTemperature': None,})
+        
+        # If Fishing operation
+        elif palangre_syc.excel_extractions.extract_time(df_donnees_p1, allData, version=context['version']).loc[i, 'VesselActivity_topiaId'] == 'fr.ird.referential.ll.common.VesselActivity#1239832686138#0.1':
+            activity.update({'startTimeStamp': create_starttimestamp(df_donnees_p1, allData, version=context['version'], index_day=i, need_hour=True),
+                            'latitude': palangre_syc.excel_extractions.extract_positions(df_donnees_p1, version=context['version']).loc[i, 'Latitude'],
+                            'longitude': palangre_syc.excel_extractions.extract_positions(df_donnees_p1, version=context['version']).loc[i, 'Longitude'],
+                            'seaSurfaceTemperature': palangre_syc.excel_extractions.extract_temperature(df_donnees_p1, version=context['version']).loc[i, 'Temperature'],
+                            })
         else:
-            activity.update({'startTimeStamp': create_starttimestamp(df_donnees_p1, allData, version=context['version'], index_day=i, need_hour=False)                             # 'startTimeStamp' : '2022-07-26T00:00:00.000Z'
-                            , })
+            activity.update({'startTimeStamp': create_starttimestamp(df_donnees_p1, allData, version=context['version'], index_day=i, need_hour=False), #'startTimeStamp' : '2022-07-26T00:00:00.000Z'
+                            'latitude': palangre_syc.excel_extractions.extract_positions(df_donnees_p1, version=context['version']).loc[i, 'Latitude'],
+                            'longitude': palangre_syc.excel_extractions.extract_positions(df_donnees_p1, version=context['version']).loc[i, 'Longitude'],
+                            'seaSurfaceTemperature': palangre_syc.excel_extractions.extract_temperature(df_donnees_p1, version=context['version']).loc[i, 'Temperature'],
+                            })
 
-        activity.update({'endTimeStamp': None,
-                        'latitude': palangre_syc.excel_extractions.extract_positions(df_donnees_p1, version=context['version']).loc[i, 'Latitude'],
-                        'longitude': palangre_syc.excel_extractions.extract_positions(df_donnees_p1, version=context['version']).loc[i, 'Longitude'],
-                        'seaSurfaceTemperature': palangre_syc.excel_extractions.extract_temperature(df_donnees_p1, version=context['version']).loc[i, 'Temperature'],
-                        'wind': None,
-                        'windDirection': None,
-                        'currentSpeed': None,
-                        'currentDirection': None,})
+        # activity.update({
+        #                 'latitude': palangre_syc.excel_extractions.extract_positions(df_donnees_p1, version=context['version']).loc[i, 'Latitude'],
+        #                 'longitude': palangre_syc.excel_extractions.extract_positions(df_donnees_p1, version=context['version']).loc[i, 'Longitude'],
+        #                 'seaSurfaceTemperature': palangre_syc.excel_extractions.extract_temperature(df_donnees_p1, version=context['version']).loc[i, 'Temperature'],
+        #                 })
         
 
         if (context['at_port_checkbox'] == "true"):
