@@ -83,6 +83,32 @@ $(document).ready(function(){
         $select.append(html);
     }
 
+    function ajaxProgramSelect(ll_context, url){
+        $.ajax({
+            url: url,
+            type: 'GET',
+            dataType: "json",
+            success: function(response) {
+                var option = '';
+                for (var i = 0; i < response.dataPro.id.length; i++) {
+                    if (!ll_context.programme) {
+                       option += '<option value="' + response.dataPro.id[i] + '">' + response.dataPro.value[i] + '</option>';
+                    } else {
+                       if (ll_context.programme == response.dataPro.id[i]) {
+                          option += '<option selected value="' + response.dataPro.id[i] + '">' + response.dataPro.value[i] + '</option>';
+                       } else {
+                          option += '<option value="' + response.dataPro.id[i] + '">' + response.dataPro.value[i] + '</option>';
+                       }
+                    }
+                }
+                $("#apply select[name='programme']").find('.after').after(option);
+            },
+            error: function(response) {
+               console.log('Erreur lors de la requête AJAX');
+            }
+        });
+    }
+
 
     // Récupération des données du contexte via le script JSON intégré
     let scriptElement = document.getElementById('context-data');
@@ -101,30 +127,7 @@ $(document).ready(function(){
             }
             if (ll_context.domaine == "palangre") {
                 // console.log(ll_context.domaine)
-                // $.ajax({
-                //     url: '/palangre',
-                //     type: 'GET',
-                //     dataType: "json",
-                //     success: function(response) {
-                //         var option = '';
-                //         for (var i = 0; i < response.dataPro.id.length; i++) {
-                //             if (!ll_context.programme) {
-                //                 option += '<option value="' + response.dataPro.id[i] + '">' + response.dataPro.value[i] + '</option>';
-                //             } else {
-                //                 if (ll_context.programme == response.dataPro.id[i]) {
-                //                     $("#apply select[name='ty_doc']").find('.after').after('<option selected value="ll">Logbook SFA industriel</option>');
-                //                     option += '<option selected value="' + response.dataPro.id[i] + '">' + response.dataPro.value[i] + '</option>';
-                //                 } else {
-                //                     option += '<option value="' + response.dataPro.id[i] + '">' + response.dataPro.value[i] + '</option>';
-                //                 }
-                //             }
-                //         }
-                //         $("#apply select[name='programme']").find('.after').after(option);
-                //     },
-                //     error: function(response) {
-                //         console.log('Erreur lors de la requête AJAX');
-                //     }
-                // });
+                ajaxProgramSelect(ll_context, '/palangre')
 
                 updateTyDocSelect(
                     [
@@ -135,43 +138,16 @@ $(document).ready(function(){
                 );
 
             } else if (ll_context.domaine == "senne") {
-                $.ajax({
-                    url: '/senne',
-                    type: 'GET',
-                    dataType: "json",
-                    success: function(response) {
-                        var option = '';
-                        for (var i = 0; i < response.dataPro.id.length; i++) {
-                            if (!ll_context.programme) {
-                                option += '<option value="' + response.dataPro.id[i] + '">' + response.dataPro.value[i] + '</option>';
-                            } else {
-                                if (ll_context.programme == response.dataPro.id[i]) {
-                                    // console.log(ll_context);
-                                    if (ll_context.ty_doc == "ps" ){
-                                        $("#apply select[name='ty_doc']").find('.after').after('<option selected class="orth" value="ps">Logbook ORTHONGEL v21</option>');
-                                        $("#apply select[name='ty_doc']").find('.orth').after('<option class="orth23" value="ps2">Logbook ORTHONGEL v23</option>');
-                                        $("#apply select[name='ty_doc']").find('.orth23').after('<option class="ers" value="ers">Données ERS</option>');
-                                    }else if (ll_context.ty_doc == "ps2" ){
-                                        $("#apply select[name='ty_doc']").find('.after').after('<option class="orth" value="ps">Logbook ORTHONGEL v21</option>');
-                                        $("#apply select[name='ty_doc']").find('.orth').after('<option selected class="orth23" value="ps2">Logbook ORTHONGEL v23</option>');
-                                        $("#apply select[name='ty_doc']").find('.orth23').after('<option class="ers" value="ers">Données ERS</option>');
-                                    }else {
-                                        $("#apply select[name='ty_doc']").find('.after').after('<option class="orth" value="ps">Logbook ORTHONGEL v21</option>');
-                                        $("#apply select[name='ty_doc']").find('.orth').after('<option  class="orth23" value="ps2">Logbook ORTHONGEL v23</option>');
-                                        $("#apply select[name='ty_doc']").find('.orth23').after('<option selected class="ers" value="ers">Données ERS</option>');
-                                    };
-                                    option += '<option selected value="' + response.dataPro.id[i] + '">' + response.dataPro.value[i] + '</option>';
-                                } else {
-                                    option += '<option value="' + response.dataPro.id[i] + '">' + response.dataPro.value[i] + '</option>';
-                                }
-                            }
-                        }
-                        $("#apply select[name='programme']").find('.after').after(option);
-                    },
-                    error: function(response) {
-                        console.log('Erreur lors de la requête AJAX');
-                    }
-                });
+                ajaxProgramSelect(ll_context, '/senne')
+
+                updateTyDocSelect(
+                    [
+                        { id: "ps", label: "Logbook ORTHONGEL v21" },
+                        { id: "ps2", label: "Logbook ORTHONGEL v23" },
+                        { id: "ers",   label: "Données ERS" }
+                    ],
+                    ll_context.ty_doc
+                );
             };
         }
     }
@@ -190,9 +166,12 @@ $(document).ready(function(){
 
         if ($this.val() == "senne") {
 
-            $("#apply select[name='ty_doc']").find('.after').after('<option class="orth" value="ps">Logbook ORTHONGEL v21</option>');
-            $("#apply select[name='ty_doc']").find('.orth').after('<option class="orth23" value="ps2">Logbook ORTHONGEL v23</option>');
-            $("#apply select[name='ty_doc']").find('.orth23').after('<option class="ers" value="ers">Données ERS</option>');
+            updateTyDocSelect([
+                { id: "ps", label: "Logbook ORTHONGEL v21" },
+                { id: "ps2", label: "Logbook ORTHONGEL v23" },
+                { id: "ers",   label: "Données ERS" }
+            ]);
+
             $.ajax({
                 url: '/'+ $this.val(),
                 type: 'GET',
@@ -211,7 +190,6 @@ $(document).ready(function(){
                     console.log('Rien');
                 }
             });
-            //$("#apply").append('<option value="{{ key }}">{{ value }}</option>');
 
         }else if ($this.val() == "palangre") {
 
@@ -252,7 +230,7 @@ $(document).ready(function(){
             // console.log($("#apply").serialize());
             data = $("#apply").serialize();
             // console.log($("#apply").data("url"));
-            //  POURQUOI ? On peut juste faire si ce n'est pas ERS
+            //  POURQUOI ? On peut juste faire si ce n'est pas ERS => Oui c'est vrai
             if (($("#apply select[name='ty_doc']").val() == "ps") || ($("#apply select[name='ty_doc']").val() == "ps2") || ($("#apply select[name='ty_doc']").val() == "ll_17.6") || ($("#apply select[name='ty_doc']").val() == "ll_26")){
 
                 
@@ -279,7 +257,6 @@ $(document).ready(function(){
                     }
                 });
 
-                // if ($("#apply select[name='ty_doc']").val() == "ps"){
                     $.ajax({
                         type: 'POST',
                         url: $("#apply").attr('action'),
@@ -303,86 +280,6 @@ $(document).ready(function(){
 
                     var domaine = $("#domaine").val();
                     dropZone(domaine);
-                // }
-
-                // else if ($("#apply select[name='ty_doc']").val() == "ps2"){
-                //     $.ajax({
-                //         type: 'POST',
-                //         url: $("#apply").attr('action'),
-                //         data: data,
-                //         dataType: "json",
-                //         success: function(response){
-
-                //             if (response.message == 'success'){
-                //                 console.log("Configuration enregistrée vous pouvez faire la migration des données logbook");
-
-                //             }else{
-                //                 console.log("2message unsuccess"+response.message);
-                //             }
-                //         },
-                //         error: function(response){
-                //             console.log('La configuration n\'a pas été enregistrer');
-                //         }
-                //     });
-                //     $("#div_upload").show(1500);
-                //     $("#my-dropzone button[class='dz-button']").text('Drop files here to upload and extract data');
-
-                //     var domaine = $("#domaine").val();
-                //     dropZone(domaine);
-                // }
-
-                // // palangre
-                // else if ($("#apply select[name='ty_doc']").val() == "ll_17.6"){
-                //     $.ajax({
-                //         type: 'POST',
-                //         url: $("#apply").attr('action'),
-                //         data: data,
-                //         dataType: "json",
-                //         success: function(response){
-
-                //             if (response.message == 'success'){
-                //                 console.log("Configuration enregistrée vous pouvez faire la migration des données logbook");
-
-                //             }else{
-                //                 console.log(response.message);
-                //             }
-                //         },
-                //         error: function(response){
-                //             console.log('La configuration n\'a pas été enregistrée');
-                //         }
-                //     });
-                //     $("#div_upload").show(1500);
-                //     $("#my-dropzone button[class='dz-button']").text('Drop files here to upload and extract data');
-
-                //     var domaine = $("#domaine").val();
-                //     dropZone(domaine);
-                // }
-
-                // else if ($("#apply select[name='ty_doc']").val() == "ll_26"){
-                //     $.ajax({
-                //         type: 'POST',
-                //         url: $("#apply").attr('action'),
-                //         data: data,
-                //         dataType: "json",
-                //         success: function(response){
-
-                //             if (response.message == 'success'){
-                //                 console.log("Configuration enregistrée vous pouvez faire la migration des données logbook");
-
-                //             }else{
-                //                 console.log(response.message);
-                //             }
-                //         },
-                //         error: function(response){
-                //             console.log('La configuration n\'a pas été enregistrée');
-                //         }
-                //     });
-                //     $("#div_upload").show(1500);
-                //     $("#my-dropzone button[class='dz-button']").text('Drop files here to upload and extract data');
-
-                //     var domaine = $("#domaine").val();
-                //     dropZone(domaine);
-                // }
             }
             else if ($("#apply select[name='ty_doc']").val() == "ers"){
 

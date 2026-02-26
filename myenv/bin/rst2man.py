@@ -1,4 +1,4 @@
-#!/home/adelphe/PycharmProjects/lto-webapp/myenv/bin/python3
+#!/home/adelphe/PycharmProjects/lto-webapp/myenv/bin/python
 
 # Author:
 # Contact: grubert@users.sf.net

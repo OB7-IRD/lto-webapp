@@ -1,4 +1,4 @@
-#!/home/adelphe/PycharmProjects/lto-webapp/myenv/bin/python3
+#!/home/adelphe/PycharmProjects/lto-webapp/myenv/bin/python
 # -*- coding: utf-8 -*-
 import re
 import sys

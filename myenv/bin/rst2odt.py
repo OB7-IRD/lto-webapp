@@ -1,4 +1,4 @@
-#!/home/adelphe/PycharmProjects/lto-webapp/myenv/bin/python3
+#!/home/adelphe/PycharmProjects/lto-webapp/myenv/bin/python
 
 # $Id: rst2odt.py 9115 2022-07-28 17:06:24Z milde $
 # Author: Dave Kuhlman <dkuhlman@rexx.com>
