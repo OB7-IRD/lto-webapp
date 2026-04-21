@@ -625,6 +625,7 @@ def file_upload_view(request):
 ##########################################
 ############    ERS   ####################
 ##########################################
+import pandas as pd
 
 @login_required
 def ERSloadData(request):
@@ -632,24 +633,74 @@ def ERSloadData(request):
     ers_profile = request.user.ers_profile
     # print("ers_profile : ", ers_profile)
 
+    # récupérer l'océan choisi dans le formulaire
+    ocean_key = request.POST.get("ocean")
+    ocean_text = request.POST.get("ocean_text")
+    ocean = ocean_text.strip().lower().replace("é", "e")
+
+    request.session["ocean_text"] = ocean
+    
+    print("clé océan :", ocean_key)
+    print("texte océan :", ocean)
+
     if request.headers.get('x-requested-with') == 'XMLHttpRequest' and ers_profile:
 
         _, connectBool = init_connexion_from_profile(ers_profile)
 
-        req1 = "media/requetesSQL/01-trips-list.sql"
-
+        req6 = "media/requetesSQL/06-trips-with-ocean.sql"
 
         if connectBool:
-            dataTripERS = ERSTripList(req1, ers_profile)
+            dataTripERS = ERSTripList(req6, ers_profile, ocean) 
 
-            # Conversion DataFrame → liste de dictionnaires pour utiliser au niveau du JS
-            dataTripERS_json = dataTripERS.to_dict(orient="records")
+            if dataTripERS is not None:
 
-            return JsonResponse({
-                "message": "Success",
-                "connectBool": True,
-                "dataTripERS": dataTripERS_json
-            })
+                base_url = request.session.get('base_url')
+                username = request.session.get('username')
+                password = request.session.get('password')
+                database = request.session.get('database')
+                client_app_version = request.session.get('client_app_version')  # Peut être None
+                model_version = request.session.get('model_version')  # Peut être None
+                referential_locale = request.session.get('referential_locale')
+
+                # Appel à reload_token avec tous les paramètres requis
+                token = api_functions.reload_token(
+                    username=username,
+                    password=password,
+                    base_url=base_url,
+                    database=database,
+                    client_app_version=client_app_version,
+                    model_version=model_version,
+                    referential_locale=referential_locale
+                )
+
+                ocean_id_enc = ocean_key.replace("#", "-")
+                program_id_enc = request.session.get('dico_config')['programme'].replace("#", "-")
+
+                ErsData_in_Observe = getAPI_Data(token=token, base_url=base_url, route="/data/ps/common/Trip", argment="ocean_id="+ocean_id_enc+"&filters.logbookProgram_id="+program_id_enc)
+                # print(type(ErsData_in_Observe), len(ErsData_in_Observe))
+                list_ers_id = [value["ersId"] for value in ErsData_in_Observe]
+
+                # print(dataTripERS)
+
+                dataTripERS["trip_id"] = dataTripERS["trip_id"].astype("str")
+
+                dataTripERS["complete"] = dataTripERS["trip_id"].isin(list_ers_id)
+
+                # Conversion DataFrame => liste de dictionnaires pour utiliser au niveau du JS
+                dataTripERS_json = dataTripERS.to_dict(orient="records")
+
+                # print("dataTripERS_json : ", dataTripERS_json)
+
+                return JsonResponse({
+                    "message": "Success",
+                    "connectBool": True,
+                    "dataTripERS": dataTripERS_json
+                })
+            else:
+                return JsonResponse({
+                    "connectBool": False,
+                    "message": "Aucune marée ERS trouvée pour cet océan. Veuillez en choisir un autre, s’il vous plaît."
+                })
 
         return JsonResponse({
             "connectBool": False,
@@ -680,13 +731,16 @@ def ERSloadTripDetails(request, trip_id):
             num_activity = len(listActivity)
             num_landing = len(listLanding)
             num_fishing_activity = (listActivity["a_table"] == "fishing_activity").sum()
+            num_fad_activity = (listActivity["a_table"] == "fad_activity").sum()
             num_discards = (listActivity["a_table"] == "discard").sum()
 
             # print("type :  ", type(num_fishing_activity), num_fishing_activity)
+            # print(listActivity.columns)
 
             data = {
                     "num_activity": num_activity,
                     "num_fishing_activity": num_fishing_activity,
+                    "num_fad_activity": num_fad_activity, 
                     "num_landing": num_landing,
                     "num_discards": num_discards
                 }
@@ -730,26 +784,27 @@ def sendERSDATA(request, trip_id):
 
         _, connectBool = init_connexion_from_profile(ers_profile)
 
-        req1 = 'media/requetesSQL/01-trips-list.sql'
+        # req1 = 'media/requetesSQL/01-trips-list.sql'
         req2 = 'media/requetesSQL/02-activities-of-a-given-trip-union-q02-q03-q06-q08-q10.sql'
         req3 = "media/requetesSQL/03-catches-of-given-fishing-activity.sql"
         req4 = "media/requetesSQL/04-discards-of-given-discard-activity.sql"
         req5 = "media/requetesSQL/05-landings-of-given-trip.sql"
+        req6 = "media/requetesSQL/06-trips-with-ocean.sql"
 
         if connectBool is True:
-            df_data = ERSTripList(req1, ers_profile)
+            df_data = ERSTripList(req6, ers_profile, request.session.get('ocean_text'))
             info_bat = ERSVessel_info(df_data, trip_id)
             df_datas_activities = ERSloadOneTripDetails(req2, trip_id, ers_profile)
+            # print("==== sendERSDATA ok ====", df_datas_activities.info())
             df_lands = ERSlanding_extraction(req5, trip_id, ers_profile)
 
-            try:
-                ocean = np.unique(df_datas_activities['a_ocean'].dropna())[0].lower()
-                find_oce = [(x["topiaId"], x["label2"]) for x in allData['Ocean'] if ocean in x["label2"].lower()]
-                oce = find_oce[0][0]
-            except:
-                oce = request.session.get('dico_config')['ocean']
-
+            oce = request.session.get('dico_config')['ocean']
             prg = request.session.get('dico_config')['programme']
+
+            # Remplacer NaN par None
+            df_datas_activities = df_datas_activities.replace({np.nan: None})
+
+            # print("df_datas_activities : ", df_datas_activities)
 
             # Extration des information de la <li> sur laquelle on a cliqué sur "insérer" ou "mettre à jour"
             messages, js_ERScontent = build_trip_ERS(allData, trip_id, info_bat, df_datas_activities, oce, prg, df_lands, req3, req4, ers_profile)
@@ -784,7 +839,27 @@ def sendERSDATA(request, trip_id):
                 if code == 1:
                     # messages.success(request, message_log)
                     print(1, message_log)
-                    return JsonResponse({"message": "Success", "code": code, "msg": message_log})
+                    
+                    ocean_id_enc = oce.replace("#", "-")
+                    program_id_enc = prg.replace("#", "-")
+
+                    ErsData_in_Observe = getAPI_Data(token=token, base_url=base_url, route="/data/ps/common/Trip", argment="ocean_id="+ocean_id_enc+"&filters.logbookProgram_id="+program_id_enc)
+                    # print(type(ErsData_in_Observe), len(ErsData_in_Observe))
+                    list_ers_id = [value["ersId"] for value in ErsData_in_Observe]
+
+                    df_data["trip_id"] = df_data["trip_id"].astype("str")
+
+                    df_data["complete"] = df_data["trip_id"].isin(list_ers_id)
+
+                    # Conversion DataFrame => liste de dictionnaires pour utiliser au niveau du JS
+                    dataTripERS_json = df_data.to_dict(orient="records")
+
+                    return JsonResponse({
+                        "message": "Success",
+                        "code": code,
+                        "dataTripERS": dataTripERS_json,
+                        "msg": message_log
+                    })
                 elif code == 2:
                     # messages.error(request, message_log)
                     print(code, message_log)

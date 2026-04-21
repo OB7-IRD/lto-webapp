@@ -775,6 +775,9 @@ def transmittingBType(chaine, dico):
     Returns:
          id (str), '' (str) ou commentaire (str)
     """
+    if (("hfes" in str(chaine).lower()) or ("hf" in str(chaine).lower())): return dico['1'], ""
+    if ("sates" in str(chaine).lower()): return dico['4'], ""
+
     if ("m3i+" in str(chaine).lower()): return dico['26'], ""
     if ("m3igo" in str(chaine).lower()): return dico['29'], ""
     if ("m3i" in str(chaine).lower()): return dico['25'], ""
@@ -792,7 +795,9 @@ def transmittingBType(chaine, dico):
     if ("autre satl" in str(chaine).lower()): return dico['40'], ""
     if ("satlink mod" in str(chaine).lower()): return dico['40'], ""
 
-    if ("marque et mod" in str(chaine).lower()): return dico['98'], ""
+    if ("sat" in str(chaine).lower()): return dico['5'], ""
+
+    if (("marque et mod" in str(chaine).lower()) or ("unk" in str(chaine).lower())): return dico['98'], ""
     if ("pas de bou" in str(chaine).lower()): return dico['999'], ""
 
     if chaine != "":
@@ -821,14 +826,14 @@ def floatingObjectPart(chaine, data, dico, index, perte_act=False):
 
     # Types objets flottants
     if index == 'obj_flot_typ_obj':
-        if ("dcp ancré" in str(chaine).lower()): return dico['1-2']
-        if (("epave artificielle liée à la pêche" in str(chaine).lower()) or ("débris artificiel issu de la pêche" in str(chaine).lower())): return dico['2-2-4']
-        if (("epave artificielle liée à d'autres activités humaines" in str(chaine).lower()) or ("débris artificiel non issu de la pêche" in str(chaine).lower())): return dico['2-2-5']
-        if ("d'origine animale" in str(chaine).lower()): return dico['2-1-2']
-        if ("d'origine végétale" in str(chaine).lower()): return dico['2-1-1']
+        if (("dcp ancré" in str(chaine).lower()) or ("dcpa" in str(chaine).lower())): return dico['1-2']
+        if (("epave artificielle liée à la pêche" in str(chaine).lower()) or ("débris artificiel issu de la pêche" in str(chaine).lower()) or ("enop" in str(chaine).lower())): return dico['2-2-4']
+        if (("epave artificielle liée à d'autres activités humaines" in str(chaine).lower()) or ("débris artificiel non issu de la pêche" in str(chaine).lower()) or ("enoh" in str(chaine).lower())): return dico['2-2-5']
+        if (("d'origine animale" in str(chaine).lower()) or ("enoa" in str(chaine).lower())) : return dico['2-1-2']
+        if (("d'origine végétale" in str(chaine).lower()) or ("enov" in str(chaine).lower())): return dico['2-1-1']
 
 
-        if ("dcp dérivant" in str(chaine).lower()):
+        if ("dcp dérivant" in str(chaine).lower()) and data != None:
             # Types de DCP
             if (("dcp français émergé bambou" in str(data['obj_flot_typ_dcp_deriv']).lower()) or ("radeau émergé bambou" in str(data['obj_flot_typ_dcp_deriv']).lower())): return dico['1-1-1-1-1']
             if ("radeau immergé métal" in str(data['obj_flot_typ_dcp_deriv']).lower()): return dico['1-1-1-1-5']
@@ -2590,11 +2595,6 @@ def build_trip_ERS(allData, trip_id, info_bat, df_datas_activities, oce, prg, df
         nb = nb_r = Som_thon = 0
         fpa_prece = None
 
-
-        # yft_id = getId(allData, "Species", argment="faoCode=YFT")
-        # skj_id = getId(allData, "Species", argment="faoCode=SKJ")
-        # bet_id = getId(allData, "Species", argment="faoCode=BET")
-
         WeightMeasureMet = getId(allData, "WeightMeasureMethod", argment="label2=Estimation visuelle")
         code_conser = getId(allData, "SpeciesFate", argment="code=6")
         code_rej = getId(allData, "SpeciesFate", argment="code=11") # speciesFate '11 - Discarded'
@@ -2602,6 +2602,7 @@ def build_trip_ERS(allData, trip_id, info_bat, df_datas_activities, oce, prg, df
         vers_code_0 = getId(allData, "VesselActivity", argment="code=0", domaine="seine")
         vers_code_2 = getId(allData, "VesselActivity", argment="code=2", domaine="seine")
         vers_code_6 = getId(allData, "VesselActivity", argment="code=6", domaine="seine")
+        vers_code_13 = getId(allData, "VesselActivity", argment="code=13", domaine="seine")
         vers_code_31 = getId(allData, "VesselActivity", argment="code=31", domaine="seine") # code VesselActivity '31 - Rejet de poisson'
         vers_code_99 = getId(allData, "VesselActivity", argment="code=99", domaine="seine") #
 
@@ -2611,10 +2612,13 @@ def build_trip_ERS(allData, trip_id, info_bat, df_datas_activities, oce, prg, df
 
         dico_code_sch_type = getAll(allData, "SchoolType")
         dico_code_setSucc = getAll(allData, "SetSuccessStatus")
+        dico_objeMat = getAll(allData, "ObjectMaterial")
+        dico_trams_oper = getAll(allData, "TransmittingBuoyOperation")
+        dico_trams = getAll(allData, "TransmittingBuoyType")
+        # dico_trams_owner = getAll(allData, "TransmittingBuoyOwnership")
 
         tab_fpa = getAll(allData, "FpaZone", type_data="tableau")
         #############################
-
 
         date = ""
         for val in group:
@@ -2622,15 +2626,14 @@ def build_trip_ERS(allData, trip_id, info_bat, df_datas_activities, oce, prg, df
                 date = data["a_date"]
                 nb += 1
 
-                if data['a_table'] != "discard":
+                if data['a_table'] != "discard" and data['a_table'] != "fad_activity":
                     activities_catchs, status = api_functions.f_catch(req3, str(data["catch_id"]), ers_profile) # Catch Operation
-                else:
+                elif data['a_table'] == "discard":
                     activities_catchs, status = api_functions.f_discard(req4, str(data["catch_id"]), ers_profile) # Discard Operation but here "discard_id == catch_id" in data
 
                 tab4_catches = []
-
+                
                 if (status) :
-
                     def func_tab4_catches(js_catches, topId_sp, weight, weightCategory_id, WeightMeasureMet, code_conser_rej, count = None):
                         js_catches["species"] = topId_sp
                         js_catches["weight"] = weight
@@ -2643,20 +2646,17 @@ def build_trip_ERS(allData, trip_id, info_bat, df_datas_activities, oce, prg, df
 
                         return js_catches
 
-                    # print(data['a_table'], data['a_date'])
-
                     for idx, data_s in activities_catchs.iterrows():
 
                         js_catches = js_catche() # intialisatiion
-                        if  data_s["specie_weight_category_id"] != None:
+                        if  data_s["specie_weight_category_id"] != None and not pd.isna(data_s['specie_weight_category_id']) and not pd.isna(data_s['specie_catchweight']):
                             species_id = getId(allData, "Species", argment="faoCode=" + data_s["specie_fao_id"].upper())
-
-                            weightCategory_pref = "C-" + data_s["specie_fao_id"] + "-" + str(data_s["specie_weight_category_id"])
-
+                            
                             try:
+                                weightCategory_pref = "C-" + data_s["specie_fao_id"] + "-" + str(data_s["specie_weight_category_id"])                            
                                 weightCategory_id = [x['topiaId'] for x in allData["WeightCategory"] if weightCategory_pref in x['code']][0]
                             except:
-                                print(weightCategory_pref)
+                                print("weightCategory_pref : ", weightCategory_pref)
                                 weightCategory_id = None
 
                             Som_thon += float(data_s['specie_catchweight']) if data_s['specie_catchweight'] != None else 0
@@ -2665,25 +2665,45 @@ def build_trip_ERS(allData, trip_id, info_bat, df_datas_activities, oce, prg, df
 
                             count = int(data_s["specie_numberoffished"]) if data_s["specie_numberoffished"] != None else None
 
-                            js_catches = func_tab4_catches(js_catches, species_id, data_s['specie_catchweight'], weightCategory_id, WeightMeasureMet, code_conser_rej, count)
+                            specie_catchweight = data_s['specie_catchweight'] if (data_s['specie_catchweight'] != None and not pd.isna(data_s['specie_catchweight'])) else None
+
+                            js_catches = func_tab4_catches(js_catches, species_id, specie_catchweight, weightCategory_id, WeightMeasureMet, code_conser_rej, count)
 
                             if (count != None or Som_thon != 0):
                                 tab4_catches.append(js_catches)
 
+                            # if weightCategory_id == None:
+                            #     print("date : ", data['a_date'], " heure : ", data['a_time'])
+                            #     print(js_catches)
+                        
                         else:
                             species_id = getId(allData, "Species", argment="faoCode=" + data_s["specie_fao_id"].upper())
                             weightCategory_id = None
+                            
+                            if data_s["specie_catchweight"] != None and not pd.isna(data_s['specie_catchweight']):
+                                Som_thon += float(data_s['specie_catchweight']) 
+                                specie_catchweight = data_s['specie_catchweight']
+                            else:
+                                Som_thon += 0
+                                specie_catchweight = None
 
-                            Som_thon += float(data_s['specie_catchweight']) if data_s['specie_catchweight'] != None else 0
+                            if data_s["specie_numberoffished"] != None and not pd.isna(data_s['specie_numberoffished']):
+                                count = int(data_s["specie_numberoffished"])
+                            else:
+                                count = None
 
                             code_conser_rej = code_conser if data['a_table'] != "discard" else code_rej
-
-                            count = int(data_s["specie_numberoffished"]) if data_s["specie_numberoffished"] != None else None
-
-                            js_catches = func_tab4_catches(js_catches, species_id, data_s['specie_catchweight'], weightCategory_id, WeightMeasureMet, code_conser_rej, count)
+                                                        
+                            js_catches = func_tab4_catches(js_catches, species_id, specie_catchweight, weightCategory_id, WeightMeasureMet, code_conser_rej, count)
 
                             if (count != None or Som_thon != 0):
                                 tab4_catches.append(js_catches)
+
+                            # print(" specie_catchweight : ", data_s['specie_catchweight'])
+
+                            # if weightCategory_id == None and data_s['specie_catchweight'] == None:
+                            #     print("date : ", data['a_date'], " heure : ", data['a_time'], " specie : ", data_s["specie_fao_id"])
+                            #     print(js_catches)
 
                     js_activitys = js_activity(tab4_catches)
                 else:
@@ -2709,20 +2729,19 @@ def build_trip_ERS(allData, trip_id, info_bat, df_datas_activities, oce, prg, df
                 except:
                     js_activitys["windDirection"] = None
 
-
                 if Som_thon != 0:
                     js_activitys["totalWeight"] =  Som_thon
 
-                last = len(df_datas_activities) - 1
-                if index == 0:
-                    # print(data["a_table"])
+                # last = len(df_datas_activities) - 1
+                if data["a_table"] == "adep":
+                    print(" a_table : ", data["a_table"])
                     if data["a_latitude"] != None and data["a_longitude"] != None :
                         js_activitys["latitude"], js_activitys["longitude"] = data["a_latitude"], data["a_longitude"]
                     else:
                         js_activitys["latitude"], js_activitys["longitude"] = get_lat_long(allData, info_bat['Depart_Port'])
 
-                elif index == last:
-                    # print(data["a_table"])
+                elif data["a_table"] == "artp":
+                    print(" a_table : ", data["a_table"])
                     if data["a_latitude"] != None and data["a_longitude"] != None :
                         js_activitys["latitude"], js_activitys["longitude"] = data["a_latitude"], data["a_longitude"]
                     else:
@@ -2732,16 +2751,10 @@ def build_trip_ERS(allData, trip_id, info_bat, df_datas_activities, oce, prg, df
                     js_activitys["latitude"], js_activitys["longitude"] = data["a_latitude"], data["a_longitude"]
 
 
-
-                # def schoolType(chaine, dico_code_sch_type):
-                #     return dico_code_sch_type["0"]
-
-
                 def setCo_setSuc_vess(setCount, setSuccessStatus, vesselActivity):
                      return setCount, setSuccessStatus, vesselActivity
 
                 # print(data['a_table'], data['a_date'], data['a_time'], len(tab4_catches))
-
                 if data['a_operation'] != None :
                     if ("positif" in data['a_operation'].lower()) :
                         # Code 6
@@ -2793,7 +2806,6 @@ def build_trip_ERS(allData, trip_id, info_bat, df_datas_activities, oce, prg, df
                                 js_activitys["catches"] = []
 
                 elif data['a_table'].lower() == "discard":
-
                     # Code 31
                     js_activitys["setCount"], js_activitys["setSuccessStatus"], js_activitys["vesselActivity"] = setCo_setSuc_vess(0, dico_code_setSucc["2"], vers_code_31)
                     js_activitys["schoolType"] = dico_code_sch_type["0"]
@@ -2801,8 +2813,52 @@ def build_trip_ERS(allData, trip_id, info_bat, df_datas_activities, oce, prg, df
                     # Code 0
                     js_activitys["setCount"], js_activitys["setSuccessStatus"], js_activitys["vesselActivity"] = setCo_setSuc_vess(None, None, vers_code_0)
                     js_activitys["schoolType"] = None
+                
+                if data['a_table'] == "fad_activity":
+                    # Code 13
+                    js_activitys["setCount"], js_activitys["setSuccessStatus"], js_activitys["vesselActivity"] = setCo_setSuc_vess(1, dico_code_setSucc["0"], vers_code_13)
+                    js_activitys["schoolType"] = dico_code_sch_type["1"]
 
-                # print(js_activitys["vesselActivity"])
+                    
+                    tab1_Float = []
+
+                    # Doit-on insérer une balise ?
+                    if data['fad_has_buoy'] == True :
+
+                        # Types objets flottants
+                        js_Floats = js_Float()  # intialisatiion des parametres defaut
+
+                        if "dcpd" in data['fad_type'].lower() : 
+                            temp_float = floatingObjectPart(data['fad_type'], None, dico_objeMat, index=None, perte_act=True)
+                        else:
+                            temp_float = floatingObjectPart(data['fad_type'], None, dico_objeMat, index='obj_flot_typ_obj')
+
+                        obj_ob_part_body_(temp_float, tab1_Float, js_Floats, bool_tuple=("true", "true"))
+
+                        js_Transmitts = js_Transmitt()
+                        js_Transmitts['transmittingBuoyOperation'] = dico_trams_oper["99"] # BuoyOperation = 99 "Unknown"  99 est desactivé
+                        js_Transmitts['transmittingBuoyType'], comment = transmittingBType(data['fad_type'], dico_trams)
+                        js_Transmitts['code'] = None
+
+                        # js_Transmitts['transmittingBuoyOwnership'] = dico_trams_owner[code_trams_owner]
+                        # js_Transmitts['transmittingBuoyOwnership'] = None
+
+                        # print("dico_trams_oper : ", dico_trams_oper)
+                        
+                        if comment != None :
+                            js_Transmitts['comment'] = comment
+
+                        js_floatingObjects = js_floatingObject([js_Transmitts,], tab1_Float)
+                        js_floatingObjects["objectOperation"] = getId(allData, "ObjectOperation", argment="code=99") # 99 est desactivé
+
+                        js_activitys["floatingObject"] = [js_floatingObjects,]
+
+                    else :
+                        # sinon
+                        js_activitys["floatingObject"] = []
+
+                    # print(js_activitys["vesselActivity"])
+                    # print(js_activitys["floatingObject"], "\n\n")
 
                 js_activitys["informationSource"] = id_infoSource
                 js_activitys["dataQuality"] = id_dataQua

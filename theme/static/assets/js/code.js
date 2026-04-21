@@ -109,6 +109,74 @@ $(document).ready(function(){
         });
     }
 
+    /**
+     * Formate une date ISO (ex: 2025-06-30T06:48:00)
+     * en format lisible : YYYY-MM-DD HH:mm
+     */
+    function formatDateISO(dateStr) {
+        if (!dateStr) return "";
+
+        const date = new Date(dateStr);
+
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+
+        const hours = String(date.getHours()).padStart(2, '0');
+        const minutes = String(date.getMinutes()).padStart(2, '0');
+
+        return `${year}-${month}-${day} à ${hours}:${minutes}`;
+    }
+
+    function load_ERS(trip){
+        // console.log("Test")
+        // Gestion des Completes
+        let badge_complete = "";
+
+        if(trip.complete){
+            badge_complete = `
+            <span class="inline-flex items-center rounded-md bg-green-100 px-2 py-0.5 text-xs font-medium text-green-700">
+                Complete
+            </span>`;
+        }
+
+        let li_html = `
+            <li class="ers-item flex items-center justify-between px-6 py-5 hover:bg-gray-50 cursor-pointer"
+                data-trip-id="${trip.trip_id}" data-complete="${trip.complete ? 'true' : 'false'}">
+
+                <div class="min-w-0 w-full">
+
+                    <!-- TITRE -->
+                    <div class="flex items-center gap-3">
+                        <p class="font-semibold text-gray-900 truncate">
+                            ${trip.trip_vessel_name}
+                        </p>
+                        <!-- 
+                        <span class="inline-flex mt-3items-center gap-2 text-sm text-gray-500">
+                            (${trip.trip_captain_name})
+                        </span>
+                        -->
+                            ${badge_complete}
+
+                    </div>
+
+                    <!-- META -->
+                    <div class="mt-3 flex items-center gap-2 text-sm text-gray-500">
+                        <span class="font-semibold">${formatDateISO(trip.trip_start_date)}</span>
+                        <span class="font-semibold text-indigo-700">(Départ: ${trip.trip_departure_harbour_name})</span>
+                        <span>•</span>
+                        <span class="font-semibold">${formatDateISO(trip.trip_end_date)}</span>
+                        <span class="font-semibold text-indigo-700">(Arrivée: ${trip.trip_landing_harbour_name})</span>
+                    </div>
+
+                    <!-- SOUS INFOS (cachées) -->
+                    <div class="sous_info_li hidden mt-5 w-full"></div>
+
+                </div>
+            </li>
+        `;
+        return li_html;
+    }
 
     // Récupération des données du contexte via le script JSON intégré
     let scriptElement = document.getElementById('context-data');
@@ -283,25 +351,6 @@ $(document).ready(function(){
             }
             else if ($("#apply select[name='ty_doc']").val() == "ers"){
 
-                /**
-                 * Formate une date ISO (ex: 2025-06-30T06:48:00)
-                 * en format lisible : YYYY-MM-DD HH:mm
-                 */
-                function formatDateISO(dateStr) {
-                    if (!dateStr) return "";
-
-                    const date = new Date(dateStr);
-
-                    const year = date.getFullYear();
-                    const month = String(date.getMonth() + 1).padStart(2, '0');
-                    const day = String(date.getDate()).padStart(2, '0');
-
-                    const hours = String(date.getHours()).padStart(2, '0');
-                    const minutes = String(date.getMinutes()).padStart(2, '0');
-
-                    return `${year}-${month}-${day} à ${hours}:${minutes}`;
-                }
-
                 $("#div_upload").hide(1500);
 
                 // Code ajax faisant reference la fonction "postProg_info" de la vue qui permet de sauvegarder au niveau des variables de session
@@ -314,55 +363,33 @@ $(document).ready(function(){
                         success: function(response){
                             if (response.message == 'success'){
                                 // Code ajax pour afficher les données ERS si nous sommes connectés au VPN et à la base Postgres des données ERS
+                                var ocean_value = $("#ocean").val(); // la clé
+                                var ocean_text = $("#ocean option:selected").text(); // le texte affiché
                                 $.ajax({
                                         type: 'POST',
                                         url: 'ERSloadData', // reference la fonction "ERSloadData"
-                                        data: data,
+                                        data: {
+                                            ocean: ocean_value,
+                                            ocean_text: ocean_text,
+                                            csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken]").val()
+                                        },
                                         dataType: "json",
                                         success: function(result){
                                             // console.log(result.connectBool)
                                             if (result.connectBool === true) {
                                                 // Vider la liste avant de remplir
                                                 $("#ers_list").empty();
+                
+                                                // total / complete
+                                                let total = result.dataTripERS.length;
+                                                let complete = result.dataTripERS.filter(t => t.complete).length;
+
+                                                $("#ers_count_total").text(total);
+                                                $("#ers_count_loaded").text(complete);
 
                                                 // Parcourir les données ERS reçues
                                                 $.each(result.dataTripERS, function(index, trip){
-
-                                                    let li_html = `
-                                                        <li class="ers-item flex items-center justify-between px-6 py-5 hover:bg-gray-50 cursor-pointer"
-                                                            data-trip-id="${trip.trip_id}">
-
-                                                            <div class="min-w-0 w-full">
-
-                                                                <!-- TITRE -->
-                                                                <div class="flex items-center gap-3">
-                                                                    <p class="font-semibold text-gray-900 truncate">
-                                                                        ${trip.trip_vessel_name}
-                                                                    </p>
-                                                                    <span class="inline-flex mt-3items-center gap-2 text-sm text-gray-500">
-                                                                        (${trip.trip_captain_name})
-                                                                    </span>
-                                                                    <span class="inline-flex items-center rounded-md bg-green-100 px-2 py-0.5 text-xs font-medium text-green-700">
-                                                                        Complete
-                                                                    </span>
-                                                                </div>
-
-                                                                <!-- META -->
-                                                                <div class="mt-3 flex items-center gap-2 text-sm text-gray-500">
-                                                                    <span>${formatDateISO(trip.trip_start_date)}</span>
-                                                                    <span class="font-semibold">(${trip.trip_departure_harbour_name})</span>
-                                                                    <span>•</span>
-                                                                    <span class="truncate">${formatDateISO(trip.trip_end_date)}</span>
-                                                                    <span class="font-semibold">(${trip.trip_landing_harbour_name})</span>
-                                                                </div>
-
-                                                                <!-- SOUS INFOS (cachées) -->
-                                                                <div class="sous_info_li hidden mt-5 w-full"></div>
-
-                                                            </div>
-                                                        </li>
-                                                    `;
-
+                                                    let li_html = load_ERS(trip)
                                                     $("#ers_list").append(li_html);
                                                 });
 
@@ -380,7 +407,7 @@ $(document).ready(function(){
                                             }
                                         },
                                         error: function(result){
-                                            cconsole.log("Erreur au niveau de la requête ERSloadData");
+                                            console.log("Erreur au niveau de la requête ERSloadData");
                                         }
                                 });
 
@@ -409,6 +436,40 @@ $(document).ready(function(){
         e.preventDefault();
         console.log($("#my-dropzone").serialize());
     });
+
+    /**
+     * Gestion du clic sur un élément complete / non complete + recherche
+     */
+
+    $("#btn_complete").click(function(){
+
+        $(".ers-item").hide();
+
+        $(".ers-item[data-complete='true']").css("display","flex");
+
+    });
+
+    $("#btn_not_complete").click(function(){
+
+        $(".ers-item").hide();
+
+        $(".ers-item[data-complete='false']").css("display","flex");
+
+    });
+
+    // recherche navire, port, dates
+    $("#ers_search").on("keyup", function(){
+
+        let value = $(this).val().toLowerCase();
+
+        $(".ers-item").filter(function(){
+            $(this).toggle(
+                $(this).text().toLowerCase().indexOf(value) > -1
+            );
+        });
+
+    });
+
 
     /**
      * Gestion du clic sur un élément ERS (<li>)
@@ -477,8 +538,13 @@ $(document).ready(function(){
                                 </div>
                                 |
                                 <div>
-                                    <span class="text-blue-500">Activités de Pêche :</span>
+                                    <span class="text-blue-500">Pêches :</span>
                                     <span>${d.num_fishing_activity}</span>
+                                </div>
+                                |
+                                <div>
+                                    <span class="text-blue-500">Objets :</span>
+                                    <span>${d.num_fad_activity}</span>
                                 </div>
                                 |
                                 <div>
@@ -584,6 +650,25 @@ $(document).ready(function(){
                                 <strong>Succès :</strong> ${response.msg}
                             </div>
                         `;
+                        $("#ers_list").empty();
+                
+                        // total / complete
+                        let total = response.dataTripERS.length;
+                        let complete = response.dataTripERS.filter(t => t.complete).length;
+
+                        $("#ers_count_total").text(total);
+                        $("#ers_count_loaded").text(complete);
+
+                        // Parcourir les données ERS reçues
+                        $.each(response.dataTripERS, function(index, trip){
+                            let li_html = load_ERS(trip)
+                            $("#ers_list").append(li_html);
+                        });
+
+                        $("#div_ers").show(1500);
+                        
+                        // je dois ecrire un script pour mettre à jour la page
+
                     } else if (response.code === 2) {
                         // Erreur bloquante
                         alertHtml = `

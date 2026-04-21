@@ -183,16 +183,63 @@
         {{files}}
       <!-- /End Drag and Drop -->
 
-      <!-- ERS Content -->
-        <div  id="div_ers" hidden="true" class="w-full max-h-[30rem] overflow-y-auto rounded-xl ring-1 ring-gray-300 bg-white">
-            <ul id="ers_list" role="list" class="divide-y divide-gray-200">
-                <!-- Les <li> ERS seront injectés ici par JavaScript -->
-            </ul>
-        </div>
-
-
+      
       <!-- Zone messages ERS -->
         <div id="ers_message_zone" class="mt-4 hidden"></div>
+      <!-- End Zone messages ERS -->
+
+      <!-- ERS Content -->
+
+        <div id="div_ers" hidden="true">
+
+          <!-- CARD HEADER -->
+          <div class="mb-4 flex flex-col gap-3">
+
+            <!-- Statistiques -->
+            <div class="flex items-center justify-between">
+
+              <div class="text-sm text-gray-600">
+                <span class="font-semibold text-indigo-700" id="ers_count_loaded">0</span> marées insérées 
+                /
+                <span id="ers_count_total">0</span>
+                marées
+              </div>
+
+              <!-- Boutons -->
+              <div class="flex gap-2">
+                <button id="btn_not_complete"
+                class="px-3 py-1 text-sm bg-indigo-600 text-white rounded-md hover:bg-indigo-700">
+                Marées non insérées
+                </button>
+
+                <button id="btn_complete"
+                class="px-3 py-1 text-sm bg-gray-500 text-white rounded-md hover:bg-gray-600">
+                Marées insérées
+                </button>
+              </div>
+            </div>
+
+            <!-- Barre de recherche -->
+            <div>
+              <input
+                id="ers_search"
+                type="text"
+                placeholder="Rechercher..."
+                class="w-full px-4 py-2 rounded-xl ring-1 ring-cyan-700 focus:ring-indigo-600"
+              >
+            </div>
+          </div>
+
+          <!-- CARD BODY -->
+          <div class="w-full max-h-[30rem] overflow-y-auto rounded-xl ring-1 ring-gray-300 bg-white">
+
+              <ul id="ers_list" role="list" class="divide-y divide-gray-200">
+                  <!-- Les <li> ERS seront injectés ici -->
+              </ul>
+
+          </div>
+
+        </div>
 
       <!-- /End ERS -->
 

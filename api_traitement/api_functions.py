@@ -183,7 +183,6 @@ def load_data(token, base_url, forceUpdate=False):
         # allData = {**ref_common, **ps_logbook, **ps_common}
 
         ref_common = get_all_referential_data(token, "common", url)
-        # ref_common2 ="https://observe.ob7.ird.fr/observeweb/api/public/referential/common?authenticationToken=6811592f-bf3b-4fa0-8320-58a4a58c9ab7"
         ps_logbook = get_all_referential_data(token, "ps/logbook", url)
         ps_common = get_all_referential_data(token, "ps/common", url)
         ll_common = get_all_referential_data(token, "ll/common", url)    
@@ -333,6 +332,7 @@ def send_trip(token, data, base_url, route):
         with open(file = "media/temporary_files/error.json", mode = "w", encoding="utf-8") as outfile:
             outfile.write(response.text)
         try:
+            # print(" ERREUR MESSAGE : ", response.text)
             return (error_filter(response.text), 2)
             # return (error_filter(response.text), 6) # 6 pour utiliser le niveau d'erreur personnalisée
             # return json.loads(res.text), 2
@@ -457,6 +457,38 @@ def getId_Data(token, base_url, moduleName, argment, route):
         return json.loads(rep.text)["content"][0]["topiaId"]
     else:
         return json.loads(rep.text)["message"]
+    
+def getAPI_Data(token, base_url, argment, route):
+    """ Fonction qui permet de retourner tous les element d'un module ou type en fonction des arguments et de la route
+
+    Args:
+        token (str):token
+        base_url (str): url de base de l'API
+        argment (str): les arguments de la requete sur le module
+        route (str):  chemin de l'API de la requete en fonction de la structure de la base de données.
+
+        exemple du module "Trip" :
+            route = "/data/ps/common/Trip
+            argment (plusieurs arguments) = "startDate=" + d1 + "&filters.endDate=" + d2 + "&filters.vessel_id=" + d3
+            OU
+            argment = "startDate=" + d1
+
+    Returns:
+        liste (list)
+    """
+    
+    headers = {
+        "Content-Type": "application/json",
+        'authenticationToken': token
+    }
+
+    urls = base_url + route + "?filters." + argment
+    rep = requests.get(urls, headers=headers, timeout=TIMEOUT_VALUE)
+
+    if rep.status_code == 200:
+        return json.loads(rep.text)["content"]
+    else:
+        return json.loads(rep.text)["message"]
 
 def check_trip(token, content, base_url):
     """ Fonction qui permet de verifier si la marée a inserer existe déjà dans la base de donnée
@@ -542,6 +574,8 @@ def error_filter(response):
         if 'children' in nodes:
             # Appel récursif pour explorer les sous-nœuds
             child_text = str(nodes['datum']['text'])
+            # print(" child_text : ", child_text)
+
             if child_text not in text_list:
                 text_list.append(child_text)
             return error_message(nodes['children'][0], text_list)
@@ -549,6 +583,8 @@ def error_filter(response):
         if 'messages' in nodes:
             temp = nodes['messages']
             text = nodes['datum']['text']
+
+            # print(" text : ", text)
 
             # Ajout du texte d'erreur dans la liste si pas déjà présent
             if text not in text_list:
@@ -581,6 +617,7 @@ def error_filter(response):
             except ValueError:
                 print("heure ou date non presente dans la liste")
 
+            texts = temp[0]['message'] + '\n' + text
             # Génération du format HTML sous forme de tableau Tailwind
             if date != "" and heure != "":
                 return f"""
@@ -600,7 +637,7 @@ def error_filter(response):
                                     <td class="px-4 py-2">{date}</td>
                                     <td class="px-4 py-2">{heure}</td>
                                     <td class="px-4 py-2">{temp[0]['fieldName']}</td>
-                                    <td class="px-4 py-2">{temp[0]['message']}</td>
+                                    <td class="px-4 py-2">{texts}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -621,7 +658,7 @@ def error_filter(response):
                             <tbody>
                                 <tr class="border-t border-red-400">
                                     <td class="px-4 py-2">{temp[0]['fieldName']}</td>
-                                    <td class="px-4 py-2">{temp[0]['message']}</td>
+                                    <td class="px-4 py-2">{texts}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -807,9 +844,9 @@ def convert_np_types(obj):
     else:
         return obj
 
-def ERSTripList(req1, ers_profile):
+def ERSTripList(req6, ers_profile, ocean):
     # Liste des TRIP
-    data = executeScriptsFromFile(ers_profile=ers_profile,filename=req1)
+    data = executeScriptsFromFile(ers_profile=ers_profile,filename=req6)
     # Transformer le tableau "data" en dataFrame pour faciliter la manipulation des données
     datas = pd.DataFrame(np.array(data))
     # Titrer le tableau
@@ -829,7 +866,8 @@ def ERSTripList(req1, ers_profile):
                      12: "trip_vessel_turbobat_id",
                      13: "trip_vessel_cfr_id",
                      14: "trip_vessel_name",
-                     15: "species_count_at_departure"})
+                     15: "species_count_at_departure",
+                     16: "trip_ocean"})
 
     # Suppression des lignes identiques c.a.d les doublons
     df_data = datas.drop_duplicates(keep='first')
@@ -843,10 +881,13 @@ def ERSTripList(req1, ers_profile):
                        "trip_departure_harbour_name",
                        "trip_departure_harbour_locode",
                        "trip_landing_harbour_name",
-                       "trip_vessel_name"]]
+                       "trip_vessel_name",
+                       "trip_ocean"]]
+    
+    df_data = df_data[df_data["trip_ocean"].str.lower().str.contains(ocean[:3])]
+    return df_data if len(df_data) > 0 else None
 
-    return df_data
-
+    
 def ERSVessel_info(df_data, trip_id):
     # df_data = ERSTripList(ers_profile, req1)
 
@@ -897,8 +938,9 @@ def ERSloadOneTripDetails(req2, trip_id, ers_profile):
                                                "a_ocean","a_latitude","a_longitude",
                                                "a_port_name", "a_current_direction", "a_current_speed",
                                                "a_wind_direction", "a_wind_speed", "a_sst",
-                                               "a_school_size", "a_positive_set", "a_operation", "a_eez"]]
-
+                                               "a_school_size", "a_positive_set", "a_operation", "a_eez", "fad_type",
+                                                "fad_has_buoy", "fad_comment", "buoy_type","buoy_identifier",
+                                                "buoy_comment", "fishing_contexts"]]
 
     return df_datas_activities
 
@@ -991,9 +1033,9 @@ def data_landing(df_landings, allData, not_match_cate=False):
             if  data_s["specie_weight_category_id"] != None and not_match_cate:
                 species_id = getId(allData, "Species", argment="faoCode=" + data_s["specie_fao_id"].upper())
 
-                weightCategory_pref = "L-" + data_s["specie_fao_id"] + "-" + str(data_s["specie_weight_category_id"])
-                # print(weightCategory_pref)
                 try:
+                    weightCategory_pref = "L-" + data_s["specie_fao_id"] + "-" + str(data_s["specie_weight_category_id"])
+                    # print(weightCategory_pref)
                     weightCategory_id = [x['topiaId'] for x in allData["WeightCategory"] if weightCategory_pref in x['code']][0]
                 except:
                     weightCategory_id = None
