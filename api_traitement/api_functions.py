@@ -17,7 +17,7 @@ import psycopg2
 
 from django.contrib.auth import authenticate
 from django.utils.html import format_html
-
+from api_traitement.ps_build_json_fonctions import *
 from api_traitement.common_functions import *
 
 # from webapps.models import User
@@ -1034,19 +1034,20 @@ def data_landing(df_landings, allData, not_match_cate=False):
                 species_id = getId(allData, "Species", argment="faoCode=" + data_s["specie_fao_id"].upper())
 
                 try:
-                    weightCategory_pref = "L-" + data_s["specie_fao_id"] + "-" + str(data_s["specie_weight_category_id"])
-                    # print(weightCategory_pref)
+                    weightCategory_pref = "L-ERS-" + data_s["specie_fao_id"] + "-" + str(data_s["specie_weight_category_id"])
                     weightCategory_id = [x['topiaId'] for x in allData["WeightCategory"] if weightCategory_pref in x['code']][0]
+                    # print(weightCategory_pref, weightCategory_id)
                 except:
                     weightCategory_id = None
-
-                landing.append(js_landing(species_id, weightCategory_id, weight=data_s["specie_catchweight"]))
-
             else:
                 species_id = getId(allData, "Species", argment="faoCode=" + data_s["specie_fao_id"].upper())
                 weightCategory_id = None
 
-                landing.append(js_landing(species_id, weightCategory_id, weight=data_s["specie_catchweight"]))
+            js_landg = js_landing(species_id, weightCategory_id, weight=data_s["specie_catchweight"]) 
+            if species_id == None and (data_s["specie_fao_id"] != None and not pd.isna(data_s['specie_fao_id'])):
+                js_landg["species"] = getId(allData, "Species", argment="faoCode=MZZ")
+                js_landg["comment"] = f' # Espèce trouvée : {data_s["specie_fao_id"]} '
+            landing.append(js_landg)
 
         return landing
     except:

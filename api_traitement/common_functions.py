@@ -2661,23 +2661,12 @@ def build_trip_ERS(allData, trip_id, info_bat, df_datas_activities, oce, prg, df
 
                             Som_thon += float(data_s['specie_catchweight']) if data_s['specie_catchweight'] != None else 0
 
-                            code_conser_rej = code_conser if data['a_table'] != "discard" else code_rej
-
                             count = int(data_s["specie_numberoffished"]) if data_s["specie_numberoffished"] != None else None
 
                             specie_catchweight = data_s['specie_catchweight'] if (data_s['specie_catchweight'] != None and not pd.isna(data_s['specie_catchweight'])) else None
-
-                            js_catches = func_tab4_catches(js_catches, species_id, specie_catchweight, weightCategory_id, WeightMeasureMet, code_conser_rej, count)
-
-                            if (count != None or Som_thon != 0):
-                                tab4_catches.append(js_catches)
-
-                            # if weightCategory_id == None:
-                            #     print("date : ", data['a_date'], " heure : ", data['a_time'])
-                            #     print(js_catches)
                         
                         else:
-                            species_id = getId(allData, "Species", argment="faoCode=" + data_s["specie_fao_id"].upper())
+                            species_id = getId(allData, "Species", argment="faoCode=" + data_s["specie_fao_id"].upper()) # Ou MZZ 
                             weightCategory_id = None
                             
                             if data_s["specie_catchweight"] != None and not pd.isna(data_s['specie_catchweight']):
@@ -2692,18 +2681,20 @@ def build_trip_ERS(allData, trip_id, info_bat, df_datas_activities, oce, prg, df
                             else:
                                 count = None
 
-                            code_conser_rej = code_conser if data['a_table'] != "discard" else code_rej
-                                                        
-                            js_catches = func_tab4_catches(js_catches, species_id, specie_catchweight, weightCategory_id, WeightMeasureMet, code_conser_rej, count)
+                        code_conser_rej = code_conser if data['a_table'] != "discard" else code_rej          
+                        js_catches = func_tab4_catches(js_catches, species_id, specie_catchweight, weightCategory_id, WeightMeasureMet, code_conser_rej, count)
 
-                            if (count != None or Som_thon != 0):
-                                tab4_catches.append(js_catches)
+                        if (count != None or Som_thon != 0):
+                            if species_id == None and (data_s["specie_fao_id"] != None and not pd.isna(data_s['specie_fao_id'])):
+                                js_catches["species"] = getId(allData, "Species", argment="faoCode=MZZ")
+                                js_catches["comment"] = f' # Espèce trouvée : {data_s["specie_fao_id"]} '
+                            tab4_catches.append(js_catches)
 
-                            # print(" specie_catchweight : ", data_s['specie_catchweight'])
+                        # print(" specie_catchweight : ", data_s['specie_catchweight'])
 
-                            # if weightCategory_id == None and data_s['specie_catchweight'] == None:
-                            #     print("date : ", data['a_date'], " heure : ", data['a_time'], " specie : ", data_s["specie_fao_id"])
-                            #     print(js_catches)
+                        # if weightCategory_id == None and data_s['specie_catchweight'] == None:
+                        #     print("date : ", data['a_date'], " heure : ", data['a_time'], " specie : ", data_s["specie_fao_id"])
+                        #     print(js_catches)
 
                     js_activitys = js_activity(tab4_catches)
                 else:
@@ -2919,7 +2910,7 @@ def build_trip_ERS(allData, trip_id, info_bat, df_datas_activities, oce, prg, df
 
 
         # landing
-        landing = api_functions.data_landing(df_lands, allData)
+        landing = api_functions.data_landing(df_lands, allData, True)
 
         js_contents = js_content(routes, oce, prg, landing = landing)
 
