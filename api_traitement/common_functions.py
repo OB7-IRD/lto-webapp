@@ -2626,10 +2626,22 @@ def build_trip_ERS(allData, trip_id, info_bat, df_datas_activities, oce, prg, df
                 date = data["a_date"]
                 nb += 1
 
-                if data['a_table'] != "discard" and data['a_table'] != "fad_activity":
+                if data['a_table'] != "discard" and data['a_table'] != "fad_activity": # Si nous avons des activités au départ et l'arriviée on met en commentaire de l'activité
                     activities_catchs, status = api_functions.f_catch(req3, str(data["catch_id"]), ers_profile) # Catch Operation
                 elif data['a_table'] == "discard":
                     activities_catchs, status = api_functions.f_discard(req4, str(data["catch_id"]), ers_profile) # Discard Operation but here "discard_id == catch_id" in data
+
+                 # Convertir captures en chaine de caracteres
+                def convCatchs(activities_catchs):
+                    activities_catchs_list = list(activities_catchs["specie_fao_id"])
+                    activities_catchs_weights_list = list(activities_catchs["specie_catchweight"])
+                    activities_catchs_str = ""
+                    for catch, weight in zip(activities_catchs_list, activities_catchs_weights_list):
+                        if weight != None:
+                            activities_catchs_str += catch + " (" + str(weight) + " t), "
+                        else:
+                            activities_catchs_str += catch + " ( null ), "
+                    return activities_catchs_str
 
                 tab4_catches = []
                 
@@ -2688,13 +2700,19 @@ def build_trip_ERS(allData, trip_id, info_bat, df_datas_activities, oce, prg, df
                             if species_id == None and (data_s["specie_fao_id"] != None and not pd.isna(data_s['specie_fao_id'])):
                                 js_catches["species"] = getId(allData, "Species", argment="faoCode=MZZ")
                                 js_catches["comment"] = f' # Espèce trouvée : {data_s["specie_fao_id"]} '
-                            tab4_catches.append(js_catches)
+                            if  data['a_table'] != "adep" and  data['a_table'] != "artp":
+                                tab4_catches.append(js_catches)
+                            # else:    
+                            #     print(data['a_table'],  " operation : ", data['a_operation'], " ==> ", js_catches)
+                                # tab4_catches.append(js_catches)
 
                         # print(" specie_catchweight : ", data_s['specie_catchweight'])
 
                         # if weightCategory_id == None and data_s['specie_catchweight'] == None:
                         #     print("date : ", data['a_date'], " heure : ", data['a_time'], " specie : ", data_s["specie_fao_id"])
                         #     print(js_catches)
+                    
+                        print("act : ", data['a_table'], " date : ", data['a_date'], " heure : ", data['a_time'], " specie : ", data_s["specie_fao_id"] , " specie_catchweight : ", data_s["specie_catchweight"], " specie_catchweight : ", data_s["specie_catchweight"])
 
                     js_activitys = js_activity(tab4_catches)
                 else:
@@ -2767,34 +2785,25 @@ def build_trip_ERS(allData, trip_id, info_bat, df_datas_activities, oce, prg, df
                         # Code 99
                         js_activitys["setCount"], js_activitys["setSuccessStatus"], js_activitys["vesselActivity"] = setCo_setSuc_vess(None, None, vers_code_99)
                         js_activitys["schoolType"] = None
-                        if (status):
-                            # Convertir captures en chaine de caracteres
-                            activities_catchs_list = list(activities_catchs["specie_fao_id"])
-                            activities_catchs_weights_list = list(activities_catchs["specie_catchweight"])
 
-                            activities_catchs_str = ""
-                            for catch, weight in zip(activities_catchs_list, activities_catchs_weights_list):
-                                if weight != None:
-                                    activities_catchs_str += catch + " (" + str(weight) + " t), "
-                                else:
-                                    activities_catchs_str += catch + " ( null ), "
+                        if (status):
+                            
+                            activities_catchs_str = convCatchs(activities_catchs)
 
                             if "comment" not in js_activitys.keys():
                                 js_activitys["comment"] = " # Operantion: \""+ data['a_operation'] +"\" non traitée par le service web."
                                 js_activitys["comment"] += " # Captures associées : \""+ activities_catchs_str +"\" "
-                                js_activitys["catches"] = []
                             else:
                                 js_activitys["comment"] += " # Operantion: \""+ data['a_operation'] +"\" non traitée par le service web."
                                 js_activitys["comment"] += " # Captures associées : \""+ activities_catchs_str +"\" "
-                                js_activitys["catches"] = []
 
                         else:
                              if "comment" not in js_activitys.keys():
                                 js_activitys["comment"] = " # Operantion: \""+ data['a_operation'] +"\" non traitée par le service web."
-                                js_activitys["catches"] = []
                              else:
                                 js_activitys["comment"] += " # Operantion: \""+ data['a_operation'] +"\" non traitée par le service web."
-                                js_activitys["catches"] = []
+
+                        js_activitys["catches"] = []
 
                 elif data['a_table'].lower() == "discard":
                     # Code 31
@@ -2804,6 +2813,22 @@ def build_trip_ERS(allData, trip_id, info_bat, df_datas_activities, oce, prg, df
                     # Code 0
                     js_activitys["setCount"], js_activitys["setSuccessStatus"], js_activitys["vesselActivity"] = setCo_setSuc_vess(None, None, vers_code_0)
                     js_activitys["schoolType"] = None
+
+                    if (status):                        
+
+                        activities_catchs_str = convCatchs(activities_catchs)
+
+                        if "comment" not in js_activitys.keys() and (data['a_table'] == "adep" or data['a_table'] == "artp"):
+                            js_activitys["comment"] = " # Activité : " + data['a_table'] 
+                            js_activitys["comment"] += " # Captures associées : \""+ activities_catchs_str +"\" "
+                        else:
+                            js_activitys["comment"] += " # Activité : " + data['a_table'] 
+                            js_activitys["comment"] += " # Captures associées : \""+ activities_catchs_str +"\" "
+
+                    js_activitys["catches"] = []
+                
+
+                # print("act : ", data['a_table'],  " operation : ", data['a_operation'], " schoolType : ", js_activitys["schoolType"])
                 
                 if data['a_table'] == "fad_activity":
                     # Code 13
