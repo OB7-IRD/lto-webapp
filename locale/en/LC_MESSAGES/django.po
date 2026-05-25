@@ -467,7 +467,7 @@ msgstr "Welcome!"
 
 #: webapps/templates/register.html:32
 msgid "register-instructions"
-msgstr "Please fill the form to create an account:"
+msgstr "Please fill the form to create an account"
 
 #: webapps/templates/register.html:39
 msgid "register-firstname"
@@ -499,7 +499,7 @@ msgstr "Submit"
 
 #: webapps/templates/register.html:112
 msgid "login"
-msgstr "Sign in page"
+msgstr "Sign in"
 
 #: webapps/views.py:100
 msgid "Votre compte n'a pas encore été validé par l'administrateur."
