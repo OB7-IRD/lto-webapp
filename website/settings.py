@@ -29,8 +29,7 @@ print(DB_DIR)
 SECRET_KEY = 'yvz$wx7h!urn+asjmu$9l56&_d6&7s+y7_9i8+7tsou7cp2xfw'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-# DEBUG = False
+DEBUG = os.environ.get('DJANGO_DEBUG', 'False') == 'True'
 
 #SECURE_SSL_REDIRECT=True
 # SESSION_COOKIE_SECURE=True
