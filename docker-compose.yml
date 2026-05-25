@@ -11,7 +11,8 @@ services:
       - web
     restart: always
   web:
-    image: ghcr.io/ob7-ird/lto-webapp:main
+    image: ghcr.io/ob7-ird/lto-webapp:latest
+    container_name: lto-webapp
     command: bash -c "python manage.py compilemessages && python manage.py collectstatic --no-input && python manage.py makemigrations && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
     volumes:
       - ./database:/home/app/webapp/database
