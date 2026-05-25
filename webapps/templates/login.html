@@ -12,7 +12,7 @@ Login
 
 
 {% block content %}
-<div class="relative py-16" style="background-image: url ({%static '/assets/img/back/bac3.png' %}); ">
+<div class="relative py-16">
     <div class="relative container m-auto px-6 text-gray-500 md:px-12 xl:px-40">
         <div class="m-auto md:w-8/12 lg:w-6/12 xl:w-6/12">
             <div class="rounded-xl bg-white shadow-xl">
@@ -64,12 +64,17 @@ Login
                         <a href="{% url 'register' %}" class="text-black-400">{% translate "register" %}</a>
                     </div>
                     <div class="mt-10 space-y-4 text-gray-600 text-center sm:-mb-8">
-                        <p class="text-xs">LTO WebApp <a href="#" class="underline">data import</a>  version <a href="#" class="underline">1.0.0</a></p>
-                    </div>
+                    <p class="text-xs">				
+					 <a href="/home" class="underline">LTO WebApp </a><br/>
+                     <span class="font-mono text-xs bg-gray-700 text-gray-400 px-2 py-1 rounded">version: {{ APP_VERSION }}</span><br/>
+                    <span class="text-xs text-gray-600">© {% now "Y" %} IRD — EUPL-1.2</span> </p>
+                 </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
 {% endblock content %}
-<!-- </body> -->
+
+{% block footer %}
+{% endblock footer %}
