@@ -103,6 +103,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'webapps.context_processors.app_version', # Ajout du context processor pour la version de l'application
             ],
         },
     },
@@ -183,3 +184,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
+LOGIN_URL = 'login'
+
+APP_VERSION = os.environ.get('APP_VERSION', 'dev')
