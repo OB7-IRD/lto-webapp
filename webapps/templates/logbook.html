@@ -1,7 +1,8 @@
-<!DOCTYPE html>
 {% load tailwind_tags %}
 {% load static %}
 {% load i18n %}
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -183,16 +184,63 @@
         {{files}}
       <!-- /End Drag and Drop -->
 
-      <!-- ERS Content -->
-        <div  id="div_ers" hidden="true" class="w-full max-h-[30rem] overflow-y-auto rounded-xl ring-1 ring-gray-300 bg-white">
-            <ul id="ers_list" role="list" class="divide-y divide-gray-200">
-                <!-- Les <li> ERS seront injectés ici par JavaScript -->
-            </ul>
-        </div>
-
-
+      
       <!-- Zone messages ERS -->
         <div id="ers_message_zone" class="mt-4 hidden"></div>
+      <!-- End Zone messages ERS -->
+
+      <!-- ERS Content -->
+
+        <div id="div_ers" hidden="true">
+
+          <!-- CARD HEADER -->
+          <div class="mb-4 flex flex-col gap-3">
+
+            <!-- Statistiques -->
+            <div class="flex items-center justify-between">
+
+              <div class="text-sm text-gray-600">
+                <span class="font-semibold text-indigo-700" id="ers_count_loaded">0</span> marées insérées 
+                /
+                <span id="ers_count_total">0</span>
+                marées
+              </div>
+
+              <!-- Boutons -->
+              <div class="flex gap-2">
+                <button id="btn_not_complete"
+                class="px-3 py-1 text-sm bg-indigo-600 text-white rounded-md hover:bg-indigo-700">
+                Marées non insérées
+                </button>
+
+                <button id="btn_complete"
+                class="px-3 py-1 text-sm bg-gray-500 text-white rounded-md hover:bg-gray-600">
+                Marées insérées
+                </button>
+              </div>
+            </div>
+
+            <!-- Barre de recherche -->
+            <div>
+              <input
+                id="ers_search"
+                type="text"
+                placeholder="Rechercher..."
+                class="w-full px-4 py-2 rounded-xl ring-1 ring-cyan-700 focus:ring-indigo-600"
+              >
+            </div>
+          </div>
+
+          <!-- CARD BODY -->
+          <div class="w-full max-h-[30rem] overflow-y-auto rounded-xl ring-1 ring-gray-300 bg-white">
+
+              <ul id="ers_list" role="list" class="divide-y divide-gray-200">
+                  <!-- Les <li> ERS seront injectés ici -->
+              </ul>
+
+          </div>
+
+        </div>
 
       <!-- /End ERS -->
 
@@ -344,7 +392,73 @@
         <span class="ml-2 animate-spin inline-block">⏳</span>
     </div>
 </div>
+<footer class="fixed bottom-0 left-0 right-0 bg-gray-800 text-gray-300 text-sm z-50">
 
+		<!-- Colonnes de liens -->
+		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+			<div class="grid grid-cols-1 md:grid-cols-3 gap-8 pb-5 border-b border-gray-700">
+
+				<div>
+					<p class="text-xs font-medium uppercase tracking-widest text-gray-500 mb-3">{% trans "Application" %}</p>
+					<a href="{% url 'home' %}" class="block text-gray-400 hover:text-white mb-2">{% trans "Tableau de bord" %}</a>
+					<a href="{% url 'logbook' %}" class="block text-gray-400 hover:text-white mb-2">Logbook</a>
+					<a href="{% url 'connect_profile' %}" class="block text-gray-400 hover:text-white mb-2">{% trans "Profil de connexion" %}</a>
+				</div>
+
+				<div>
+					<p class="text-xs font-medium uppercase tracking-widest text-gray-500 mb-3">{% trans "Documentation"						%}</p>
+					<a href="https://ob7-ird.github.io/lto-webapp/" target="_blank"
+						class="block text-gray-400 hover:text-white mb-2">{% trans "Guide utilisateur" %} ↗</a>
+					<a href="https://sfa.sc" target="_blank" class="block text-gray-400 hover:text-white mb-2">SFA ↗</a>
+					<a href="https://ob7.ird.science" target="_blank"
+						class="block text-gray-400 hover:text-white mb-2">OB7 — IRD ↗</a>
+				</div>
+
+				<div>
+					<p class="text-xs font-medium uppercase tracking-widest text-gray-500 mb-3">Support</p>
+					<a href="https://github.com/OB7-IRD/lto-webapp/issues" target="_blank"
+						class="block text-gray-400 hover:text-white mb-2">{% trans "Signaler un problème" %} ↗</a>
+					<a href="https://github.com/OB7-IRD/lto-webapp" target="_blank"
+						class="block text-gray-400 hover:text-white mb-2">GitHub ↗</a>
+				</div>
+
+			</div>
+
+			<!-- Barre basse : logo · langue · version · licence -->
+			<div class="flex flex-wrap items-center justify-between gap-4 pt-4">
+
+				<div class="flex items-center gap-3">
+					<img src="{% static 'assets/img/ob7-logo-zoom.png' %}" alt="OB7"
+						class="h-7 w-7 rounded-md opacity-80">
+					<div>
+						<p class="text-sm font-medium text-gray-200 leading-tight">LTO WebApp</p>
+						<p class="text-xs text-gray-500 leading-tight">OB7 — Institut de Recherche pour le Développement
+						</p>
+					</div>
+				</div>
+
+				<div class="flex items-center gap-4">
+					<!-- Sélecteur de langue -->
+					<div class="flex gap-1">
+						<a href="/fr{{ request.path|slice:'3:' }}"
+							class="text-xs px-2 py-1 rounded border border-gray-700 text-gray-400 hover:text-gray-200">
+							<img src="{% static 'assets/img/fr_flag.png' %}" class="inline h-3 mr-1" alt="">FR
+						</a>
+						<a href="/en{{ request.path|slice:'3:' }}"
+							class="text-xs px-2 py-1 rounded border border-gray-700 text-gray-400 hover:text-gray-200">
+							<img src="{% static 'assets/img/en_flag.png' %}" class="inline h-3 mr-1" alt="">EN
+						</a>
+					</div>
+					<!-- Version -->
+					<span class="font-mono text-xs bg-gray-700 text-gray-400 px-2 py-1 rounded">version: {{ APP_VERSION 						}}</span>
+					<!-- Licence -->
+					<span class="text-xs text-gray-600">© {% now "Y" %} IRD — EUPL-1.2</span>
+				</div>
+
+			</div>
+		</div>
+
+	</footer>
 <script type="text/javascript" src="{% static 'assets/js/code.js' %}?v={{ timestamp }}"></script>
 </body>
 </html>

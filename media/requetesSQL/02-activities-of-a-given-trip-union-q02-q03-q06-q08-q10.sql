@@ -15,7 +15,8 @@
 -- Date : 2023-07-15
 --
 -- Updates : 2023-11-22 - Added ORDER BY (...) 	a_table ASC
--- Updates : 2025-11-15 - Added discard activities
+-- 			 2025-11-15 - Added discard activities
+--			 2026-03-13 - Bug fix, fishing_context must link to fad_activity.fadactivity_fad_activity_id, not fishingactivity_fishing_activity_id
 -- ------------------------------------------------------------------------
 
 -- Departure activity (adep table)
@@ -162,8 +163,7 @@ FROM trip t
 	INNER JOIN position p ON (fa.position_fk = p.position_id)
 	INNER JOIN gear g ON (fa.gear_id_fk = g.gear_id)
 	LEFT OUTER JOIN end_fishing ef ON (ef.fishing_activity_id = fa.fishing_activity_id)
-	LEFT OUTER JOIN fishing_context fc ON (fc.fishingactivity_fishing_activity_id = fa.fishing_activity_id)
-	
+	LEFT OUTER JOIN fishing_context fc ON fc.fishingactivity_fishing_activity_id = fa.fishing_activity_id
 WHERE
 	t.trip_id IN (%s)
 	
@@ -360,7 +360,7 @@ FROM trip t
 	INNER JOIN position p ON fda.position_fk = p.position_id
 	INNER JOIN fad fd ON fda.fad_fk = fd.fad_id
 	LEFT OUTER JOIN buoy b ON b.fad_fad_id = fd.fad_id
-	LEFT OUTER JOIN fishing_context fc ON fc.fishingactivity_fishing_activity_id = fda.fad_activity_id
+	LEFT OUTER JOIN fishing_context fc ON fc.fadactivity_fad_activity_id = fda.fad_activity_id
 	
 WHERE
 	t.trip_id IN (%s)

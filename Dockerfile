@@ -2,7 +2,10 @@
 FROM --platform=$TARGETPLATFORM python:3.11-bullseye
 
 # setup environment variable  
+ARG APP_VERSION=dev
+ENV APP_VERSION=$APP_VERSION
 ENV DockerHOME=/home/app/webapp  
+
 
 # set work directory  
 RUN mkdir -p /var/www/static/
