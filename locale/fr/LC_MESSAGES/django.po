@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-25 07:17+0000\n"
+"POT-Creation-Date: 2026-05-25 10:37+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -181,7 +181,7 @@ msgid "port_mess"
 msgstr ""
 
 #: palangre_syc/templates/LL_presenting_logbook.html:574
-#: webapps/templates/logbook.html:177
+#: webapps/templates/logbook.html:178
 msgid "Annuler"
 msgstr ""
 
@@ -266,20 +266,25 @@ msgstr ""
 msgid "Le logbook a bien été envoyé dans la base"
 msgstr ""
 
-#: theme/templates/base.html:43 webapps/templates/home.html:14
-#: webapps/templates/logbook.html:32
+#: theme/templates/base.html:43 theme/templates/base.html:112
+#: webapps/templates/home.html:14 webapps/templates/logbook.html:33
+#: webapps/templates/logbook.html:403
 msgid "Tableau de bord"
 msgstr "Tableau de bord"
 
-#: theme/templates/base.html:108 webapps/templates/logbook.html:401
+#: theme/templates/base.html:111 webapps/templates/logbook.html:402
 msgid "Application"
 msgstr "Application"
 
-#: theme/templates/base.html:120 webapps/templates/logbook.html:413
+#: theme/templates/base.html:117 webapps/templates/logbook.html:408
+msgid "Documentation"
+msgstr ""
+
+#: theme/templates/base.html:119 webapps/templates/logbook.html:410
 msgid "Guide utilisateur"
 msgstr "Guide utilisateur"
 
-#: theme/templates/base.html:129 webapps/templates/logbook.html:422
+#: theme/templates/base.html:128 webapps/templates/logbook.html:419
 msgid "Signaler un problème"
 msgstr "Signaler un problème"
 
@@ -315,90 +320,90 @@ msgstr ""
 msgid "Commencer l'importation"
 msgstr ""
 
-#: webapps/templates/logbook.html:80
+#: webapps/templates/logbook.html:81
 msgid "Mise à jour des données de réferences"
 msgstr ""
 
-#: webapps/templates/logbook.html:106
+#: webapps/templates/logbook.html:107
 msgid "Domaine..."
 msgstr ""
 
-#: webapps/templates/logbook.html:107
+#: webapps/templates/logbook.html:108
 msgid "Senne"
 msgstr ""
 
-#: webapps/templates/logbook.html:108
+#: webapps/templates/logbook.html:109
 msgid "Palangre"
 msgstr ""
 
-#: webapps/templates/logbook.html:113
+#: webapps/templates/logbook.html:114
 msgid "Programmes du domaine..."
 msgstr ""
 
-#: webapps/templates/logbook.html:118
+#: webapps/templates/logbook.html:119
 msgid "Ocean..."
 msgstr ""
 
-#: webapps/templates/logbook.html:128
+#: webapps/templates/logbook.html:129
 msgid "Types de document..."
 msgstr ""
 
-#: webapps/templates/logbook.html:134
+#: webapps/templates/logbook.html:135
 msgid "Appliquer"
 msgstr ""
 
-#: webapps/templates/logbook.html:162
+#: webapps/templates/logbook.html:163
 msgid "Les documents doivent être de type: .xlsx, .xlsm"
 msgstr ""
 
-#: webapps/templates/logbook.html:176
+#: webapps/templates/logbook.html:177
 msgid "Extraction des informations pour la soumission dans observe"
 msgstr ""
 
-#: webapps/templates/logbook.html:255
+#: webapps/templates/logbook.html:256
 msgid "Info"
 msgstr ""
 
-#: webapps/templates/logbook.html:269
+#: webapps/templates/logbook.html:270
 msgid "Envoyer les donnée"
 msgstr ""
 
-#: webapps/templates/logbook.html:272
+#: webapps/templates/logbook.html:273
 msgid "Annuler et charger un nouveau logbook"
 msgstr ""
 
-#: webapps/templates/logbook.html:280
+#: webapps/templates/logbook.html:281
 msgid "Effectué"
 msgstr ""
 
-#: webapps/templates/logbook.html:288 webapps/templates/logbook.html:367
+#: webapps/templates/logbook.html:289 webapps/templates/logbook.html:368
 msgid "Charger un nouveau logbook"
 msgstr ""
 
-#: webapps/templates/logbook.html:296
+#: webapps/templates/logbook.html:297
 msgid "Erreur"
 msgstr ""
 
-#: webapps/templates/logbook.html:317
+#: webapps/templates/logbook.html:318
 msgid "Forcer l'envoie des données"
 msgstr ""
 
-#: webapps/templates/logbook.html:320 webapps/templates/logbook.html:336
+#: webapps/templates/logbook.html:321 webapps/templates/logbook.html:337
 msgid "Corriger et envoyer à nouveau"
 msgstr ""
 
-#: webapps/templates/logbook.html:328
+#: webapps/templates/logbook.html:329
 msgid "NB:"
 msgstr ""
 
-#: webapps/templates/logbook.html:328
+#: webapps/templates/logbook.html:329
 msgid ""
 "Il est possible de forcer l'envoi si les erreurs ne concernent que "
 "l'opération objet incorrectement saisie et/ou le code espèce rejeté à trois "
 "(3) caractères."
 msgstr ""
 
-#: webapps/templates/logbook.html:372 webapps/templates/logbook.html:377
+#: webapps/templates/logbook.html:373 webapps/templates/logbook.html:378
 msgid "Charger un logbook"
 msgstr ""
 
