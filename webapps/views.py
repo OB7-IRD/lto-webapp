@@ -182,7 +182,7 @@ def home(request):
 
     return render(request, 'home.html', {
         'profiles': profiles,
-        'current_profile': current_profile,
+        # 'current_profile': current_profile,  ← supprimer, géré par le context processor
         'message': message
     })
 
@@ -328,7 +328,7 @@ def logbook(request):
                     "alert_message": _("Merci de téléverser un fichier excel"),
                     "ocean_data": datat_0c_Pr["ocean"],
                     "ll_context" : json.dumps(apply_conf),
-                    'current_profile': current_profile,
+                    # 'current_profile': current_profile,  ← supprimer, géré par le context processor
                     "timestamp": now().timestamp()  # pour gérer le cache par rapport au code js
 
                 })
@@ -438,7 +438,7 @@ def logbook(request):
                 "tags": tags,
                 "ocean_data": datat_0c_Pr["ocean"],
                 "ll_context" : json.dumps(apply_conf),
-                'current_profile': current_profile,
+                # 'current_profile': current_profile,  ← supprimer, géré par le context processor
                 "timestamp": now().timestamp()  # pour gérer le cache par rapport au code js
             })
 
@@ -454,7 +454,7 @@ def logbook(request):
                     "program_data": datat_0c_Pr['program']['longline'],
                     "ocean_data": datat_0c_Pr["ocean"],
                     "ll_context" : json.dumps(apply_conf),
-                    'current_profile': current_profile,
+                    # 'current_profile': current_profile,  ← supprimer, géré par le context processor
                     "timestamp": now().timestamp()  # pour gérer le cache par rapport au code js
                 })
             elif apply_conf['domaine'] == 'senne' :
@@ -462,7 +462,7 @@ def logbook(request):
                     "program_data": datat_0c_Pr['program']['seine'],
                     "ocean_data": datat_0c_Pr["ocean"],
                     "ll_context" : json.dumps(apply_conf),
-                    'current_profile': current_profile,
+                    # 'current_profile': current_profile,  ← supprimer, géré par le context processor
                     "timestamp": now().timestamp()  # pour gérer le cache par rapport au code js
                 })
     # print("="*20, "apply_conf is None", "="*20)
@@ -472,7 +472,7 @@ def logbook(request):
                 "program_data": datat_0c_Pr["program"],
                 "ocean_data": datat_0c_Pr["ocean"],
                 "ll_context" : json.dumps(apply_conf),
-                'current_profile': current_profile,
+                # 'current_profile': current_profile,  ← supprimer, géré par le context processor
                 "timestamp": now().timestamp()  # pour gérer le cache par rapport au code js
             })
 
