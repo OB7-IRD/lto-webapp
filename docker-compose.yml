@@ -17,8 +17,8 @@ services:
     volumes:
       - ./database:/home/app/webapp/database
       - /var/www/lto-webapp/static:/var/www/lto-webapp/static
-    environment:
-      - DJANGO_DEBUG=True
+    env_file:
+      - .env
     # ports:
     #   - "8000:8000"
     expose:
