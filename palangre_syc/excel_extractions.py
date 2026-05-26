@@ -692,7 +692,8 @@ def extract_catches_v26(df_donnees, version):
             print(">>"+ specie_process+ "<<")
             print("row ::: ", type(row), "::: fin row")
             count = row[col_no]
-            kg = row[i + 1]
+            # kg = row[i + 1]
+            kg = row[col_kg]
             print("count :: ", count) 
             print("kg ::: ", kg)
             

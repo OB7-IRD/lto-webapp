@@ -8,10 +8,6 @@
 
 {% endblock title %}
 
-{% block heading %}
-{% comment %} <h1> {% translate  "Page d'accueil pour les données de palangre" %}</h1> {% endcomment %}
-{% endblock heading %}
-
 {% block content %}
 
 <form method="POST" id="previoustrip" action="{% url 'checking logbook' %}">
@@ -125,6 +121,4 @@
 
 {% endblock content %}
 
-{% block footer %}
-<p>&copy;  {% translate "En cours de développement"%} </p>
-{% endblock footer %}
+

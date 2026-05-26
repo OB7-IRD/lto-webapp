@@ -104,7 +104,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'webapps.context_processors.app_version', # Ajout du context processor pour la version de l'application
+                'webapps.context_processors.global_context', # Ajout du context processor pour la version de l'application
             ],
         },
     },
