@@ -18,9 +18,14 @@ from django.contrib import admin
 from django.urls import path, include
 from webapps.views import auth_login, deconnexion, home, logbook, register, file_upload_view, update_data, getProgram, postProg_info, domaineSelect, sendData, logbook_del_files, connect_profile, ERSloadData, ERSloadTripDetails, sendERSDATA
 from django.conf.urls.i18n import i18n_patterns
+from django.views.generic import RedirectView
+from django.conf import settings
 
 urlpatterns = [
-
+    path('', RedirectView.as_view(
+        url=f'/{settings.LANGUAGE_CODE}/', 
+        permanent=False
+    )),
     
 
     # path('change_language/', change_language, name='change_language'),
