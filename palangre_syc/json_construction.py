@@ -109,6 +109,9 @@ def get_baittype_topiaid(row, allData, version):
         return None
     else :
         for baittype in baittypes:
+            if pd.isna(bait_logbook) or bait_logbook is None or bait_logbook == '':
+                return None
+
             if baittype.get(join_on_colnames)[:len(bait_logbook)] == bait_logbook:
                 return baittype["topiaId"]
             
@@ -396,6 +399,12 @@ def create_bait_composition(bait_datatable, allData, version):
     Returns:
         _type_: le json rempli à partir des infos de mon logbook
     """
+    bait_value = bait_datatable.get('Bait') if isinstance(bait_datatable, pd.Series) else None
+    if pd.isna(bait_value) or bait_value is None:
+        bait_topiaid = None
+    else:
+        bait_topiaid = get_baittype_topiaid(bait_datatable, allData, version=version)
+
     MultipleBaits = []
     if version == "ll_17.6":
         total_baits = len(bait_datatable)
@@ -407,7 +416,7 @@ def create_bait_composition(bait_datatable, allData, version):
                 "individualSize": None,
                 "individualWeight": None,
                 "baitSettingStatus": None,
-                "baitType": get_baittype_topiaid(row, allData, version=version),
+                "baitType": bait_topiaid,
             }
             MultipleBaits.append(BaitsComposition)
 
@@ -419,7 +428,7 @@ def create_bait_composition(bait_datatable, allData, version):
                 "individualSize": None,
                 "individualWeight": None,
                 "baitSettingStatus": None,
-                "baitType": get_baittype_topiaid(bait_datatable, allData, version=version),
+                "baitType": bait_topiaid,
             }]
 
     return MultipleBaits
