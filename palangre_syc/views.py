@@ -139,9 +139,14 @@ def presenting_previous_trip(request):
     Returns:
         html page with a table of the existings trips in observe
     """
-    # est ce qu'on ne peut pas la mettre en variable globale ?
-    # allData = common_functions.load_allData_file()
-    allData_file_path = "media/data/" + os.listdir("media/data")[0]
+    # Vérification que media/data/ contient bien un fichier
+    data_files = [f for f in os.listdir("media/data") if os.path.isfile(os.path.join("media/data", f))]
+    
+    if not data_files:
+        messages.error(request, _("Les données de référence sont absentes. Veuillez effectuer une mise à jour des données de références."))
+        return redirect('logbook')
+    
+    allData_file_path = "media/data/" + data_files[0]
     request.session['allData_file_path'] = allData_file_path
     allData = common_functions.load_json_file(allData_file_path)
 
