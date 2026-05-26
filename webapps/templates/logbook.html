@@ -174,8 +174,8 @@
                     {% csrf_token %}
                   <br>
                   <div class="text-center">
-                      <input id="test_btn" value="{% translate 'Extraction des informations pour la soumission dans observe' %}" type="submit" name="submit" class="text-white bg-blue-900 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-200 font-medium rounded-lg text-xs px-3 py-1.5 mr-2 text-center inline-flex items-center dark:bg-blue-800 dark:hover:bg-blue-900"/>
-                      <input data-url="{% url 'domaineSelect' %}" id="cancel_btn" value="{% translate 'Annuler' %}" type="reset" name="submit_annuler" class="text-red-900 bg-transparent border border-red-900 hover:bg-red-900 hover:text-white focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-xs px-3 py-1.5 text-center dark:border-red-800 dark:text-red-800 dark:hover:text-white"/>
+                    <input data-url="{% url 'domaineSelect' %}" id="cancel_btn" value="{% translate 'Annuler' %}" type="reset" name="submit_annuler" class="text-red-900 bg-transparent border border-red-900 hover:bg-red-900 hover:text-white focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-xs px-3 py-1.5 text-center dark:border-red-800 dark:text-red-800 dark:hover:text-white"/>  
+                    <input id="test_btn" value="{% translate 'Extraction des informations pour la soumission dans observe' %}" type="submit" name="submit" class="text-white bg-blue-900 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-200 font-medium rounded-lg text-xs px-3 py-1.5 mr-2 text-center inline-flex items-center dark:bg-blue-800 dark:hover:bg-blue-900"/> 
                   </div>
               </form>
           </div>
@@ -392,7 +392,7 @@
         <span class="ml-2 animate-spin inline-block">⏳</span>
     </div>
 </div>
-<footer class="fixed bottom-0 left-0 right-0 bg-gray-800 text-gray-300 text-sm z-50">
+<footer class="bottom-0 left-0 right-0 bg-gray-800 text-gray-300 text-sm z-50">
 
 		<!-- Colonnes de liens -->
 		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
