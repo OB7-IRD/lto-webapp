@@ -20,24 +20,25 @@ from django.contrib.messages import constants as message_constants
 BASE_DIR = Path(__file__).resolve().parent.parent
 DB_DIR = os.path.join(BASE_DIR, "database")
 
-print(DB_DIR)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'yvz$wx7h!urn+asjmu$9l56&_d6&7s+y7_9i8+7tsou7cp2xfw'
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'yvz$wx7h!urn+asjmu$9l56&_d6&7s+y7_9i8+7tsou7cp2xfw')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-# DEBUG = False
+DEBUG = os.environ.get('DJANGO_DEBUG', 'False') == 'True'
 
 #SECURE_SSL_REDIRECT=True
 # SESSION_COOKIE_SECURE=True
 # CSRF_COOKIE_SECURE=True
 
 ALLOWED_HOSTS = ['*']
-CSRF_TRUSTED_ORIGINS = ["http://localhost:8000", "http://10.9.8.133:8000"]
+CSRF_TRUSTED_ORIGINS = os.environ.get(
+    'CSRF_TRUSTED_ORIGINS',
+    'http://localhost:8000'
+).split(',')
 
 AUTH_USER_MODEL = "webapps.LTOUser"
 # AUTH_USER_MODEL = "webapps.User"
