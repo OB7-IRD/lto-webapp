@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load static tailwind_tags %}
+{% load i18n %}
+
+
+	{% block footer %}
+
+	<footer class="fixed bottom-0 left-0 right-0 bg-gray-800 text-gray-300 text-sm z-50">
+
+		<!-- Colonnes de liens -->
+		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+
+			<!-- Barre basse : logo · langue · version · licence -->
+			<div class="flex flex-wrap items-center justify-between gap-4 pt-4">
+
+				<div class="flex items-center gap-3">
+					<img src="{% static 'assets/img/ob7-logo-zoom.png' %}" alt="OB7"
+						class="h-7 w-7 rounded-md opacity-80">
+					<div>
+						<p class="text-sm font-medium text-gray-200 leading-tight">LTO WebApp</p>
+						<p class="text-xs text-gray-500 leading-tight">OB7 — Institut de Recherche pour le Développement
+						</p>
+					</div>
+				</div>
+
+				<div class="flex items-center gap-4">
+					<!-- Sélecteur de langue -->
+					<div class="flex gap-1">
+						<a href="/fr{{ request.path|slice:'3:' }}"
+							class="text-xs px-2 py-1 rounded border border-gray-700 text-gray-400 hover:text-gray-200">
+							<img src="{% static 'assets/img/fr_flag.png' %}" class="inline h-3 mr-1" alt="">FR
+						</a>
+						<a href="/en{{ request.path|slice:'3:' }}"
+							class="text-xs px-2 py-1 rounded border border-gray-700 text-gray-400 hover:text-gray-200">
+							<img src="{% static 'assets/img/en_flag.png' %}" class="inline h-3 mr-1" alt="">EN
+						</a>
+					</div>
+					<!-- Version -->
+					<span class="font-mono text-xs bg-gray-700 text-gray-400 px-2 py-1 rounded">version: {{ APP_VERSION }}</span>
+					<!-- Licence -->
+					<span class="text-xs text-gray-600">© {% now "Y" %} IRD — EUPL-1.2</span>
+				</div>
+
+			</div>
+		</div>
+
+	</footer>
+	{% endblock footer %}
