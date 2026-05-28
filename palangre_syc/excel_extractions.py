@@ -721,7 +721,7 @@ def extract_catches_v26(df_donnees, version):
                 "species": species_code,
                 "onBoardProcessing": specie_process,
                 "catchFate" : 'RET',
-                "discardHealthStatus": None,
+                "discardHealthStatus": "A",
                 "count": count,
                 "kg": kg
             })
