@@ -71,8 +71,10 @@ INSTALLED_APPS = [
     'tailwind',
     'theme',
     'palangre_syc',
-    'django_browser_reload',
 ]
+
+if DEBUG:
+    INSTALLED_APPS += ['django_browser_reload']
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -83,9 +85,11 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    "django_browser_reload.middleware.BrowserReloadMiddleware",
     'django.middleware.locale.LocaleMiddleware',
     ]
+
+if DEBUG:
+    MIDDLEWARE += ['django_browser_reload.middleware.BrowserReloadMiddleware']
 
 # MESSAGE_STORAGE = "django.contrib.messages.storage.cookie.CookieStorage"
 

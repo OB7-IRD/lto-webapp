@@ -58,7 +58,10 @@ urlpatterns += i18n_patterns(
 
     ####################### Fin url #########################
     path("palangre_syc/", include("palangre_syc.urls")),
-    path("__reload__/", include("django_browser_reload.urls"))
 )
+
+if settings.DEBUG:
+    from django.urls import include, path
+    urlpatterns += [path('__reload__/', include('django_browser_reload.urls'))]
 
 handler404 = 'webapps.views.error_404_view'
