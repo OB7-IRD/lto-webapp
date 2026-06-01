@@ -276,14 +276,28 @@ $(document).ready(function(){
                     // maxFile = 2;
                     // group_file   = '.xlsx, .xlsm';
 
+                    console.log('[programme] ajax response for domaine=', $this.val(), response);
+
+                    // Si endpoint renvoie une page HTML (erreur) ou un autre format JSON,
+                    // response.dataPro peut ne pas exister => on ne plante pas.
+                    if (!response || !response.dataPro || !Array.isArray(response.dataPro.id)) {
+                        console.error('[programme] response.dataPro invalide:', response);
+                        $("#apply select[name='programme']").find('.after').nextAll().remove();
+                        return;
+                    }
+
                     let option = '';
                     for (var i = 0; i < response.dataPro.id.length; i++) {
-                        option += '<option value='+response.dataPro.id[i]+'>'+response.dataPro.value[i]+'</option>';
+                        option += `<option value="${response.dataPro.id[i]}">${response.dataPro.value[i]}</option>`;
                     }
+                    $("#apply select[name='programme']").find('.after').nextAll().remove();
                     $("#apply select[name='programme']").find('.after').after(option);
+
+                    console.log('[programme] domaine=', $this.val(), 'firstId=', response.dataPro?.id?.[0], 'programme.val() after inject=', $("#programme").val());
                 },
-                error: function(response){
-                    console.log('Rien');
+                error: function(xhr){
+                    console.error('[programme] erreur AJAX:', xhr);
+                    $("#apply select[name='programme']").find('.after').nextAll().remove();
                 }
             });
             // $("#apply").append('<option value="{{ key }}">{{ value }}</option>');
