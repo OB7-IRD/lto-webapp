@@ -83,31 +83,32 @@ $(document).ready(function(){
         $select.append(html);
     }
 
-    function ajaxProgramSelect(ll_context, url){
-        $.ajax({
-            url: url,
-            type: 'GET',
-            dataType: "json",
-            success: function(response) {
-                var option = '';
-                for (var i = 0; i < response.dataPro.id.length; i++) {
-                    if (!ll_context.programme) {
-                       option += '<option value="' + response.dataPro.id[i] + '">' + response.dataPro.value[i] + '</option>';
-                    } else {
-                       if (ll_context.programme == response.dataPro.id[i]) {
-                          option += '<option selected value="' + response.dataPro.id[i] + '">' + response.dataPro.value[i] + '</option>';
-                       } else {
-                          option += '<option value="' + response.dataPro.id[i] + '">' + response.dataPro.value[i] + '</option>';
-                       }
-                    }
-                }
-                $("#apply select[name='programme']").find('.after').after(option);
-            },
-            error: function(response) {
-               console.log('Erreur lors de la requête AJAX');
+   function ajaxProgramSelect(ll_context, url){
+    $.ajax({
+        url: url,
+        type: 'GET',
+        dataType: "json",
+        success: function(response) {
+
+            if (!response.dataPro || !response.dataPro.id) {
+                console.error('Structure JSON inattendue :', response);
+                return;
             }
-        });
-    }
+
+            var option = '';
+            for (var i = 0; i < response.dataPro.id.length; i++) {
+                var isSelected = (ll_context.programme == response.dataPro.id[i]);
+                // ↓ Guillemets autour de la valeur
+                option += `<option ${isSelected ? 'selected' : ''} value="${response.dataPro.id[i]}">${response.dataPro.value[i]}</option>`;
+            }
+            $("#apply select[name='programme']").find('.after').after(option);
+        },
+        error: function(xhr, status, error) {
+            console.error(`Erreur AJAX [${xhr.status}] :`, error);
+            console.error('Réponse :', xhr.responseText);
+        }
+    });
+}
 
     /**
      * Formate une date ISO (ex: 2025-06-30T06:48:00)
@@ -250,7 +251,7 @@ $(document).ready(function(){
                     let option = '';
                     for (var i = 0; i < response.dataPro.id.length; i++) {
                         //println(response.dataPro.id[i]);
-                        option += '<option value='+response.dataPro.id[i]+'>'+response.dataPro.value[i]+'</option>';
+                        option += `<option value="${response.dataPro.id[i]}">${response.dataPro.value[i]}</option>`;
                     }
                     $("#apply select[name='programme']").find('.after').after(option);
                 },
