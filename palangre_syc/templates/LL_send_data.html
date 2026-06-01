@@ -1,16 +1,13 @@
-{% extends "base.html" %}
+{% extends "base_for_processing_step.html" %}
 {% load static %}
 {% load i18n %}
 
 
 {% block title %}
-{% comment %} {% translate "Palangre aux Seychelles"%} {% endcomment %}
+{% translate "Palangre aux Seychelles"%}
 {% endblock title %}
 
 
-{% block heading %}
-{% comment %} <h1> {% translate "Envoie des données dans la base" %}</h1> {% endcomment %}
-{% endblock heading %}
 
 {% block content %}
 
@@ -61,7 +58,3 @@
 
 
 {% endblock content %}
-
-{% block footer %}
-<p>&copy; {% translate "En cours de développement" %}</p>
-{% endblock footer %}

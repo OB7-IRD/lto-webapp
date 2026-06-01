@@ -17,7 +17,7 @@
 </head>
 
 
-<body id="body">
+<body id="body" class="flex flex-col min-h-screen">
 
 <div class="min-h-full">
   <nav class="bg-gray-800">
@@ -90,7 +90,7 @@
     </div>
 
   </header>
-  <main>
+  <main class="min-h-[800px] pb-48">
     <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
         {% if ll_context != None %}
             <script id="context-data" type="application/json">
@@ -174,8 +174,8 @@
                     {% csrf_token %}
                   <br>
                   <div class="text-center">
-                      <input id="test_btn" value="{% translate 'Extraction des informations pour la soumission dans observe' %}" type="submit" name="submit" class="text-white bg-blue-900 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-200 font-medium rounded-lg text-xs px-3 py-1.5 mr-2 text-center inline-flex items-center dark:bg-blue-800 dark:hover:bg-blue-900"/>
-                      <input data-url="{% url 'domaineSelect' %}" id="cancel_btn" value="{% translate 'Annuler' %}" type="reset" name="submit_annuler" class="text-red-900 bg-transparent border border-red-900 hover:bg-red-900 hover:text-white focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-xs px-3 py-1.5 text-center dark:border-red-800 dark:text-red-800 dark:hover:text-white"/>
+                    <input data-url="{% url 'domaineSelect' %}" id="cancel_btn" value="{% translate 'Annuler' %}" type="reset" name="submit_annuler" class="text-red-900 bg-transparent border border-red-900 hover:bg-red-900 hover:text-white focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-xs px-3 py-1.5 text-center dark:border-red-800 dark:text-red-800 dark:hover:text-white"/>  
+                    <input id="test_btn" value="{% translate 'Extraction des informations pour la soumission dans observe' %}" type="submit" name="submit" class="text-white bg-blue-900 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-200 font-medium rounded-lg text-xs px-3 py-1.5 mr-2 text-center inline-flex items-center dark:bg-blue-800 dark:hover:bg-blue-900"/> 
                   </div>
               </form>
           </div>
@@ -396,32 +396,6 @@
 
 		<!-- Colonnes de liens -->
 		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-			<div class="grid grid-cols-1 md:grid-cols-3 gap-8 pb-5 border-b border-gray-700">
-
-				<div>
-					<p class="text-xs font-medium uppercase tracking-widest text-gray-500 mb-3">{% trans "Application" %}</p>
-					<a href="{% url 'home' %}" class="block text-gray-400 hover:text-white mb-2">{% trans "Tableau de bord" %}</a>
-					<a href="{% url 'logbook' %}" class="block text-gray-400 hover:text-white mb-2">Logbook</a>
-				</div>
-
-				<div>
-					<p class="text-xs font-medium uppercase tracking-widest text-gray-500 mb-3">{% trans "Documentation"						%}</p>
-					<a href="https://ob7-ird.github.io/lto-webapp/" target="_blank"
-						class="block text-gray-400 hover:text-white mb-2">{% trans "Guide utilisateur" %} ↗</a>
-					<a href="https://sfa.sc" target="_blank" class="block text-gray-400 hover:text-white mb-2">SFA ↗</a>
-					<a href="https://ob7.ird.science" target="_blank"
-						class="block text-gray-400 hover:text-white mb-2">OB7 — IRD ↗</a>
-				</div>
-
-				<div>
-					<p class="text-xs font-medium uppercase tracking-widest text-gray-500 mb-3">Support</p>
-					<a href="https://github.com/OB7-IRD/lto-webapp/issues" target="_blank"
-						class="block text-gray-400 hover:text-white mb-2">{% trans "Signaler un problème" %} ↗</a>
-					<a href="https://github.com/OB7-IRD/lto-webapp" target="_blank"
-						class="block text-gray-400 hover:text-white mb-2">GitHub ↗</a>
-				</div>
-
-			</div>
 
 			<!-- Barre basse : logo · langue · version · licence -->
 			<div class="flex flex-wrap items-center justify-between gap-4 pt-4">
