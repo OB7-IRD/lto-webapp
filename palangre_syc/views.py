@@ -5,7 +5,7 @@ import os
 import json
 # import datetime
 import warnings
-
+import ast
 
 import pandas as pd
 import numpy as np
@@ -189,7 +189,17 @@ def presenting_previous_trip(request):
 
     if selected_file is not None and apply_conf is not None:
 
-        file_name = selected_file.strip("['']")
+            # Parser la liste correctement
+
+        try:
+            file_list = ast.literal_eval(selected_file)
+            if isinstance(file_list, str):
+                file_list = [file_list]
+        except (ValueError, SyntaxError):
+            file_list = [selected_file]
+
+        # Prendre uniquement le premier fichier (ou adapter selon votre logique)
+        file_name = file_list[0]
         logbook_file_path = DIR + "/" + file_name
 
         request.session['logbook_file_path'] = logbook_file_path
