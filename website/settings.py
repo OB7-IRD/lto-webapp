@@ -29,7 +29,6 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'yvz$wx7h!urn+asjmu$9l56&_d6&7s
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DJANGO_DEBUG', 'False') == 'True'
-print(DEBUG)
 #SECURE_SSL_REDIRECT=True
 # SESSION_COOKIE_SECURE=True
 # CSRF_COOKIE_SECURE=True
