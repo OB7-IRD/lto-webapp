@@ -20,24 +20,25 @@ from django.contrib.messages import constants as message_constants
 BASE_DIR = Path(__file__).resolve().parent.parent
 DB_DIR = os.path.join(BASE_DIR, "database")
 
-print(DB_DIR)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'yvz$wx7h!urn+asjmu$9l56&_d6&7s+y7_9i8+7tsou7cp2xfw'
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'yvz$wx7h!urn+asjmu$9l56&_d6&7s+y7_9i8+7tsou7cp2xfw')
 
 # SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = os.environ.get('DJANGO_DEBUG', 'False') == 'True'
 DEBUG = True
-# DEBUG = False
-
 #SECURE_SSL_REDIRECT=True
 # SESSION_COOKIE_SECURE=True
 # CSRF_COOKIE_SECURE=True
 
 ALLOWED_HOSTS = ['*']
-CSRF_TRUSTED_ORIGINS = ["http://localhost:8000", "http://10.9.8.133:8000"]
+CSRF_TRUSTED_ORIGINS = os.environ.get(
+    'CSRF_TRUSTED_ORIGINS',
+    'http://localhost:8000'
+).split(',')
 
 AUTH_USER_MODEL = "webapps.LTOUser"
 # AUTH_USER_MODEL = "webapps.User"
@@ -70,8 +71,12 @@ INSTALLED_APPS = [
     'tailwind',
     'theme',
     'palangre_syc',
-    'django_browser_reload',
 ]
+
+if DEBUG:
+    INSTALLED_APPS += [
+        "django_browser_reload",
+    ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -82,8 +87,12 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    "django_browser_reload.middleware.BrowserReloadMiddleware",
     'django.middleware.locale.LocaleMiddleware',
+    ]
+
+if DEBUG:
+    MIDDLEWARE += [
+        "django_browser_reload.middleware.BrowserReloadMiddleware",
     ]
 
 # MESSAGE_STORAGE = "django.contrib.messages.storage.cookie.CookieStorage"
@@ -103,7 +112,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'webapps.context_processors.app_version', # Ajout du context processor pour la version de l'application
+                'webapps.context_processors.global_context', # Ajout du context processor pour la version de l'application
             ],
         },
     },
