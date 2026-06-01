@@ -13,7 +13,6 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-import django_browser_reload
 from django.contrib import admin
 from django.urls import path, include
 from webapps.views import auth_login, deconnexion, home, logbook, register, file_upload_view, update_data, getProgram, postProg_info, domaineSelect, sendData, logbook_del_files, connect_profile, ERSloadData, ERSloadTripDetails, sendERSDATA
