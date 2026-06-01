@@ -567,7 +567,7 @@ def extract_fishing_effort(df_donnees, version):
     if version == "ll_17.6":
         df_fishing_effort = df_donnees.iloc[24:55, [0, 9, 10, 11]].copy()
     elif version == "ll_26":
-        df_fishing_effort = df_donnees.iloc[23:54, [0, 9, 10, 11]].copy()
+        df_fishing_effort = df_donnees.iloc[23:54, [0, 10, 11, 12]].copy()
     
     df_fishing_effort.columns = ['Day', 'Hooks per basket', 'Total hooks', 'Total lightsticks']
     
@@ -721,7 +721,7 @@ def extract_catches_v26(df_donnees, version):
                 "species": species_code,
                 "onBoardProcessing": specie_process,
                 "catchFate" : 'RET',
-                "discardHealthStatus": None,
+                "discardHealthStatus": "A",
                 "count": count,
                 "kg": kg
             })
