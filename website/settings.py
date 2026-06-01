@@ -165,16 +165,29 @@ USE_I18N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.0/howto/static-files/
+# ── Fichiers statiques ──────────────────────────────────────
 
 STATIC_URL = '/static/'
-STATIC_ROOT = "/var/www/lto-webapp/static/"
+
+# STATIC_ROOT : dossier de collecte pour la production
+# En dev local, on pointe dans le projet ; en prod Docker, /var/www/...
+STATIC_ROOT = os.environ.get(
+    'STATIC_ROOT',
+    BASE_DIR / 'staticfiles'   # ← dossier local par défaut
+)
+
+# STATICFILES_DIRS : dossiers sources supplémentaires
+# On n'inclut un chemin que s'il existe réellement
+_extra_static = os.environ.get('EXTRA_STATIC_DIR', '')
 
 STATICFILES_DIRS = [
-    BASE_DIR / 'static/',
-    "/var/www/static/",
+    d for d in [
+        BASE_DIR / 'static',
+        Path(_extra_static) if _extra_static else None,
+    ]
+    if d and Path(d).exists()   # ← ignore les chemins inexistants
 ]
+
 
 
 # Default primary key field type
