@@ -170,3 +170,5 @@ cython_debug/
 
 staticfiles
 /palangre_syc/test_LTO_entries
+
+node_modules/
