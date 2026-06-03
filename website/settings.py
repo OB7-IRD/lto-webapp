@@ -29,6 +29,9 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'yvz$wx7h!urn+asjmu$9l56&_d6&7s
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DJANGO_DEBUG', 'False') == 'True'
+# DEBUG = True
+# DEBUG = False
+
 RELOAD_MODE = os.environ.get('RELOAD_MODE', 'False') == 'True'
 
 

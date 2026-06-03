@@ -83,32 +83,32 @@ $(document).ready(function(){
         $select.append(html);
     }
 
-   function ajaxProgramSelect(ll_context, url){
-    $.ajax({
-        url: url,
-        type: 'GET',
-        dataType: "json",
-        success: function(response) {
+  function ajaxProgramSelect(ll_context, url){
+        $.ajax({
+            url: url,
+            type: 'GET',
+            dataType: "json",
+            success: function(response) {
 
-            if (!response.dataPro || !response.dataPro.id) {
-                console.error('Structure JSON inattendue :', response);
-                return;
-            }
+                if (!response.dataPro || !response.dataPro.id) {
+                    console.log('Structure JSON inattendue :', response);
+                    return;
+                }
 
-            var option = '';
-            for (var i = 0; i < response.dataPro.id.length; i++) {
-                var isSelected = (ll_context.programme == response.dataPro.id[i]);
-                // ↓ Guillemets autour de la valeur
-                option += `<option ${isSelected ? 'selected' : ''} value="${response.dataPro.id[i]}">${response.dataPro.value[i]}</option>`;
+                var option = '';
+                for (var i = 0; i < response.dataPro.id.length; i++) {
+                    var isSelected = (ll_context.programme == response.dataPro.id[i]);
+                    // ↓ Guillemets autour de la valeur
+                    option += `<option ${isSelected ? 'selected' : ''} value="${response.dataPro.id[i]}">${response.dataPro.value[i]}</option>`;
+                }
+                $("#apply select[name='programme']").find('.after').after(option);
+            },
+            error: function(xhr, status, error) {
+                console.log(`Erreur AJAX [${xhr.status}] :`, error);
+                console.log('Réponse :', xhr.responseText);
             }
-            $("#apply select[name='programme']").find('.after').after(option);
-        },
-        error: function(xhr, status, error) {
-            console.error(`Erreur AJAX [${xhr.status}] :`, error);
-            console.error('Réponse :', xhr.responseText);
-        }
-    });
-}
+        });
+    }
 
     /**
      * Formate une date ISO (ex: 2025-06-30T06:48:00)
@@ -179,6 +179,9 @@ $(document).ready(function(){
         return li_html;
     }
 
+    // récupération automatique de la langue depuis l'URL
+    let CURRENT_LANGUAGE = window.location.pathname.split('/')[1];
+
     // Récupération des données du contexte via le script JSON intégré
     let scriptElement = document.getElementById('context-data');
     let ll_context = null;
@@ -196,7 +199,7 @@ $(document).ready(function(){
             }
             if (ll_context.domaine == "palangre") {
                 // console.log(ll_context.domaine)
-                ajaxProgramSelect(ll_context, '/palangre')
+                ajaxProgramSelect(ll_context, '/' + CURRENT_LANGUAGE + '/palangre')
 
                 updateTyDocSelect(
                     [
@@ -207,7 +210,7 @@ $(document).ready(function(){
                 );
 
             } else if (ll_context.domaine == "senne") {
-                ajaxProgramSelect(ll_context, '/senne')
+                ajaxProgramSelect(ll_context, '/' + CURRENT_LANGUAGE + '/senne')
 
                 updateTyDocSelect(
                     [
@@ -242,7 +245,7 @@ $(document).ready(function(){
             ]);
 
             $.ajax({
-                url: '/'+ $this.val(),
+                url: '/' + CURRENT_LANGUAGE + '/'+ $this.val(),
                 type: 'GET',
                 success: function(response){
                     // maxFile = 2;
@@ -251,7 +254,7 @@ $(document).ready(function(){
                     let option = '';
                     for (var i = 0; i < response.dataPro.id.length; i++) {
                         //println(response.dataPro.id[i]);
-                        option += `<option value="${response.dataPro.id[i]}">${response.dataPro.value[i]}</option>`;
+                        option += '<option value='+response.dataPro.id[i]+'>'+response.dataPro.value[i]+'</option>';
                     }
                     $("#apply select[name='programme']").find('.after').after(option);
                 },
@@ -270,34 +273,20 @@ $(document).ready(function(){
             ]);
             
             $.ajax({
-                url: '/'+$this.val(),
+                url: '/' + CURRENT_LANGUAGE + '/'+$this.val(),
                 type: 'GET',
                 success: function(response){
                     // maxFile = 2;
                     // group_file   = '.xlsx, .xlsm';
 
-                    console.log('[programme] ajax response for domaine=', $this.val(), response);
-
-                    // Si endpoint renvoie une page HTML (erreur) ou un autre format JSON,
-                    // response.dataPro peut ne pas exister => on ne plante pas.
-                    if (!response || !response.dataPro || !Array.isArray(response.dataPro.id)) {
-                        console.error('[programme] response.dataPro invalide:', response);
-                        $("#apply select[name='programme']").find('.after').nextAll().remove();
-                        return;
-                    }
-
                     let option = '';
                     for (var i = 0; i < response.dataPro.id.length; i++) {
-                        option += `<option value="${response.dataPro.id[i]}">${response.dataPro.value[i]}</option>`;
+                        option += '<option value='+response.dataPro.id[i]+'>'+response.dataPro.value[i]+'</option>';
                     }
-                    $("#apply select[name='programme']").find('.after').nextAll().remove();
                     $("#apply select[name='programme']").find('.after').after(option);
-
-                    console.log('[programme] domaine=', $this.val(), 'firstId=', response.dataPro?.id?.[0], 'programme.val() after inject=', $("#programme").val());
                 },
-                error: function(xhr){
-                    console.error('[programme] erreur AJAX:', xhr);
-                    $("#apply select[name='programme']").find('.after').nextAll().remove();
+                error: function(response){
+                    console.log('Rien');
                 }
             });
             // $("#apply").append('<option value="{{ key }}">{{ value }}</option>');
@@ -532,7 +521,7 @@ $(document).ready(function(){
          */
         $.ajax({
             type: 'GET',
-            url: `/logbook/ERSloadTripDetails/${tripId}/`,
+            url: '/' + CURRENT_LANGUAGE + `/logbook/ERSloadTripDetails/${tripId}/`,
             dataType: 'json',
             success: function (response) {
 
@@ -646,12 +635,10 @@ $(document).ready(function(){
         /**
          * Appel AJAX vers Django
          */
+        console.log("CURRENT_LANGUAGE ", CURRENT_LANGUAGE)
         $.ajax({
             type: 'POST',
             url: `/logbook/sendERSDATA/${tripId}/`,
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest'
-            },
             success: function (response) {
 
                 let alertHtml = '';

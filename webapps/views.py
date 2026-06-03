@@ -516,6 +516,12 @@ def getProgram(request, domaine):
 
 # @login_required
 def postProg_info(request):
+
+    print("="*50)
+    print(request.headers)
+    print("XRW =", request.headers.get('x-requested-with'))
+    print("="*50)
+
     if request.headers.get('x-requested-with') == 'XMLHttpRequest':
 
         request.session['dico_config'] = {
