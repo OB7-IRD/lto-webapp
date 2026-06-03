@@ -29,9 +29,9 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'yvz$wx7h!urn+asjmu$9l56&_d6&7s
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DJANGO_DEBUG', 'False') == 'True'
-#SECURE_SSL_REDIRECT=True
-# SESSION_COOKIE_SECURE=True
-# CSRF_COOKIE_SECURE=True
+RELOAD_MODE = os.environ.get('RELOAD_MODE', 'False') == 'True'
+
+
 
 ALLOWED_HOSTS = ['*']
 CSRF_TRUSTED_ORIGINS = os.environ.get(
@@ -72,7 +72,7 @@ INSTALLED_APPS = [
     'palangre_syc',
 ]
 
-if DEBUG:
+if RELOAD_MODE:
     INSTALLED_APPS += ['django_browser_reload']
 
 MIDDLEWARE = [
@@ -87,7 +87,7 @@ MIDDLEWARE = [
     'django.middleware.locale.LocaleMiddleware',
     ]
 
-if DEBUG:
+if RELOAD_MODE:
     MIDDLEWARE += ['django_browser_reload.middleware.BrowserReloadMiddleware']
 
 # MESSAGE_STORAGE = "django.contrib.messages.storage.cookie.CookieStorage"
