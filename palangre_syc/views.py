@@ -5,7 +5,6 @@ import os
 import json
 # import datetime
 import warnings
-import ast
 
 import pandas as pd
 import numpy as np
@@ -14,11 +13,11 @@ from django.shortcuts import render
 from django.contrib import messages
 from django.utils.translation import gettext as _
 
+from pathlib import Path
 from palangre_syc import excel_extractions
 from palangre_syc import json_construction
 from api_traitement import api_functions, common_functions
-
-DIR = "./media/logbooks"
+from website.settings import MEDIA_ROOT ,LOGBOOKS_DIR ,DATA_DIR, TEMP_DIR  
 
 def get_previous_trip_infos(request, token, df_donnees_p1, allData):
     """Fonction qui va faire appel au WS pour :
@@ -140,13 +139,11 @@ def presenting_previous_trip(request):
         html page with a table of the existings trips in observe
     """
     # Vérification que media/data/ contient bien un fichier
-    data_files = [f for f in os.listdir("media/data") if os.path.isfile(os.path.join("media/data", f))]
-    
+    data_files = [f for f in DATA_DIR.iterdir() if f.is_file()]
     if not data_files:
-        messages.error(request, _("Les données de référence sont absentes. Veuillez effectuer une mise à jour des données de références."))
+        messages.error(request, _("Les données de référence sont absentes. Veuillez effectuer une mise à jour."))
         return redirect('logbook')
-    
-    allData_file_path = "media/data/" + data_files[0]
+    allData_file_path = str(data_files[0])
     request.session['allData_file_path'] = allData_file_path
     allData = common_functions.load_json_file(allData_file_path)
 
@@ -187,67 +184,47 @@ def presenting_previous_trip(request):
     context = dict(domaine=apply_conf['domaine'], program=programme, programtopiaid=apply_conf['programme'],
                     ocean=ocean, oceantopiaid=apply_conf['ocean'], version=apply_conf['ty_doc'])
 
-    if selected_file is not None and apply_conf is not None:
+    logbook_file_path = request.session.get('logbook_file_path')
+    if not logbook_file_path or not Path(logbook_file_path).exists():
+        messages.error(request, _("Fichier logbook introuvable. Veuillez le déposer à nouveau."))
+        return redirect('logbook')
 
-            # Parser la liste correctement
+    df_donnees_p1 = common_functions.read_excel(logbook_file_path, 1)
 
-        try:
-            file_list = ast.literal_eval(selected_file)
-            if isinstance(file_list, str):
-                file_list = [file_list]
-        except (ValueError, SyntaxError):
-            file_list = [selected_file]
+    token = request.session['token']
+    base_url = request.session['base_url']
+    if not api_functions.is_valid(base_url, token):
+        username = request.session.get('username')
+        password = request.session.get('password')
+        database = request.session.get('database')
+        client_app_version = request.session.get('client_app_version')
+        model_version = request.session.get('model_version')
+        referential_locale = request.session.get('referential_locale')
+        token = api_functions.reload_token(
+            username=username,
+            password=password,
+            base_url=base_url,
+            database=database,
+            client_app_version=client_app_version,
+            model_version=model_version,
+            referential_locale=referential_locale
+        )
+        request.session['token'] = token
 
-        # Prendre uniquement le premier fichier (ou adapter selon votre logique)
-        file_name = file_list[0]
-        logbook_file_path = DIR + "/" + file_name
+    try:
+        start_time = time.time()
+        df_previous_trip = get_previous_trip_infos(request, token, df_donnees_p1, allData)
+        end_time = time.time()
+        print("Temps d'exécution:", end_time - start_time, "secondes")
 
-        request.session['logbook_file_path'] = logbook_file_path
+        if df_previous_trip is not None:
+            df_previous_trip = df_previous_trip.to_dict("index")
+            context.update({'df_previous': df_previous_trip})
 
-        print("="*20, "presenting_previous_trip selected_file", "="*20)
-        print(logbook_file_path)
+    except Exception as e:
+        print("Erreur get_previous_trip_infos:", e)
+        context.update({'df_previous': None})
 
-        df_donnees_p1 = common_functions.read_excel(logbook_file_path, 1)
-
-        # on test le token, s'il est non valide, on le met à jour
-        token = request.session['token']
-        base_url = request.session['base_url']
-        if not api_functions.is_valid(base_url, token):
-            username = request.session.get('username')
-            password = request.session.get('password')
-            database = request.session.get('database')
-            client_app_version = request.session.get('client_app_version')  # Peut être None
-            model_version = request.session.get('model_version')            # Peut être None
-            referential_locale = request.session.get('referential_locale')
-
-            # Appel à reload_token avec tous les paramètres requis
-            token = api_functions.reload_token(
-                username=username,
-                password=password,
-                base_url=base_url,
-                database=database,
-                client_app_version=client_app_version,
-                model_version=model_version,
-                referential_locale=referential_locale
-            )
-            request.session['token'] = token
-
-        try:
-            start_time = time.time()
-            df_previous_trip = get_previous_trip_infos(request, token, df_donnees_p1, allData)
-            end_time = time.time()
-
-            print("Temps d'exécution:", end_time - start_time, "secondes")
-            print("°"*20, "presenting_previous_trip - context updated", "°"*20)
-
-            if df_previous_trip is not None:
-                # Conversion car ne veut pas passer un dataframe en context
-                df_previous_trip = df_previous_trip.to_dict("index")
-                context.update({'df_previous': df_previous_trip})
-
-        except:
-            context.update({'df_previous': None})
-            
     request.session['context'] = context
     print("---"*50, "context saved")
     print(context)
@@ -270,8 +247,6 @@ def checking_logbook(request):
     
     print("="*20, "checking_logbook", "="*20)
     
-    # allData = api_functions.load_allData_file()
-    # file_path = "media/data/" + os.listdir("media/data")[0]
     allData_file_path = request.session.get('allData_file_path')
     allData = common_functions.load_json_file(allData_file_path)
 
@@ -502,7 +477,7 @@ def checking_logbook(request):
                 # context.update({'df_previous' : pd.DataFrame.from_dict(context['df_previous'], orient = 'index')})
                 # context.update({'df_previous' : context['df_previous'], orient = 'index')})
                 
-                with open ('media/temporary_files/previous_trip.json', 'r', encoding='utf-8') as f:
+                with open(TEMP_DIR / 'previous_trip.json', 'r', encoding='utf-8') as f:
                     json_previoustrip = json.load(f)
                 
                 # On récupère la date du jour 1 au bon format
@@ -608,11 +583,11 @@ def checking_logbook(request):
             json_previoustrip = json.loads(previous_trip_info)
             
             # on enregistre dans le dossier les informations relatives au précédent trip qu'on veut continuer
-            if os.path.exists("media/temporary_files/previous_trip.json"):
-                os.remove("media/temporary_files/previous_trip.json")
-
-            file_name = "media/temporary_files/previous_trip.json"
-            with open(file_name, 'w', encoding='utf-8') as f:
+            previous_trip_path = TEMP_DIR / 'previous_trip.json'
+            if previous_trip_path.exists():
+                previous_trip_path.unlink()
+            TEMP_DIR.mkdir(parents=True, exist_ok=True)
+            with open(previous_trip_path, 'w', encoding='utf-8') as f:
                 f.write(json.dumps(json_previoustrip, ensure_ascii=False, indent=4))
             
             json_previoustrip = json_previoustrip["content"][0]
@@ -689,7 +664,7 @@ def send_logbook2observe(request):
     1) le trip si on créé un nouveau trip 
     2) supprime et envoie le nouveau trip updated si on ajoute des informations de marée à un trip existant
     """
-    # allData_file_path = "media/data/" + os.listdir("media/data")[0]
+
     allData_file_path = request.session.get('allData_file_path')
     allData = common_functions.load_json_file(allData_file_path)
     # allData = common_functions.load_allData_file()
@@ -704,8 +679,9 @@ def send_logbook2observe(request):
         resultat = None
         
 
-        if os.path.exists("media/temporary_files/created_json_file.json"):
-            os.remove("media/temporary_files/created_json_file.json")
+        created_json_path = TEMP_DIR / 'created_json_file.json'
+        if created_json_path.exists():
+            created_json_path.unlink()
 
         print("="*80)
         print("Load JSON data file")
@@ -806,7 +782,7 @@ def send_logbook2observe(request):
         else:   
             # CONTINUE THE TRIP 
             
-            with open ('media/temporary_files/previous_trip.json', 'r', encoding='utf-8') as f:
+            with open(TEMP_DIR / 'previous_trip.json', 'r', encoding='utf-8') as f:
                 json_previoustrip = json.load(f)
             
             if context['version'] == 'll_17.6':

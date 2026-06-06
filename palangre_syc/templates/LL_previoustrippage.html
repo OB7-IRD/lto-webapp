@@ -10,7 +10,7 @@
 
 {% block content %}
 
-<form method="POST" id="previoustrip" action="{% url 'checking logbook' %}">
+<form method="POST" id="previoustrip" action="{% url 'checking_logbook' %}">
     <!-- last trip extracted data -->
     {% comment %} {% if df_previous_trip.iterrows != None %} {% endcomment %}
     {% if df_previous != None %}

@@ -202,7 +202,13 @@ STATICFILES_DIRS = [
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+
+
+MEDIA_ROOT   = BASE_DIR / 'media'
+LOGBOOKS_DIR = MEDIA_ROOT / 'logbooks'
+DATA_DIR     = MEDIA_ROOT / 'data'
+TEMP_DIR     = MEDIA_ROOT / 'temporary_files'
+SQL_DIR = MEDIA_ROOT / 'requetesSQL'
 
 LOGIN_URL = 'login'
 

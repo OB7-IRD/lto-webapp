@@ -11,15 +11,18 @@ from django.shortcuts import render, redirect
 from api_traitement import api_functions
 from api_traitement.common_functions import *
 from api_traitement.api_functions import *
-# from palangre_syc import api
-
+from website import settings
 from .form import LTOUserForm
-
+from pathlib import Path
+from website.settings import MEDIA_ROOT ,SQL_DIR, LOGBOOKS_DIR ,DATA_DIR, TEMP_DIR  
 import json
 from zipfile import ZipFile
 import os
 
 from .models import ConnectionProfile
+import uuid
+
+
 
 # Create your views here.
 def register(request):
@@ -295,17 +298,15 @@ def logbook(request):
             current_profile = None
 
     try:
-        file_name = "media/data/" + os.listdir('media/data')[0]
-        # Opening JSON file
-        f = open(file_name, encoding="utf8")
-        # returns JSON object as  a dictionary
-        allData = json.load(f)
-
-        datat_0c_Pr.update({"ocean": search_in(request, allData)})
-        request.session['data_Oc_Pr'] = datat_0c_Pr
-        datat_0c_Pr = request.session.get('data_Oc_Pr')
-    except:
-        pass
+        data_files = [f for f in DATA_DIR.iterdir() if f.is_file()]
+        if data_files:
+            with open(data_files[0], encoding="utf8") as f:
+                allData = json.load(f)
+            datat_0c_Pr.update({"ocean": search_in(request, allData)})
+            request.session['data_Oc_Pr'] = datat_0c_Pr
+            datat_0c_Pr = request.session.get('data_Oc_Pr')
+    except Exception as e:
+        print("Erreur chargement allData:", e)
 
     if datat_0c_Pr['program'] != None:
         print(datat_0c_Pr['program'].keys())
@@ -314,54 +315,38 @@ def logbook(request):
         if request.POST.get('submit'):
 
             message = tags = ''
-            logbooks = os.listdir("media/logbooks")
+            logbook_file_path = request.session.get('logbook_file_path')
+            if not logbook_file_path or not os.path.exists(logbook_file_path):
+                messages.error(request, _("Fichier logbook introuvable. Veuillez le déposer à nouveau."))
+                return redirect('logbook')
 
-            #Si validé sans fichier excel televersé
-            if logbooks == []:
-                print("="*10, "Validé sans fichier excel", "="*10)
-                msg = _("Merci de déposer un fichier excel avant de lancer l'extraction de données !")
-                messages.error(request, msg)
-                tags = "error2"
-
-                return render(request, "logbook.html",{
-                    "tags": tags,
-                    "alert_message": _("Merci de téléverser un fichier excel"),
-                    "ocean_data": datat_0c_Pr["ocean"],
-                    "ll_context" : json.dumps(apply_conf),
-                    # 'current_profile': current_profile,  ← supprimer, géré par le context processor
-                    "timestamp": now().timestamp()  # pour gérer le cache par rapport au code js
-
-                })
             print(apply_conf)
             # Si le fichier pour les palangre, alors on renvoit vers 'palagre_syc'
             if apply_conf["domaine"] == "palangre":
-                logbooks = os.listdir("media/logbooks")
-                # print("="*20, "logbook kwargs", "="*20)
-                # print(logbooks)
-                # print(apply_conf)
-
-                url = reverse('presenting previous trip')
-                url = f"{url}?selected_file={logbooks}"
-                return redirect(url)
+                return redirect('presenting_previous_trip')
 
             # sinon on a un fichier senne
-            if 0 < len(logbooks) <= 1:
-                if apply_conf["ty_doc"] == "ps":
-                    info_Navir, data_logbook, data_observateur, message = read_data("media/logbooks/"+ logbooks[0], type_doc="v21")
-                if apply_conf["ty_doc"] == "ps2":
-                    info_Navir, data_logbook, message = read_data("media/logbooks/"+ logbooks[0], type_doc="v23")
+            if apply_conf["ty_doc"] == "ps":
+                info_Navir, data_logbook, data_observateur, message = read_data(logbook_file_path, type_doc="v21")
+            elif apply_conf["ty_doc"] == "ps2":
+                info_Navir, data_logbook, message = read_data(logbook_file_path, type_doc="v23")
+            else:
+                message = ''
 
-                # Suprimer le ou les fichiers data logbooks
-                os.remove("media/logbooks/"+ logbooks[0])
+            Path(logbook_file_path).unlink(missing_ok=True)
+            request.session.pop('logbook_file_path', None)
+            request.session.pop('logbook_original_name', None)
+            request.session.modified = True
 
-            if message == '' and len(logbooks) > 0:
+            if message == '':
                  print("len log ", len(logbooks), " messa : ", message)
                  try:
-                     file_name = "media/data/" + os.listdir('media/data')[0]
-                     # Opening JSON file
-                     f = open(file_name, encoding="utf8")
-                     # returns JSON object as  a dictionary
-                     allData = json.load(f)
+                     data_files = [f for f in DATA_DIR.iterdir() if f.is_file()]
+                     if not data_files:
+                        messages.error(request, _("Données de référence absentes."))
+                        return redirect('logbook')
+                     with open(data_files[0], encoding="utf8") as f:
+                        allData = json.load(f)
 
                      if apply_conf["ty_doc"] == "ps":
                         allMessages, content_json = build_trip(allData=allData, info_bat=info_Navir, data_log=data_logbook, oce=apply_conf['ocean'], prg=apply_conf['programme'], ob=data_observateur)
@@ -387,12 +372,9 @@ def logbook(request):
 
                          safe_content_json = recursive_convert(content_json)
 
-                         file_name = "media/temporary_files/content_json.json"
-
-                         # créer récursivement tous les dossiers du chemin indiqué, s’ils n’existent pas encore.
-                         os.makedirs(os.path.dirname(file_name), exist_ok=True)
-
-                         with open(file_name, 'w', encoding='utf-8') as f:
+                         content_json_path = TEMP_DIR / 'content_json.json'
+                         TEMP_DIR.mkdir(parents=True, exist_ok=True)
+                         with open(content_json_path, 'w', encoding='utf-8') as f:
                              f.write(json.dumps(safe_content_json, ensure_ascii=False, indent=4))
 
                      except TypeError as e:
@@ -416,19 +398,20 @@ def logbook(request):
                              tags = "error"
 
                          # Mettre les messages d'erreurs dans un fichier log
-                         file_log_name = "media/log/log.txt"
-
-                         with open(file_log_name, 'w', encoding='utf-8') as f_log:
+                         log_path = MEDIA_ROOT / 'log' / 'log.log'
+                         log_path.parent.mkdir(parents=True, exist_ok=True)
+                         with open(log_path, 'w', encoding='utf-8') as f_log:
                              log_mess = "\r\r".join(allMessages)
                              f_log.write(log_mess)
                  except UnboundLocalError:
-                     messages.error(request, _("Veuillez recharger la page et reprendre votre opération SVP."))
-                     tags = "error2"
+                    messages.error(request, _("Veuillez recharger la page et reprendre votre opération SVP."))
+                    tags = "error2"
 
-                     logbooks = os.listdir("media/logbooks")
-
-                     for logbook in logbooks:
-                         os.remove("media/logbooks/"+ logbook)
+                    if logbook_file_path and Path(logbook_file_path).exists():
+                        Path(logbook_file_path).unlink()
+                    request.session.pop('logbook_file_path', None)
+                    request.session.pop('logbook_original_name', None)
+                    request.session.modified = True
 
             else:
                 messages.error(request, message)
@@ -516,57 +499,68 @@ def getProgram(request, domaine):
 
 # @login_required
 def postProg_info(request):
+    if request.method == 'POST':
+        domaine   = request.POST.get("domaine")
+        ocean     = request.POST.get("ocean")
+        programme = request.POST.get("programme")
+        ty_doc    = request.POST.get("ty_doc")
 
-    print("="*50)
-    print(request.headers)
-    print("XRW =", request.headers.get('x-requested-with'))
-    print("="*50)
-
-    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        if not all([domaine, ocean, programme, ty_doc]):
+            messages.error(request, _("Merci de sélectionner tous les champs avant d'appliquer"))
+            return redirect('logbook')
 
         request.session['dico_config'] = {
-            'domaine': request.POST["domaine"],
-            'ocean': request.POST["ocean"],
-            'programme': request.POST["programme"],
-            'ty_doc': request.POST["ty_doc"]
+            'domaine': domaine,
+            'ocean': ocean,
+            'programme': programme,
+            'ty_doc': ty_doc,
         }
-        print(request.session['dico_config'])
-        return JsonResponse({"message": "success", 
-                            "domaine": request.session.get('dico_config')['domaine']})
-    return JsonResponse({"message": _("Veuillez ressayer svp.")})
+        request.session.modified = True
 
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+            return JsonResponse({"message": "success", "domaine": domaine})
+
+        return redirect('logbook')
+
+    return redirect('logbook')
+@login_required
 def logbook_del_files(request):
-    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
-        if not os.path.exists("media/logbooks"):
-            os.makedirs("media/logbooks")
-
-        logbooks_files = os.listdir("media/logbooks")
-
-        if len(logbooks_files) > 0:
-            for file in logbooks_files:
-                # os.remove("media/logbooks/"+ file)
-                file_path = os.path.join("media/logbooks", file)
-                try:
-                    os.remove(file_path)
-                    print(f"Supprimé : {file}")
-                except PermissionError:
-                    print(f"Impossible de supprimer {file} : fichier utilisé par un autre processus")
-
-            print("Suppression des logbook trouvés")
-        else:
-            print("Aucun logbook trouvé dans le cache")
+    """
+    Supprime les fichiers logbook de la session
+    """
+    logbook_file_path = request.session.get('logbook_file_path')
+    if logbook_file_path and Path(logbook_file_path).exists():
+        try:
+            Path(logbook_file_path).unlink()
+        except PermissionError:
+            pass
+    request.session.pop('logbook_file_path', None)
+    request.session.pop('logbook_original_name', None)
+    request.session.modified = True
     return JsonResponse({})
 
 @login_required
 def domaineSelect(request):
-    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+    if request.method == 'POST':
+        # Supprimer le fichier via le chemin en session
+        logbook_file_path = request.session.get('logbook_file_path')
+        if logbook_file_path and os.path.exists(logbook_file_path):
+            try:
+                os.remove(logbook_file_path)
+            except PermissionError:
+                pass
 
-        logbooks = os.listdir("media/logbooks")
+        # Nettoyer la session
+        request.session.pop('logbook_file_path', None)
+        request.session.pop('logbook_original_name', None)
+        request.session.modified = True
 
-        for logbook in logbooks:
-            os.remove("media/logbooks/"+ logbook)
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+            return JsonResponse({"domaine": request.session.get('dico_config', {}).get('domaine')})
 
-        return JsonResponse({"domaine": request.session.get('dico_config')['domaine']})
+        return redirect('logbook')
+
+    return redirect('logbook')
 
 @login_required
 def sendData(request):
@@ -590,11 +584,11 @@ def sendData(request):
     )
 
     if request.headers.get('x-requested-with') == 'XMLHttpRequest':
-        file_name = "media/temporary_files/content_json.json"
-        # Opening JSON file
-        f = open(file_name, encoding="utf8")
-        # returns JSON object as  a dictionary
-        content_json = json.load(f)
+        content_json_path = TEMP_DIR / 'content_json.json'
+        if not content_json_path.exists():
+            return JsonResponse({"message": _("Fichier de données introuvable.")}, status=404)
+        with open(content_json_path, encoding="utf8") as f:
+            content_json = json.load(f)
         route = '/data/ps/common/Trip'
         message, code = api_functions.send_trip(token, content_json, base_url, route)
 
@@ -614,18 +608,43 @@ def sendData(request):
     return JsonResponse({"message": _("Veuillez ressayer svp.")})
 
 def file_upload_view(request):
-    if request.method == "POST":
-        file = request.FILES['file']
-        fs = FileSystemStorage()
-        if (file.name not in os.listdir("media/logbooks")):
-            #To copy data to the base folder
-            filename = fs.save("logbooks/"+file.name, file)
-            uploaded_file_url = fs.url(filename)                 #To get the file`s url
+    if request.method == 'POST':
+        uploaded_file = request.FILES.get('file')
+        
+        if not uploaded_file:
+            return JsonResponse({"error": "Aucun fichier reçu"}, status=400)
 
-            # print(uploaded_file_url)
+        # Vérification extension
+        ext = uploaded_file.name.split('.')[-1].lower()
+        if ext not in ['xlsx', 'xlsm']:
+            return JsonResponse({"error": "Format non autorisé"}, status=400)
 
-        # print("Contenu", request.session['table_files'])
-    return render(request, "logbook.html")
+        # Générer un nom unique
+        unique_name = f"{uuid.uuid4().hex}.{ext}"
+        
+        # S'assurer que le dossier existe
+        settings.LOGBOOKS_DIR.mkdir(parents=True, exist_ok=True)
+
+        # Chemin absolu complet
+        file_path = settings.LOGBOOKS_DIR / unique_name
+
+        # Sauvegarder le fichier
+        with open(file_path, 'wb+') as f:
+            for chunk in uploaded_file.chunks():
+                f.write(chunk)
+
+        # Stocker le chemin absolu ET le nom original en session
+        request.session['logbook_file_path'] = str(file_path)
+        request.session['logbook_original_name'] = uploaded_file.name
+        request.session.modified = True
+
+        return JsonResponse({
+            "message": "success",
+            "file_name": uploaded_file.name,
+            "unique_name": unique_name
+        })
+
+    return JsonResponse({"error": "Méthode non autorisée"}, status=405)
 
 
 ##########################################
@@ -653,7 +672,7 @@ def ERSloadData(request):
 
         _, connectBool = init_connexion_from_profile(ers_profile)
 
-        req6 = "media/requetesSQL/06-trips-with-ocean.sql"
+        req6 = str(SQL_DIR / '06-trips-with-ocean.sql')
 
         if connectBool:
             dataTripERS = ERSTripList(req6, ers_profile, ocean) 
@@ -727,8 +746,8 @@ def ERSloadTripDetails(request, trip_id):
 
         _, connectBool = init_connexion_from_profile(ers_profile)
 
-        req2 = 'media/requetesSQL/02-activities-of-a-given-trip-union-q02-q03-q06-q08-q10.sql'
-        req5 = "media/requetesSQL/05-landings-of-given-trip.sql"
+        req2 = str(SQL_DIR / '02-activities-of-a-given-trip-union-q02-q03-q06-q08-q10.sql')
+        req5 = str(SQL_DIR / '05-landings-of-given-trip.sql')
 
         if connectBool is True:
             listActivity = ERSloadOneTripDetails(req2, trip_id, ers_profile)
@@ -776,14 +795,13 @@ def sendERSDATA(request, trip_id):
     allData = {}
 
     try:
-        file_name = "media/data/" + os.listdir('media/data')[0]
-        # Opening JSON file
-        f = open(file_name, encoding="utf8")
-        # returns JSON object as  a dictionary
-        allData = json.load(f)
-    except:
-        pass
-
+        data_files = [f for f in DATA_DIR.iterdir() if f.is_file()]
+        if data_files:
+            with open(data_files[0], encoding="utf8") as f:
+                allData = json.load(f)
+    except Exception as e:
+        print("Erreur chargement allData ERS:", e)
+    
     ers_profile = request.user.ers_profile
 
     if request.headers.get('x-requested-with') == 'XMLHttpRequest' and ers_profile:
@@ -791,11 +809,11 @@ def sendERSDATA(request, trip_id):
         _, connectBool = init_connexion_from_profile(ers_profile)
 
         # req1 = 'media/requetesSQL/01-trips-list.sql'
-        req2 = 'media/requetesSQL/02-activities-of-a-given-trip-union-q02-q03-q06-q08-q10.sql'
-        req3 = "media/requetesSQL/03-catches-of-given-fishing-activity.sql"
-        req4 = "media/requetesSQL/04-discards-of-given-discard-activity.sql"
-        req5 = "media/requetesSQL/05-landings-of-given-trip.sql"
-        req6 = "media/requetesSQL/06-trips-with-ocean.sql"
+        req6 = str(SQL_DIR / '06-trips-with-ocean.sql')
+        req2 = str(SQL_DIR / '02-activities-of-a-given-trip-union-q02-q03-q06-q08-q10.sql')
+        req3 = str(SQL_DIR / '03-catches-of-given-fishing-activity.sql')
+        req4 = str(SQL_DIR / '04-discards-of-given-discard-activity.sql')
+        req5 = str(SQL_DIR / '05-landings-of-given-trip.sql')
 
         if connectBool is True:
             df_data = ERSTripList(req6, ers_profile, request.session.get('ocean_text'))
