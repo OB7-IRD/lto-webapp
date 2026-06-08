@@ -344,7 +344,6 @@ def logbook(request):
             request.session.modified = True
 
             if message == '':
-                 print("len log ", len(logbooks), " messa : ", message)
                  try:
                      data_files = [f for f in DATA_DIR.iterdir() if f.is_file()]
                      if not data_files:
