@@ -138,6 +138,8 @@ def presenting_previous_trip(request):
     Returns:
         html page with a table of the existings trips in observe
     """
+    print("#"*25,"\nStart presenting_previous_trip \n", request.session.get('dico_config'), "\n", "#"*25)
+
     # Vérification que media/data/ contient bien un fichier
     data_files = [f for f in DATA_DIR.iterdir() if f.is_file()]
     if not data_files:

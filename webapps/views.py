@@ -319,12 +319,17 @@ def logbook(request):
             if not logbook_file_path or not os.path.exists(logbook_file_path):
                 messages.error(request, _("Fichier logbook introuvable. Veuillez le déposer à nouveau."))
                 return redirect('logbook')
-
+            
+            print(apply_conf)
+            if not apply_conf:
+                print("#"*25,"\nNot apply_conf\n", apply_conf)
+                messages.error(request, _("Veuillez d'abord sélectionner un domaine, programme, océan et type de document."))
+                return redirect('logbook')
             print(apply_conf)
             # Si le fichier pour les palangre, alors on renvoit vers 'palagre_syc'
             if apply_conf["domaine"] == "palangre":
                 return redirect('presenting_previous_trip')
-
+    
             # sinon on a un fichier senne
             if apply_conf["ty_doc"] == "ps":
                 info_Navir, data_logbook, data_observateur, message = read_data(logbook_file_path, type_doc="v21")
