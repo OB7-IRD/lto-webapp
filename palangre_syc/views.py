@@ -18,115 +18,131 @@ from palangre_syc import excel_extractions
 from palangre_syc import json_construction
 from api_traitement import api_functions, common_functions
 from website.settings import MEDIA_ROOT ,LOGBOOKS_DIR ,DATA_DIR, TEMP_DIR  
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 def get_previous_trip_infos(request, token, df_donnees_p1, allData):
     """Fonction qui va faire appel au WS pour :
     1) trouver l'id du trip le plus récent pour un vessel et un programme donné
-    et 2) trouver les informations rattachées à ce trip
-
-    Args:
-        request (_type_): _description_
-        df_donnees_p1 (_type_): _description_
-
-    Returns:
-        dictionnaire: startDate, endDate, captain
+    2) trouver les informations rattachées à ce trip
+    - Utilise ThreadPoolExecutor pour paralléliser les appels API
     """
-    
+
     base_url = request.session.get('base_url')
-   
-    # les topiaid envoyés au WS doivent être avec des '-' à la place des '#'
+
     vessel_topiaid = json_construction.get_vessel_topiaid(df_donnees_p1, allData)
-    # Pour le webservice, il faut remplacer les # par des - dans les topiaid
     vessel_topiaid_ws = vessel_topiaid.replace("#", "-")
     programme_topiaid = request.session.get('dico_config')['programme']
     programme_topiaid_ws = programme_topiaid.replace("#", "-")
 
     print("="*20, vessel_topiaid_ws, "="*20)
     print("="*20, programme_topiaid_ws, "="*20)
+
     route = '/data/ll/common/Trip'
-    previous_trip = api_functions.trip_for_prog_vessel(token, base_url, route, vessel_topiaid_ws, programme_topiaid_ws)
+    previous_trip = api_functions.trip_for_prog_vessel(
+        token, base_url, route, vessel_topiaid_ws, programme_topiaid_ws
+    )
 
-    # on récupères les informations uniquement pour le trip avec la endDate la plus récente
     parsed_previous_trip = json.loads(previous_trip.decode('utf-8'))
-    if parsed_previous_trip['content'] != []:
-        # Prévoir le cas ou le vessel n'a pas fait de trip avant
-        print("pour ce programme et ce vessel on a : ", len(parsed_previous_trip['content']), "trip enregistrés")
-        
-        df_trip = pd.DataFrame(columns=["triptopiaid", "startDate", "depPort_topiaid", "depPort", "endDate", "endPort_topiaid", "endPort", "ocean"])
 
-
-        for num_trip in range(len(parsed_previous_trip['content'])):
-            trip_topiaid = parsed_previous_trip['content'][num_trip]['topiaId'].replace("#", "-")
-            route = '/data/ll/common/Trip/'
-            # trip_info = json.loads(api.get_trip(token, base_url, trip_topiaid).decode('utf-8'))
-            trip_info = json.loads(api_functions.get_one_from_ws(token, base_url, route, trip_topiaid).decode('utf-8'))
-            # parsed_trip_info = json.loads(trip_info.decode('utf-8'))
-            if 'departureHarbour' in trip_info['content'][0]:
-                depPort = trip_info['content'][0]['departureHarbour']
-                
-                if request.LANGUAGE_CODE == 'fr':
-                    depPort_name = common_functions.from_topiaid_to_value(topiaid=depPort,
-                                lookingfor='Harbour',
-                                label_output='label2',
-                                allData=allData,
-                                domaine=None)
-                elif request.LANGUAGE_CODE == 'en':
-                    depPort_name = common_functions.from_topiaid_to_value(topiaid=depPort,
-                                lookingfor='Harbour',
-                                label_output='label1',
-                                allData=allData,
-                                domaine=None)
-            else : 
-                depPort = None
-                depPort_name = None
-            
-            if 'landingHarbour' in trip_info['content'][0]:
-                endPort = trip_info['content'][0]['landingHarbour']
-                if request.LANGUAGE_CODE == 'fr':
-                    endPort_name = common_functions.from_topiaid_to_value(topiaid=endPort,
-                                lookingfor='Harbour',
-                                label_output='label2',
-                                allData=allData,
-                                domaine=None)
-                elif request.LANGUAGE_CODE == 'en':
-                    endPort_name = common_functions.from_topiaid_to_value(topiaid=endPort,
-                                lookingfor='Harbour',
-                                label_output='label1',
-                                allData=allData,
-                                domaine=None)
-                    
-            else : 
-                endPort = None
-                endPort_name = None
-            
-            if request.LANGUAGE_CODE == 'fr':
-                ocean = common_functions.from_topiaid_to_value(topiaid=trip_info['content'][0]['ocean'],
-                                lookingfor='Ocean',
-                                label_output='label2',
-                                allData=allData,
-                                domaine=None)
-            elif request.LANGUAGE_CODE == 'en':
-                ocean = common_functions.from_topiaid_to_value(topiaid=trip_info['content'][0]['ocean'],
-                                lookingfor='Ocean',
-                                label_output='label1',
-                                allData=allData,
-                                domaine=None)
-        
-            trip_info_row = [trip_info['content'][0]['topiaId'],
-                            trip_info['content'][0]['startDate'],
-                            depPort,
-                            depPort_name,
-                            trip_info['content'][0]['endDate'],
-                            endPort,
-                            endPort_name,
-                            ocean] # type: ignore
-            
-            df_trip.loc[num_trip] = trip_info_row
-            
-        return(df_trip)
-    
-    else:
+    if not parsed_previous_trip['content']:
         return None
+
+    print(f"Pour ce programme et ce vessel : {len(parsed_previous_trip['content'])} trips enregistrés")
+
+    # ── Fonction appelée en parallèle pour chaque trip ──────────────
+    def fetch_trip_details(num_trip):
+        """Récupère les détails d'un trip depuis l'API Observe."""
+        try:
+            trip_topiaid = parsed_previous_trip['content'][num_trip]['topiaId'].replace("#", "-")
+            trip_info = json.loads(
+                api_functions.get_one_from_ws(
+                    token, base_url, '/data/ll/common/Trip/', trip_topiaid
+                ).decode('utf-8')
+            )
+            return num_trip, trip_info
+        except Exception as e:
+            print(f"Erreur fetch trip {num_trip}: {e}")
+            return num_trip, None
+
+    # ── Appels parallèles ────────────────────────────────────────────
+    nb_trips = len(parsed_previous_trip['content'])
+    trip_results = {}
+
+    with ThreadPoolExecutor(max_workers=min(nb_trips, 5)) as executor:
+        futures = {
+            executor.submit(fetch_trip_details, i): i
+            for i in range(nb_trips)
+        }
+        for future in as_completed(futures):
+            num_trip, trip_info = future.result()
+            if trip_info is not None:
+                trip_results[num_trip] = trip_info
+
+    # ── Construction du DataFrame dans l'ordre ───────────────────────
+    df_trip = pd.DataFrame(
+        columns=["triptopiaid", "startDate", "depPort_topiaid", "depPort",
+                 "endDate", "endPort_topiaid", "endPort", "ocean"]
+    )
+
+    lang = request.LANGUAGE_CODE
+    label_key = 'label2' if lang == 'fr' else 'label1'
+
+    for num_trip in sorted(trip_results.keys()):
+        trip_info = trip_results[num_trip]
+        content = trip_info['content'][0]
+
+        # Port de départ
+        if 'departureHarbour' in content:
+            depPort = content['departureHarbour']
+            depPort_name = common_functions.from_topiaid_to_value(
+                topiaid=depPort,
+                lookingfor='Harbour',
+                label_output=label_key,
+                allData=allData,
+                domaine=None
+            )
+        else:
+            depPort = None
+            depPort_name = None
+
+        # Port d'arrivée
+        if 'landingHarbour' in content:
+            endPort = content['landingHarbour']
+            endPort_name = common_functions.from_topiaid_to_value(
+                topiaid=endPort,
+                lookingfor='Harbour',
+                label_output=label_key,
+                allData=allData,
+                domaine=None
+            )
+        else:
+            endPort = None
+            endPort_name = None
+
+        # Océan
+        ocean = common_functions.from_topiaid_to_value(
+            topiaid=content['ocean'],
+            lookingfor='Ocean',
+            label_output=label_key,
+            allData=allData,
+            domaine=None
+        )
+
+        df_trip.loc[num_trip] = [
+            content['topiaId'],
+            content['startDate'],
+            depPort,
+            depPort_name,
+            content['endDate'],
+            endPort,
+            endPort_name,
+            ocean
+        ]
+
+    # ── Nettoyage nan → None pour sérialisation JSON ─────────────────
+    df_trip = df_trip.where(df_trip.notna(), other=None)
+
+    return df_trip
     
 
 def presenting_previous_trip(request):
