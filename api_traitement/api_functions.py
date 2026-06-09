@@ -318,12 +318,17 @@ def send_trip(token, data, base_url, route):
 
     url = base_url + route
 
+    print(f"→ POST {url}")  # ← ajouter ici
+    print(f"  Payload size: {len(data_json)} bytes")  # ← ajouter ici
+
     print("Post - send data")
     pretty_print(data)
     
     response = requests.post(url, data=data_json, headers=headers, timeout=TIMEOUT_VALUE)
 
-    # print(response.status_code, "\n")
+    print(f"← {response.status_code}")  # ← ajouter ici
+    if response.status_code != 200:
+        print(f"  Réponse erreur : {response.text[:500]}")  # ← ajouter ici
 
     if response.status_code == 200:
         # return json.loads(res.text)
@@ -388,11 +393,17 @@ def update_trip(token, data, base_url, topiaid):
 
     url = base_url + '/data/ll/common/Trip/' + topiaid
 
+    print(f"→ POST {url}")  # ← ajouter ici
+    print(f"  Payload size: {len(data_json)} bytes")  # ← ajouter ici
+    
     pretty_print(data)
     response = requests.put(url, data=data_json, headers=headers, timeout=TIMEOUT_VALUE)
     
     print("Code resultat de la requete", response.status_code)
-    
+    print(f"← {response.status_code}")  # ← ajouter ici
+    if response.status_code != 200:
+        print(f"  Réponse erreur : {response.text[:500]}")  # ← ajouter ici
+
     # if response.status_code == 200:
     #     return (_("Logbook inséré avec success"), 1)
     # else:

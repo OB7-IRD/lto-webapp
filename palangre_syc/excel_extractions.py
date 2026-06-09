@@ -679,7 +679,7 @@ def extract_catches_v26(df_donnees, version):
         for i in range(0, len(cols), 2):
             col_no = cols[i]
             col_kg = cols[i + 1]
-            print("°"*10, col_no, "//", col_kg, "°"*10)
+            # print("°"*10, col_no, "//", col_kg, "°"*10)
             # récupérer le code espèce (SBF, ALB, BET…)
             species_match = re.search(r'\(([^)]+)\)', col_no)
             species_code = species_match.group(1) if species_match else None
@@ -689,16 +689,16 @@ def extract_catches_v26(df_donnees, version):
             # specie_process = re.search(r'[^a-zA-Z]', utf_8)
             process_match = re.search(r'\b([A-Z]{2})\b\s*$', col_kg)
             specie_process = process_match.group(1).strip() if process_match else None
-            print(">>"+ specie_process+ "<<")
-            print("row ::: ", type(row), "::: fin row")
+            # print(">>"+ specie_process+ "<<")
+            # print("row ::: ", type(row), "::: fin row")
             count = row[col_no]
             # kg = row[i + 1]
             kg = row[col_kg]
-            print("count :: ", count) 
-            print("kg ::: ", kg)
+            # print("count :: ", count) 
+            # print("kg ::: ", kg)
             
             # if pd.isna(count):
-            #     print("coucou na")
+            #     # print("coucou na")
             #     count = None
             # normalisation des vides
             # count = None if pd.isna(count) or count == '' or count == 0 else count
@@ -706,7 +706,7 @@ def extract_catches_v26(df_donnees, version):
             # if count is None or pd.isna(count) or (count == 0).all() or count == '':
             #     count = None
             # if pd.isna(kg).all():
-            #     print("coucou na kg")
+            #     # print("coucou na kg")
             #     kg = None
             kg = clean_value(kg)
             count = clean_value(count)
