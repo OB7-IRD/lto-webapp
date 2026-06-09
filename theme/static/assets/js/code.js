@@ -595,6 +595,33 @@ $(document).ready(function(){
         });
     });
 
+    function getCookie(name) {
+        let cookieValue = null;
+
+        if (document.cookie && document.cookie !== '') {
+
+            let cookies = document.cookie.split(';');
+
+            for (let i = 0; i < cookies.length; i++) {
+
+                let cookie = cookies[i].trim();
+
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+
+                    cookieValue = decodeURIComponent(
+                        cookie.substring(name.length + 1)
+                    );
+
+                    break;
+                }
+            }
+        }
+
+        return cookieValue;
+    }
+
+    const csrftoken = getCookie('csrftoken');
+
     // Bloque toute l'interface utilisateur
     function lockUI() {
         $('#ui-lock-overlay').removeClass('hidden');
@@ -638,7 +665,13 @@ $(document).ready(function(){
         console.log("CURRENT_LANGUAGE ", CURRENT_LANGUAGE)
         $.ajax({
             type: 'POST',
-            url: `/logbook/sendERSDATA/${tripId}/`,
+            url: `/${CURRENT_LANGUAGE}/logbook/sendERSDATA/${tripId}/`,
+
+            headers: {
+                "X-CSRFToken": csrftoken,
+                "X-Requested-With": "XMLHttpRequest"
+            },
+
             success: function (response) {
 
                 let alertHtml = '';

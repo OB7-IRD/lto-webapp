@@ -650,7 +650,6 @@ def file_upload_view(request):
 
     return JsonResponse({"error": "Méthode non autorisée"}, status=405)
 
-
 ##########################################
 ############    ERS   ####################
 ##########################################
@@ -795,6 +794,8 @@ def ERSloadTripDetails(request, trip_id):
 
 @login_required
 def sendERSDATA(request, trip_id):
+
+    print("sendERSDATA exécutée")
 
     allData = {}
 
