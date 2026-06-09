@@ -497,8 +497,8 @@
 
                         <div class="block w-full overflow-x-auto">
                             <table class="items-center w-full bg-transparent border-collapse">
-                                <tbody>     
-                                    {% if df_bait.0 and df_bait.0|stringformat:"s" %}
+                                <tbody>  
+                                    {% if df_bait|length > 0 %}
                                         {% for bait in df_bait %}
                                             <tr>
                                                 <td class="border-t-0 px-2 align-middle text-center border-l-0 border-r-0 text-m whitespace-nowrap p-2">
