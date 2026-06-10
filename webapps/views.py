@@ -285,7 +285,9 @@ def connect_profile(request):
 def logbook(request):
     datat_0c_Pr = request.session.get('data_Oc_Pr')
     apply_conf  = request.session.get('dico_config')
-
+    
+    print("="*20, "logbook apply_conf au démarrage", "="*20)
+    print(apply_conf)
     # Récupérer l'ID du profil actuellement sélectionné depuis la session
     current_profile_id = request.session.get('current_profile_id')
 
@@ -408,6 +410,8 @@ def logbook(request):
                              log_mess = "\r\r".join(allMessages)
                              f_log.write(log_mess)
                  except UnboundLocalError:
+                    print("#"*20, "\n", datat_0c_Pr, "\n", "#"*20)
+                    print("#"*20, "\n", apply_conf, "\n", "#"*20)
                     messages.error(request, _("Veuillez recharger la page et reprendre votre opération SVP."))
                     tags = "error2"
 
@@ -508,6 +512,9 @@ def postProg_info(request):
         ocean     = request.POST.get("ocean")
         programme = request.POST.get("programme")
         ty_doc    = request.POST.get("ty_doc")
+        
+        print("="*20, "postProg_info POST data", "="*20)
+        print(f"domaine={domaine}, ocean={ocean}, programme={programme}, ty_doc={ty_doc}")
 
         if not all([domaine, ocean, programme, ty_doc]):
             messages.error(request, _("Merci de sélectionner tous les champs avant d'appliquer"))
@@ -520,6 +527,9 @@ def postProg_info(request):
             'ty_doc': ty_doc,
         }
         request.session.modified = True
+        request.session.save()  # ← forcer la sauvegarde immédiate
+
+        print("Session dico_config saved:", request.session['dico_config'])
 
         if request.headers.get('x-requested-with') == 'XMLHttpRequest':
             return JsonResponse({"message": "success", "domaine": domaine})
@@ -627,10 +637,10 @@ def file_upload_view(request):
         unique_name = f"{uuid.uuid4().hex}.{ext}"
         
         # S'assurer que le dossier existe
-        settings.LOGBOOKS_DIR.mkdir(parents=True, exist_ok=True)
+        LOGBOOKS_DIR.mkdir(parents=True, exist_ok=True)
 
         # Chemin absolu complet
-        file_path = settings.LOGBOOKS_DIR / unique_name
+        file_path = LOGBOOKS_DIR / unique_name
 
         # Sauvegarder le fichier
         with open(file_path, 'wb+') as f:
