@@ -895,7 +895,7 @@ def ERSTripList(req6, ers_profile, ocean):
                        "trip_vessel_name",
                        "trip_ocean"]]
     
-    df_data = df_data[df_data["trip_ocean"].str.lower().str.contains(ocean[:3])]
+    df_data = df_data[df_data["trip_ocean"].str.lower().str.contains(ocean[:3], na=False)]
     return df_data if len(df_data) > 0 else None
 
     
