@@ -824,48 +824,62 @@ def floatingObjectPart(chaine, data, dico, index, perte_act=False):
          id (str), id (str)
     """
 
-    # Types objets flottants
+    def get_dcp_value():
+        """Retourne la valeur de obj_flot_typ_dcp_deriv quel que soit le type de data."""
+        if data is None:
+            return None
+        if isinstance(data, pd.Series):
+            val = data.get('obj_flot_typ_dcp_deriv', None)
+            return str(val).lower() if val is not None and not pd.isna(val) else None
+        if isinstance(data, pd.DataFrame):
+            if data.empty or 'obj_flot_typ_dcp_deriv' not in data.columns:
+                return None
+            return str(data['obj_flot_typ_dcp_deriv'].iloc[0]).lower()
+        return str(data).lower()
+
     if index == 'obj_flot_typ_obj':
-        if (("dcp ancré" in str(chaine).lower()) or ("dcpa" in str(chaine).lower())): return dico['1-2']
-        if (("epave artificielle liée à la pêche" in str(chaine).lower()) or ("débris artificiel issu de la pêche" in str(chaine).lower()) or ("enop" in str(chaine).lower())): return dico['2-2-4']
-        if (("epave artificielle liée à d'autres activités humaines" in str(chaine).lower()) or ("débris artificiel non issu de la pêche" in str(chaine).lower()) or ("enoh" in str(chaine).lower())): return dico['2-2-5']
-        if (("d'origine animale" in str(chaine).lower()) or ("enoa" in str(chaine).lower())) : return dico['2-1-2']
-        if (("d'origine végétale" in str(chaine).lower()) or ("enov" in str(chaine).lower())): return dico['2-1-1']
+        if (("dcp ancré" in str(chaine).lower()) or ("dcpa" in str(chaine).lower())): 
+            return dico['1-2']
+        if (("epave artificielle liée à la pêche" in str(chaine).lower()) or 
+            ("débris artificiel issu de la pêche" in str(chaine).lower()) or 
+            ("enop" in str(chaine).lower())): 
+            return dico['2-2-4']
+        if (("epave artificielle liée à d'autres activités humaines" in str(chaine).lower()) or 
+            ("débris artificiel non issu de la pêche" in str(chaine).lower()) or 
+            ("enoh" in str(chaine).lower())): 
+            return dico['2-2-5']
+        if (("d'origine animale" in str(chaine).lower()) or 
+            ("enoa" in str(chaine).lower())): 
+            return dico['2-1-2']
+        if (("d'origine végétale" in str(chaine).lower()) or 
+            ("enov" in str(chaine).lower())): 
+            return dico['2-1-1']
 
-
-        if ("dcp dérivant" in str(chaine).lower()) and data != None:
-            # Types de DCP
-            if (("dcp français émergé bambou" in str(data['obj_flot_typ_dcp_deriv']).lower()) or ("radeau émergé bambou" in str(data['obj_flot_typ_dcp_deriv']).lower())): return dico['1-1-1-1-1']
-            if ("radeau immergé métal" in str(data['obj_flot_typ_dcp_deriv']).lower()): return dico['1-1-1-1-5']
-            if ("dcp français émergé métal" in str(data['obj_flot_typ_dcp_deriv']).lower()): return dico['1-1-1-1-2']
-            if ("dcp français émergé bambou-métal" in str(data['obj_flot_typ_dcp_deriv']).lower()): return dico[
-                '1-1-1-1-1'], dico['1-1-1-1-2']
-            if ("dcp français furtif" in str(data['obj_flot_typ_dcp_deriv']).lower()): return dico['4-9'], dico['1-1-1']
-            if ("dcp français cage" in str(data['obj_flot_typ_dcp_deriv']).lower()): return dico['1-1-1']
-            if ("dcp espagnol émergé bambou" in str(data['obj_flot_typ_dcp_deriv']).lower()): return dico['1-1-1-1-1']
-            if ("dcp espagnol émergé métal" in str(data['obj_flot_typ_dcp_deriv']).lower()): return dico['1-1-1-1-2']
-            if ("traine" in str(data['obj_flot_typ_dcp_deriv']).lower()): return dico['1-1-2-6']
-            if ("dcp espagnol émergé bambou-métal" in str(data['obj_flot_typ_dcp_deriv']).lower()): return dico[
-                '1-1-1-1-1'], dico['1-1-1-1-2']
-            if ("dcp espagnol émergé plastique" in str(data['obj_flot_typ_dcp_deriv']).lower()): return dico[
-                '1-1-1-1-2']
-            if ("dcp espagnol furtif" in str(data['obj_flot_typ_dcp_deriv']).lower()): return dico['4-9'], dico['1-1-1']
-            if ("dcp espagnol cage" in str(data['obj_flot_typ_dcp_deriv']).lower()) or ("radeau" in str(data['obj_flot_typ_dcp_deriv']).lower()): return dico['1-1-1']
-            if ("dcp coréen" in str(data['obj_flot_typ_dcp_deriv']).lower()) : return dico['1-1']
-
-            if (("dcp cage" in str(data['obj_flot_typ_dcp_deriv']).lower()) or \
-                ("dcp avd" in str(data['obj_flot_typ_dcp_deriv']).lower()) or \
-                ("autre dcp dérivant" in str(data['obj_flot_typ_dcp_deriv']).lower()) or \
-                ("autre objet" in str(data['obj_flot_typ_dcp_deriv']).lower()) or \
-                (data['obj_flot_typ_dcp_deriv'].isna() | (data['obj_flot_typ_dcp_deriv'] == "")).any()):
-
-                return dico['1-1']
-
-            if ("cage" in str(data['obj_flot_typ_dcp_deriv']).lower()): return dico['1-1-2-5']
-            if ("tas de bout" in str(data['obj_flot_typ_dcp_deriv']).lower()): return dico['2-2-4-1']
-            if ("tas de paille" in str(data['obj_flot_typ_dcp_deriv']).lower()): return dico['2-1-1-1']
-            if ("bille de bois" in str(data['obj_flot_typ_dcp_deriv']).lower()): return dico['2-1-1-3']
-            if ("defense" in str(data['obj_flot_typ_dcp_deriv']).lower()): return dico['2-2']
+        # ← Remplacer le bloc dcp dérivant par
+        if "dcp dérivant" in str(chaine).lower():
+            dcp_val = get_dcp_value()
+            if dcp_val is None:
+                return None
+            if ("dcp français émergé bambou" in dcp_val) or ("radeau émergé bambou" in dcp_val): 
+                return dico['1-1-1-1-1']
+            if "radeau immergé métal" in dcp_val: 
+                return dico['1-1-1-1-5']
+            if "dcp français émergé métal" in dcp_val: 
+                return dico['1-1-1-1-2']
+            if "dcp français émergé bambou-métal" in dcp_val: 
+                return dico['1-1-1-1-1'], dico['1-1-1-1-2']
+            if "dcp français furtif" in dcp_val: 
+                return dico['4-9'], dico['1-1-1']
+            if "dcp français cage" in dcp_val: 
+                return dico['1-1-1']
+            if "dcp espagnol émergé bambou" in dcp_val: 
+                return dico['1-1-1-1-1']
+            if "dcp espagnol émergé métal" in dcp_val: 
+                return dico['1-1-1-1-2']
+            if "traine" in dcp_val: 
+                return dico['1-1-2-6']
+            if "dcp espagnol émergé bambou-métal" in dcp_val: 
+                return dico['1-1-1-1-1'], dico['1-1-1-1-2']
 
     # Mailles
     if index == 'obj_mailles':
@@ -2124,8 +2138,20 @@ def build_trip_v23(allData, info_bat, data_log, oce, prg):
                 prev = -1
 
                 try:
-                    if (row['obj_flot_act_sur_obj'] != None) and (d_act_obj.loc[index + 1, 'obj_flot_act_sur_obj'] != None):
-                        check_vis_dep = row['obj_flot_act_sur_obj'].lower(), d_act_obj.loc[index + 1, 'obj_flot_act_sur_obj'].lower()
+                        # ✅ Correction — vérifier aussi que les valeurs ne sont pas NaN et sont des strings
+                        val_current = row['obj_flot_act_sur_obj']
+                        val_next = d_act_obj.loc[index + 1, 'obj_flot_act_sur_obj'] if (index + 1 in d_act_obj.index) else None
+
+                        if (val_current is not None and not pd.isna(val_current) and isinstance(val_current, str)) and \
+                        (val_next is not None and not pd.isna(val_next) and isinstance(val_next, str)):
+                            check_vis_dep = val_current.lower(), val_next.lower()
+                            prev = index + 1
+                            if ("visite" in check_vis_dep) and ("déploiement" in check_vis_dep):
+                                operation = "renforcement == Visite + Déploiement"
+                                tab2_Transmitt = obj_deja_deploy_v23(d_act_bo, js_Transmitts, dico_trams_oper, dico_trams, dico_trams_owner,
+                                                                allData, operation)
+                                js_floatingObjects = func_tab3_floatingObject(allData, d_act_obj, dico_objeMat, js_Float,
+                                                                            bool_tuple=("true", "true"), argment="code=8")
                         prev = index + 1
 
                         if ("visite" in check_vis_dep) and ("déploiement" in check_vis_dep):
@@ -2311,13 +2337,12 @@ def build_trip_v23(allData, info_bat, data_log, oce, prg):
                 else:
                     posi_or_null_c = dico_code_setSucc["0"]
 
-                if ( ("FAR -" in data_activity["type_declaration"].upper()) and ("libre" in data_activity["calee_type"].lower()) ):
-                    # Code 6
+                calee_type_str = str(data_activity["calee_type"]).lower()  # ← cast sécurisé
+
+                if ("FAR -" in data_activity["type_declaration"].upper()) and ("libre" in calee_type_str):
                     js_activitys["setCount"], js_activitys["setSuccessStatus"], js_activitys["vesselActivity"] = setCo_setSuc_vess(1, posi_or_null_c, vers_code_6)
                     js_activitys["schoolType"] = schoolType(data_activity["calee_type"], dico_code_sch_type)
-
-                elif ( ("FAR -" in data_activity["type_declaration"].upper()) and ("objet" in data_activity["calee_type"].lower()) ):
-                    # Code 6
+                elif ("FAR -" in data_activity["type_declaration"].upper()) and ("objet" in calee_type_str):
                     js_activitys["setCount"], js_activitys["setSuccessStatus"], js_activitys["vesselActivity"] = setCo_setSuc_vess(1, posi_or_null_c, vers_code_6)
                     js_activitys["schoolType"] = schoolType(data_activity["calee_type"], dico_code_sch_type)
 
